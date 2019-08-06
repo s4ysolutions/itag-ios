@@ -2,19 +2,19 @@
 # platform :ios, '9.0'
 
 target 'itagone' do
-  use_frameworks!
   platform :ios, '12.4'
+  use_frameworks!
 
-  # Pods for itagone
+  pod 'Rasat'
 
   target 'itagoneTests' do
-    inherit! :search_paths
-    # Pods for testing
+    inherit! :complete
+    use_frameworks!
   end
 
   target 'itagoneUITests' do
     inherit! :complete
-    # Pods for testing
+    use_frameworks!
   end
 
 end
