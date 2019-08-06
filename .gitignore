@@ -1,0 +1,9 @@
+*.vim
+Pods/
+itagone.xcodeproj/xcuserdata
+itagone.xcworkspace/xcuserdata
+itagone.xcodeproj/project.xcworkspace/xcuserdata
+itagone/grps/secret.swift
+itagone/wsse/secret.swift
+.DS_Store
+.idea
