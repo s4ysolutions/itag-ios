@@ -68,8 +68,12 @@ class BLEDefault: NSObject, CBCentralManagerDelegate, BLE {
     }
     
     func startScan(timeout: Int) {
-        print(manager.delegate)
+        print(manager.delegate as Any)
         scanner.start(manager: manager, timeout: timeout)
+    }
+    
+    func stopScan() {
+        scanner.stop()
     }
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {

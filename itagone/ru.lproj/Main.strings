@@ -1,0 +1,6 @@
+
+/* Class = "UILabel"; text = "You have no iTag devices connected yet."; ObjectID = "Aox-D2-ha9"; */
+"Aox-D2-ha9.text" = "Нет подключенных брелков.";
+
+/* Class = "UILabel"; text = "Click \"Scan\" button above to start searching."; ObjectID = "V78-gO-sIZ"; */
+"V78-gO-sIZ.text" = "Нажмите кнопку сканирования, чтобы начать подключение.";

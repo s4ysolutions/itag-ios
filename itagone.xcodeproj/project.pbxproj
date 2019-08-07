@@ -8,8 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		416D2ABD22F9C481003A087A /* BLEScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416D2ABC22F9C481003A087A /* BLEScanner.swift */; };
+		41A5DA6322FB1DD800E6F94B /* BLEScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6222FB1DD800E6F94B /* BLEScanViewController.swift */; };
+		41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6422FB5AB500E6F94B /* PeripheralsTableViewController.swift */; };
+		41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6722FB5E1B00E6F94B /* PeripheralTableViewCell.swift */; };
+		41A5DA6A22FB5E1B00E6F94B /* PeripheralTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41A5DA6822FB5E1B00E6F94B /* PeripheralTableViewCell.xib */; };
+		41C15A5922FAF0FC008A4521 /* BLETags0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */; };
 		41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F67BF722F932E300BCC628 /* AppDelegate.swift */; };
-		41F67BFA22F932E300BCC628 /* BLEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F67BF922F932E300BCC628 /* BLEViewController.swift */; };
+		41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F67BF922F932E300BCC628 /* BLERootViewController.swift */; };
 		41F67BFD22F932E300BCC628 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41F67BFB22F932E300BCC628 /* Main.storyboard */; };
 		41F67BFF22F932E500BCC628 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41F67BFE22F932E500BCC628 /* Assets.xcassets */; };
 		41F67C0222F932E500BCC628 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41F67C0022F932E500BCC628 /* LaunchScreen.storyboard */; };
@@ -42,9 +47,22 @@
 
 /* Begin PBXFileReference section */
 		416D2ABC22F9C481003A087A /* BLEScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScanner.swift; sourceTree = "<group>"; };
+		41A5DA5D22FAF1DA00E6F94B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		41A5DA5E22FAF1DA00E6F94B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		41A5DA6122FB15D400E6F94B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		41A5DA6222FB1DD800E6F94B /* BLEScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScanViewController.swift; sourceTree = "<group>"; };
+		41A5DA6422FB5AB500E6F94B /* PeripheralsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralsTableViewController.swift; sourceTree = "<group>"; };
+		41A5DA6722FB5E1B00E6F94B /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
+		41A5DA6822FB5E1B00E6F94B /* PeripheralTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeripheralTableViewCell.xib; sourceTree = "<group>"; };
+		41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETags0ViewController.swift; sourceTree = "<group>"; };
+		41C15A5B22FAF1A1008A4521 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		41C15A5C22FAF1B6008A4521 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
+		41C15A5D22FAF1B6008A4521 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		41C15A5E22FAF1BC008A4521 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Main.strings; sourceTree = "<group>"; };
+		41C15A5F22FAF1BC008A4521 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		41F67BF422F932E300BCC628 /* itagone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = itagone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F67BF722F932E300BCC628 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		41F67BF922F932E300BCC628 /* BLEViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEViewController.swift; sourceTree = "<group>"; };
+		41F67BF922F932E300BCC628 /* BLERootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLERootViewController.swift; sourceTree = "<group>"; };
 		41F67BFC22F932E300BCC628 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		41F67BFE22F932E500BCC628 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		41F67C0122F932E500BCC628 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -118,6 +136,26 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		41A5DA6622FB5DD600E6F94B /* views */ = {
+			isa = PBXGroup;
+			children = (
+				41A5DA6722FB5E1B00E6F94B /* PeripheralTableViewCell.swift */,
+				41A5DA6822FB5E1B00E6F94B /* PeripheralTableViewCell.xib */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		41C15A5722FAF07E008A4521 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				41F67BF922F932E300BCC628 /* BLERootViewController.swift */,
+				41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */,
+				41A5DA6222FB1DD800E6F94B /* BLEScanViewController.swift */,
+				41A5DA6422FB5AB500E6F94B /* PeripheralsTableViewController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
 		41F67BEB22F932E300BCC628 = {
 			isa = PBXGroup;
 			children = (
@@ -143,10 +181,11 @@
 		41F67BF622F932E300BCC628 /* itagone */ = {
 			isa = PBXGroup;
 			children = (
+				41A5DA6622FB5DD600E6F94B /* views */,
+				41C15A5722FAF07E008A4521 /* controllers */,
 				41F67C2822F9478E00BCC628 /* ble */,
 				41F67C2522F9379A00BCC628 /* models */,
 				41F67BF722F932E300BCC628 /* AppDelegate.swift */,
-				41F67BF922F932E300BCC628 /* BLEViewController.swift */,
 				41F67BFB22F932E300BCC628 /* Main.storyboard */,
 				41F67BFE22F932E500BCC628 /* Assets.xcassets */,
 				41F67C0022F932E500BCC628 /* LaunchScreen.storyboard */,
@@ -298,6 +337,10 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
+				ar,
+				it,
+				"zh-Hans",
 			);
 			mainGroup = 41F67BEB22F932E300BCC628;
 			productRefGroup = 41F67BF522F932E300BCC628 /* Products */;
@@ -319,6 +362,7 @@
 				41F67C0222F932E500BCC628 /* LaunchScreen.storyboard in Resources */,
 				41F67BFF22F932E500BCC628 /* Assets.xcassets in Resources */,
 				41F67BFD22F932E300BCC628 /* Main.storyboard in Resources */,
+				41A5DA6A22FB5E1B00E6F94B /* PeripheralTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,11 +508,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				41F67C2722F93E6400BCC628 /* TagInterface.swift in Sources */,
-				41F67BFA22F932E300BCC628 /* BLEViewController.swift in Sources */,
+				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
 				41F67C2E22F990B300BCC628 /* BLEDefault.swift in Sources */,
+				41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */,
 				41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */,
 				41F67C2C22F98DD400BCC628 /* BLE.swift in Sources */,
+				41A5DA6322FB1DD800E6F94B /* BLEScanViewController.swift in Sources */,
 				416D2ABD22F9C481003A087A /* BLEScanner.swift in Sources */,
+				41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */,
+				41C15A5922FAF0FC008A4521 /* BLETags0ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,6 +556,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				41F67BFC22F932E300BCC628 /* Base */,
+				41C15A5C22FAF1B6008A4521 /* ar */,
+				41C15A5E22FAF1BC008A4521 /* it */,
+				41A5DA5D22FAF1DA00E6F94B /* zh-Hans */,
+				41A5DA6122FB15D400E6F94B /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -516,6 +568,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				41F67C0122F932E500BCC628 /* Base */,
+				41C15A5B22FAF1A1008A4521 /* ru */,
+				41C15A5D22FAF1B6008A4521 /* ar */,
+				41C15A5F22FAF1BC008A4521 /* it */,
+				41A5DA5E22FAF1DA00E6F94B /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -527,6 +583,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -588,6 +645,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

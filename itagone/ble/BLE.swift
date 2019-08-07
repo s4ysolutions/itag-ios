@@ -10,6 +10,8 @@ import Foundation
 import CoreBluetooth
 import Rasat
 
+let SCAN_TIMEOUT = 60
+
 protocol BLE {
     var scannerTimerObservable: Observable<Int> { get }
     var scannerObservable: Observable<CBPeripheral> { get }
@@ -17,4 +19,5 @@ protocol BLE {
     var scanningTimeout: Int { get }
     var state: CBManagerState { get }
     func startScan(timeout: Int)
+    func stopScan()
 }
