@@ -21,6 +21,7 @@ class TagStoreDefault: TagStoreInterface {
     
     init(factory: TagFactoryInterface) {
         self.factory = factory
+ 
         ids = defaults.array(forKey: "ids") as? [String] ?? []
         for id in ids {
             let dict = defaults.dictionary(forKey: "tag \(id)")
@@ -28,12 +29,19 @@ class TagStoreDefault: TagStoreInterface {
                 tags[id] = factory.tag(id: id, dict: dict!)
             }
         }
+ 
         print("tag ids in store:", ids)
         print("tags in store:", tags)
     }
     
     subscript(id: String) -> TagInterface? {
         return tags[id]
+    }
+    
+    var count: Int {
+        get {
+            return ids.count
+        }
     }
  
     var observable: Observable<StoreOp> {

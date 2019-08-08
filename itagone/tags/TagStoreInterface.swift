@@ -16,6 +16,7 @@ enum StoreOp {
 }
 
 protocol TagStoreInterface {
+    var count: Int { get }
     var observable: Observable<StoreOp> { get }
     subscript(id: String) -> TagInterface? {get}
     func forget(id: String)
