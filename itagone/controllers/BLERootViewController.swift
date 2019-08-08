@@ -12,12 +12,16 @@ import Rasat
 class BLERootViewController: UIViewController {
     @IBOutlet weak var containerView: UIView?
 
-    var ble: BLE?
+    let ble: BLE
     var contentID = ""
 
+    required init?(coder aDecoder: NSCoder) {
+        ble = BLEDefault.shared
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        ble = BLEDefault.shared
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,7 +31,7 @@ class BLERootViewController: UIViewController {
     // MARK: - Manage Content
     
     func setupContent() {
-        contentID = (ble?.isScanning ?? false ) ? "tags0" : "tags0"
+        contentID = "tags0"
         guard let contentViewController = self.storyboard?.instantiateViewController(withIdentifier: contentID) else { return }
         guard let contentView = contentViewController.view else { return }
         addChild(contentViewController)

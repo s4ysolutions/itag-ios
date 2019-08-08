@@ -11,25 +11,35 @@ import Rasat
 import UIKit
 
 class PeripheralsTableViewController: UITableViewController {
-    var ble: BLE?
     var disposable: DisposeBag?
     var peripherals = [] as [CBPeripheral]
+    let ble: BLE
+    let store: TagStoreInterface
+    
+    required init?(coder aDecoder: NSCoder) {
+        ble = BLEDefault.shared
+        store = TagStoreDefault.shared
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ble = BLEDefault.shared
+        tableView.register(UINib(nibName: "PeripheralTableViewCell", bundle: nil), forCellReuseIdentifier: "peripheralCell")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable?.add(ble!.scannerObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {peripheral in
+        disposable?.add(ble.scannerObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {peripheral in
             self.updatePeripheral(peripheral)
+        }))
+        disposable?.add(store.observable.subscribe(on: DispatchQueue.main, id: "scaning store", handler: {op in
+            print("peripherals got notification store changed")
+            self.tableView.reloadData()
         }))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        ble?.stopScan()
         disposable?.dispose()
         disposable = nil
     }
@@ -40,6 +50,7 @@ class PeripheralsTableViewController: UITableViewController {
                 return
             }
         }
+        print("add peripheral into tableview", peripheral)
         peripherals.append(peripheral)
         tableView.reloadData()
     }
@@ -58,7 +69,8 @@ class PeripheralsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "peripheralCell", for: indexPath) as! PeripheralTableViewCell
 
-        cell.uuid?.text = peripherals[indexPath.row].identifier.uuidString
+        let peripheral = peripherals[indexPath.row]
+        cell.peripheral = peripheral
         return cell
     }
     

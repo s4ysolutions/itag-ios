@@ -12,6 +12,14 @@
 		41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6422FB5AB500E6F94B /* PeripheralsTableViewController.swift */; };
 		41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6722FB5E1B00E6F94B /* PeripheralTableViewCell.swift */; };
 		41A5DA6A22FB5E1B00E6F94B /* PeripheralTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41A5DA6822FB5E1B00E6F94B /* PeripheralTableViewCell.xib */; };
+		41A5DA6C22FBC98F00E6F94B /* BLEDefaultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6B22FBC98F00E6F94B /* BLEDefaultDelegate.swift */; };
+		41A5DA6E22FBD56C00E6F94B /* TagStoreInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6D22FBD56C00E6F94B /* TagStoreInterface.swift */; };
+		41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA6F22FBD6B400E6F94B /* TagFactoryInterface.swift */; };
+		41A5DA7222FBD7F900E6F94B /* TagDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7122FBD7F900E6F94B /* TagDefault.swift */; };
+		41A5DA7422FBD85B00E6F94B /* TagFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7322FBD85B00E6F94B /* TagFactoryDefault.swift */; };
+		41A5DA7622FBDAA700E6F94B /* TagStoreDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7522FBDAA700E6F94B /* TagStoreDefault.swift */; };
+		41A5DA7922FBF95800E6F94B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41A5DA7722FBF95800E6F94B /* Localizable.strings */; };
+		41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7C22FBFAFF00E6F94B /* localized.swift */; };
 		41C15A5922FAF0FC008A4521 /* BLETags0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */; };
 		41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F67BF722F932E300BCC628 /* AppDelegate.swift */; };
 		41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F67BF922F932E300BCC628 /* BLERootViewController.swift */; };
@@ -54,6 +62,15 @@
 		41A5DA6422FB5AB500E6F94B /* PeripheralsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralsTableViewController.swift; sourceTree = "<group>"; };
 		41A5DA6722FB5E1B00E6F94B /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
 		41A5DA6822FB5E1B00E6F94B /* PeripheralTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeripheralTableViewCell.xib; sourceTree = "<group>"; };
+		41A5DA6B22FBC98F00E6F94B /* BLEDefaultDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEDefaultDelegate.swift; sourceTree = "<group>"; };
+		41A5DA6D22FBD56C00E6F94B /* TagStoreInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStoreInterface.swift; sourceTree = "<group>"; };
+		41A5DA6F22FBD6B400E6F94B /* TagFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFactoryInterface.swift; sourceTree = "<group>"; };
+		41A5DA7122FBD7F900E6F94B /* TagDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDefault.swift; sourceTree = "<group>"; };
+		41A5DA7322FBD85B00E6F94B /* TagFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFactoryDefault.swift; sourceTree = "<group>"; };
+		41A5DA7522FBDAA700E6F94B /* TagStoreDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStoreDefault.swift; sourceTree = "<group>"; };
+		41A5DA7822FBF95800E6F94B /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = itagone/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		41A5DA7A22FBF97E00E6F94B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = itagone/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		41A5DA7C22FBFAFF00E6F94B /* localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = localized.swift; sourceTree = "<group>"; };
 		41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETags0ViewController.swift; sourceTree = "<group>"; };
 		41C15A5B22FAF1A1008A4521 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		41C15A5C22FAF1B6008A4521 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
@@ -145,6 +162,14 @@
 			path = views;
 			sourceTree = "<group>";
 		};
+		41A5DA7B22FBFAD700E6F94B /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				41A5DA7C22FBFAFF00E6F94B /* localized.swift */,
+			);
+			path = extensions;
+			sourceTree = "<group>";
+		};
 		41C15A5722FAF07E008A4521 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +184,7 @@
 		41F67BEB22F932E300BCC628 = {
 			isa = PBXGroup;
 			children = (
+				41A5DA7722FBF95800E6F94B /* Localizable.strings */,
 				41F67BF622F932E300BCC628 /* itagone */,
 				41F67C0B22F932E500BCC628 /* itagoneTests */,
 				41F67C1622F932E500BCC628 /* itagoneUITests */,
@@ -181,10 +207,11 @@
 		41F67BF622F932E300BCC628 /* itagone */ = {
 			isa = PBXGroup;
 			children = (
+				41A5DA7B22FBFAD700E6F94B /* extensions */,
 				41A5DA6622FB5DD600E6F94B /* views */,
 				41C15A5722FAF07E008A4521 /* controllers */,
 				41F67C2822F9478E00BCC628 /* ble */,
-				41F67C2522F9379A00BCC628 /* models */,
+				41F67C2522F9379A00BCC628 /* tags */,
 				41F67BF722F932E300BCC628 /* AppDelegate.swift */,
 				41F67BFB22F932E300BCC628 /* Main.storyboard */,
 				41F67BFE22F932E500BCC628 /* Assets.xcassets */,
@@ -212,12 +239,17 @@
 			path = itagoneUITests;
 			sourceTree = "<group>";
 		};
-		41F67C2522F9379A00BCC628 /* models */ = {
+		41F67C2522F9379A00BCC628 /* tags */ = {
 			isa = PBXGroup;
 			children = (
 				41F67C2622F93E6400BCC628 /* TagInterface.swift */,
+				41A5DA6D22FBD56C00E6F94B /* TagStoreInterface.swift */,
+				41A5DA6F22FBD6B400E6F94B /* TagFactoryInterface.swift */,
+				41A5DA7122FBD7F900E6F94B /* TagDefault.swift */,
+				41A5DA7322FBD85B00E6F94B /* TagFactoryDefault.swift */,
+				41A5DA7522FBDAA700E6F94B /* TagStoreDefault.swift */,
 			);
-			path = models;
+			path = tags;
 			sourceTree = "<group>";
 		};
 		41F67C2822F9478E00BCC628 /* ble */ = {
@@ -226,6 +258,7 @@
 				41F67C2B22F98DD400BCC628 /* BLE.swift */,
 				41F67C2D22F990B300BCC628 /* BLEDefault.swift */,
 				416D2ABC22F9C481003A087A /* BLEScanner.swift */,
+				41A5DA6B22FBC98F00E6F94B /* BLEDefaultDelegate.swift */,
 			);
 			path = ble;
 			sourceTree = "<group>";
@@ -359,6 +392,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41A5DA7922FBF95800E6F94B /* Localizable.strings in Resources */,
 				41F67C0222F932E500BCC628 /* LaunchScreen.storyboard in Resources */,
 				41F67BFF22F932E500BCC628 /* Assets.xcassets in Resources */,
 				41F67BFD22F932E300BCC628 /* Main.storyboard in Resources */,
@@ -510,12 +544,19 @@
 				41F67C2722F93E6400BCC628 /* TagInterface.swift in Sources */,
 				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
 				41F67C2E22F990B300BCC628 /* BLEDefault.swift in Sources */,
+				41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */,
+				41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */,
 				41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */,
+				41A5DA6E22FBD56C00E6F94B /* TagStoreInterface.swift in Sources */,
 				41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */,
 				41F67C2C22F98DD400BCC628 /* BLE.swift in Sources */,
 				41A5DA6322FB1DD800E6F94B /* BLEScanViewController.swift in Sources */,
+				41A5DA6C22FBC98F00E6F94B /* BLEDefaultDelegate.swift in Sources */,
+				41A5DA7222FBD7F900E6F94B /* TagDefault.swift in Sources */,
 				416D2ABD22F9C481003A087A /* BLEScanner.swift in Sources */,
 				41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */,
+				41A5DA7422FBD85B00E6F94B /* TagFactoryDefault.swift in Sources */,
+				41A5DA7622FBDAA700E6F94B /* TagStoreDefault.swift in Sources */,
 				41C15A5922FAF0FC008A4521 /* BLETags0ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,6 +593,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		41A5DA7722FBF95800E6F94B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				41A5DA7822FBF95800E6F94B /* Base */,
+				41A5DA7A22FBF97E00E6F94B /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		41F67BFB22F932E300BCC628 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -6,12 +6,42 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import CoreBluetooth
 import UIKit
 
 class PeripheralTableViewCell: UITableViewCell {
-    @IBOutlet
-    weak var uuid: UILabel?
+    @IBOutlet weak var uuid: UILabel?
+    @IBOutlet weak var name: UILabel?
+    @IBOutlet weak var button: UIButton?
 
+    let factory: TagFactoryInterface
+    let imagePlus = UIImage(named: "btnPlus")
+    let imageMinus = UIImage(named: "btnMinus")
+    let store: TagStoreInterface
+
+    var _peripheral: CBPeripheral?
+
+    var peripheral: CBPeripheral? {
+        set (it) {
+            _peripheral = it
+            uuid?.text = it?.identifier.uuidString
+            name?.text = it?.name
+            let remembered = it != nil && store.remembered(id: it!.identifier.uuidString)
+            button?.setImage(remembered ? imageMinus : imagePlus, for: .normal)
+        }
+        get {
+            return _peripheral
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        store = TagStoreDefault.shared
+        factory = TagFactoryDefault.shared
+        
+        super.init(coder: aDecoder)
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -21,6 +51,16 @@ class PeripheralTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    @IBAction func onButton(_ sender: UIView) {
+        guard let peripheral = peripheral else { return }
+        if store.remembered(id: peripheral.identifier.uuidString) {
+            store.forget(id: peripheral.identifier.uuidString)
+        } else {
+            let tag = factory.tag(id: peripheral.identifier.uuidString, name: peripheral.description)
+            store.remember(tag: tag)
+        }
     }
     
 }

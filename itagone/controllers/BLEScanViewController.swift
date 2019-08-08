@@ -13,29 +13,32 @@ import CoreBluetooth
 class BLEScanViewController: UIViewController {
     @IBOutlet
     weak var progressBar: UIProgressView?
-    var ble: BLE?
     var disposable: DisposeBag?
+    let ble: BLE
 
+    required init?(coder aDecoder: NSCoder) {
+        ble = BLEDefault.shared
+        super.init(coder: aDecoder)
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        ble = BLEDefault.shared
     }
     
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable?.add(ble!.scannerTimerObservable.subscribe(on: DispatchQueue.main, id: "scanningTimer", handler: {timeout in
+        disposable?.add(ble.scannerTimerObservable.subscribe(on: DispatchQueue.main, id: "scanningTimer", handler: {timeout in
             self.updateProgress(timeout)
         }))
         progressBar?.isHidden = false
         progressBar?.progress = 1.0
-        ble?.startScan(timeout: SCAN_TIMEOUT)
+        ble.startScan(timeout: SCAN_TIMEOUT)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        ble?.stopScan()
+        ble.stopScan()
         disposable?.dispose()
         disposable = nil
     }

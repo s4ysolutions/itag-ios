@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -19,24 +19,51 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUL-9d-VJV" userLabel="UUID">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjT-mJ-eFJ" userLabel="Name">
+                        <rect key="frame" x="8" y="-4.5" width="252" height="24.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUL-9d-VJV" userLabel="UUID">
+                        <rect key="frame" x="8" y="24" width="252" height="14.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqx-ad-ojL">
+                        <rect key="frame" x="268" y="-0.5" width="44" height="44.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="8oZ-oT-M1u"/>
+                            <constraint firstAttribute="width" constant="44" id="QfF-09-kpn"/>
+                        </constraints>
+                        <state key="normal" image="btnPlus"/>
+                        <connections>
+                            <action selector="onButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LcA-Lj-Y9h"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="PUL-9d-VJV" secondAttribute="trailing" id="4dZ-fQ-DAc"/>
-                    <constraint firstItem="PUL-9d-VJV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MRS-Ps-vV1"/>
-                    <constraint firstAttribute="bottom" secondItem="PUL-9d-VJV" secondAttribute="bottom" id="syr-xk-Ucu"/>
-                    <constraint firstItem="PUL-9d-VJV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="vhW-Ug-HdU"/>
+                    <constraint firstItem="PUL-9d-VJV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="2" id="4n5-A9-7sb"/>
+                    <constraint firstItem="oqx-ad-ojL" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6nU-2v-vWW"/>
+                    <constraint firstItem="PUL-9d-VJV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="MRS-Ps-vV1"/>
+                    <constraint firstItem="PUL-9d-VJV" firstAttribute="trailing" secondItem="oqx-ad-ojL" secondAttribute="leading" constant="-8" id="VN4-7O-CGS"/>
+                    <constraint firstItem="jjT-mJ-eFJ" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-2" id="XvT-aR-Lt3"/>
+                    <constraint firstItem="jjT-mJ-eFJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Z7l-ow-EpF"/>
+                    <constraint firstAttribute="trailing" secondItem="oqx-ad-ojL" secondAttribute="trailing" constant="8" id="bqg-jd-GEP"/>
+                    <constraint firstItem="jjT-mJ-eFJ" firstAttribute="right" secondItem="oqx-ad-ojL" secondAttribute="left" constant="-8" id="oz7-aV-NRa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="button" destination="oqx-ad-ojL" id="mcQ-vv-Ihd"/>
+                <outlet property="name" destination="jjT-mJ-eFJ" id="RGX-HJ-sx2"/>
                 <outlet property="uuid" destination="PUL-9d-VJV" id="Bza-l6-H1C"/>
             </connections>
+            <point key="canvasLocation" x="34.782608695652179" y="34.821428571428569"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="btnPlus" width="384" height="384"/>
+    </resources>
 </document>

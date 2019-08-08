@@ -13,7 +13,11 @@ import Rasat
 class BLEScanner {
     var timeoutSubject = Subject(0)
     var timer: Timer? = nil
-    var manager: CBCentralManager? = nil
+    let manager: CBCentralManager
+    
+    init (_ manager: CBCentralManager) {
+        self.manager = manager
+    }
     
     func start(manager: CBCentralManager, timeout: Int) {
         if timer != nil {
@@ -21,10 +25,10 @@ class BLEScanner {
         }
         
         if manager.state != .poweredOn {
-         //   return
+            return
         }
         
-        // manager.scanForPeripherals(withServices: nil)
+        manager.scanForPeripherals(withServices: nil)
         
         timeoutSubject.value = timeout
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
@@ -36,8 +40,7 @@ class BLEScanner {
     }
     
     func stop() {
-        manager?.stopScan()
-        manager = nil
+        manager.stopScan()
         timer?.invalidate()
         timer = nil
         timeoutSubject.value = 0

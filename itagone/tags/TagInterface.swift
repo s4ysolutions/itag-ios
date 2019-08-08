@@ -26,7 +26,7 @@ enum TagLostState {
 }
 
 protocol TagInterface {
-    var bindState: TagBindState {get set}
-    var connectionState: TagConnectionState {get set}
-    var lostState: TagLostState {get set}
+    var id: String { get }
+    var name: String { get set }
+    func toDict() -> [String: Any?]
 }

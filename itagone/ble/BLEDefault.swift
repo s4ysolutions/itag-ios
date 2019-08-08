@@ -10,8 +10,9 @@ import Foundation
 import CoreBluetooth
 import Rasat
 
-class BLEDefault: NSObject, CBCentralManagerDelegate, BLE {
-    
+class BLEDefault: BLE {
+    static let shared = BLEDefault()
+    /*
     static var _shared: BLEDefault?
     static var shared: BLEDefault {
         get{
@@ -33,14 +34,23 @@ class BLEDefault: NSObject, CBCentralManagerDelegate, BLE {
             return _manager!
         }
     }
+    */
     
+    let manager: CBCentralManager
+    let delegate: BLEDefaultDelegate
+    let scanner: BLEScanner
+
+    init() {
+        delegate = BLEDefaultDelegate()
+        manager = CBCentralManager(delegate: delegate, queue: DispatchQueue.global(qos: .background))
+        scanner = BLEScanner(manager)
+    }
+
     var state: CBManagerState {
         get {
-            return _manager?.state ?? .unknown
+            return manager.state
         }
     }
-    
-    internal let scanner = BLEScanner()
     
     var isScanning: Bool {
         get {
@@ -60,15 +70,13 @@ class BLEDefault: NSObject, CBCentralManagerDelegate, BLE {
         }
     }
     
-    internal var scannerChannel = Channel<CBPeripheral>()
     var scannerObservable: Observable<CBPeripheral> {
         get {
-            return scannerChannel.observable
+            return delegate.scannerChannel.observable
         }
     }
     
     func startScan(timeout: Int) {
-        print(manager.delegate as Any)
         scanner.start(manager: manager, timeout: timeout)
     }
     
@@ -76,27 +84,5 @@ class BLEDefault: NSObject, CBCentralManagerDelegate, BLE {
         scanner.stop()
     }
 
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-        case .unknown:
-            print("central.state is .unknown")
-        case .resetting:
-            print("central.state is .resetting")
-        case .unsupported:
-            print("central.state is .unsupported")
-        case .unauthorized:
-            print("central.state is .unauthorized")
-        case .poweredOff:
-            print("central.state is .poweredOff")
-        case .poweredOn:
-            print("central.state is .poweredOn")
-        @unknown default:
-            print("central.state is .@unkonw")
-        }
-    }
-    
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
-                        advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        scannerChannel.broadcast(peripheral)
-    }
+
 }

@@ -101,6 +101,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="S92-fE-aiU" firstAttribute="top" secondItem="fr2-cc-e05" secondAttribute="top" constant="8" id="1tA-WU-y0Y"/>
                             <constraint firstItem="Aox-D2-ha9" firstAttribute="trailing" secondItem="fr2-cc-e05" secondAttribute="trailing" constant="-8" id="3Ya-xE-TeP"/>
@@ -128,7 +129,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3Wz-Te-6l8">
-                                <rect key="frame" x="4" y="478" width="312" height="2"/>
+                                <rect key="frame" x="4" y="476" width="312" height="2"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNG-j8-iRD">
                                 <rect key="frame" x="256" y="28" width="56" height="56"/>
@@ -142,7 +143,7 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQI-K4-7I9">
-                                <rect key="frame" x="0.0" y="92" width="320" height="386"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="384"/>
                                 <connections>
                                     <segue destination="kkA-aV-we6" kind="embed" id="qHV-eT-8Hi"/>
                                 </connections>
@@ -155,7 +156,7 @@
                             <constraint firstItem="fQI-K4-7I9" firstAttribute="leading" secondItem="lgU-rk-RjQ" secondAttribute="leading" id="PQ4-sV-Vpp"/>
                             <constraint firstAttribute="trailing" secondItem="3Wz-Te-6l8" secondAttribute="trailing" constant="4" id="Ur5-K7-JGe"/>
                             <constraint firstItem="fQI-K4-7I9" firstAttribute="top" secondItem="hNG-j8-iRD" secondAttribute="bottom" constant="8" id="ZOq-I1-ZFW"/>
-                            <constraint firstItem="lgU-rk-RjQ" firstAttribute="bottom" secondItem="3Wz-Te-6l8" secondAttribute="bottom" id="eEn-tx-B0F"/>
+                            <constraint firstItem="lgU-rk-RjQ" firstAttribute="bottom" secondItem="3Wz-Te-6l8" secondAttribute="bottom" constant="2" id="eEn-tx-B0F"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="trailing" secondItem="fQI-K4-7I9" secondAttribute="trailing" id="pqz-zg-CSv"/>
                             <constraint firstItem="3Wz-Te-6l8" firstAttribute="top" secondItem="fQI-K4-7I9" secondAttribute="bottom" id="yLs-S4-BAZ"/>
                             <constraint firstItem="hNG-j8-iRD" firstAttribute="top" secondItem="lgU-rk-RjQ" secondAttribute="top" constant="8" id="zr2-e4-ydM"/>
@@ -174,16 +175,16 @@
         <scene sceneID="Nfg-iI-nrO">
             <objects>
                 <tableViewController id="kkA-aV-we6" customClass="PeripheralsTableViewController" customModule="itagone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FRr-3I-5BO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="386"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FRr-3I-5BO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="384"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="hpd-1O-obY">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hpd-1O-obY" id="2T3-J7-7mY">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
