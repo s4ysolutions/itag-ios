@@ -15,11 +15,11 @@ class BLEScannerDefault: BLEScannerInterface {
     var timeoutSubject = Subject(0)
     var timer: Timer? = nil
     let manager: CBCentralManager
-    let observer: BLEObserverInterface
+    let observer: BLEManagerObserverInterface
     
-    init (manager: CBCentralManager, observer: BLEObserverInterface) {
+    init (manager: CBCentralManager) {
         self.manager = manager
-        self.observer = observer
+        self.observer = manager.delegate as! BLEManagerObserverInterface
     }
     
     func start(timeout: Int) {
@@ -67,9 +67,9 @@ class BLEScannerDefault: BLEScannerInterface {
         }
     }
     
-    var peripheralsObservable: Observable<CBPeripheral> {
+    var peripheralsObservable: Observable<(CBPeripheral, [String: Any], NSNumber)> {
         get {
-            return observer.scanObservable
+            return observer.discoverObservable
         }
     }
 }

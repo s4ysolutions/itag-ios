@@ -14,72 +14,32 @@ import Rasat
 
 public class BLEDefault: BLEInterface {
     public static let shared = BLEDefault(
-        observer: BLEObserverDefault(),
+        connectionFactory: BLEConnectionFactoryDefault(),
+        finderFactory: BLEAlertFactoryDefault(),
+        observer: BLEManagerObserverDefault(),
+        peripheralObserverFactory: BLEPeripheralObserverFactoryDefault(),
         scannerFactory: BLEScannerFactoryDefault(),
-        store: BLEConnectionsStoreDefault())
+        storeFactory: BLEConnectionsStoreFactoryDefault()
+    )
     
+    public let finder: BLEAlertInterface
     public let scanner: BLEScannerInterface
+    public var timeout = 60
     
-    private let manager: CBCentralManager
-    private let observer: BLEObserverInterface
-    private let store: BLEConnectionsStoreInterface
-
-    init(observer: BLEObserverInterface,
-         scannerFactory: BLEScannerFactoryInterface,
-         store: BLEConnectionsStoreInterface) {
+    init(
+        connectionFactory: BLEConnectionFactoryInterface,
+        finderFactory: BLEAlertFactoryInterface,
+        observer: BLEManagerObserverInterface,
+        peripheralObserverFactory: BLEPeripheralObserverFactoryInterface,
+        scannerFactory: BLEScannerFactoryInterface,
+        storeFactory: BLEConnectionsStoreFactoryInterface
+        ) {
         
-        self.store = store
-        self.observer = observer
-        
-        manager = CBCentralManager(delegate: observer.delegate, queue: DispatchQueue.global(qos: .background))
-        scanner = scannerFactory.scanner(manager: manager, observer: observer)
-    }
-
-    var state: CBManagerState {
-        get {
-            return manager.state
-        }
-    }
-    /*
-    var isScanning: Bool {
-        get {
-            return scanner.isScanning
-        }
+        // NOTE: delegate MUST be of BLEManagerObserverInterface
+        let manager = CBCentralManager(delegate: observer, queue: DispatchQueue.global(qos: .background))
+        let store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
+        scanner = scannerFactory.scanner(manager: manager)
+        finder = finderFactory.finder(store: store)
     }
     
-    var scanningTimeout: Int {
-        get {
-            return scanner.scanningTimeout
-        }
-    }
-
-    var scannerTimerObservable: Observable<Int> {
-        get{
-            return scanner.timeoutSubject.observable
-        }
-    }
-    
-    var scannerObservable: Observable<CBPeripheral> {
-        get {
-            return delegate.scannerChannel.observable
-        }
-    }
-    
-    func startScan(timeout: Int) {
-        scanner.start(manager: manager, timeout: timeout)
-    }
-    
-    func stopScan() {
-        scanner.stop()
-    }
-
-    func startCallTag(id: String) {
-        DispatchQueue.global(qos: .background).async {
-            let item = self.store[id]
-            if item == nil {
-                
-            }
-        }
-    }
- */
 }

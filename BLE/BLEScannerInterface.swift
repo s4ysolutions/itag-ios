@@ -14,7 +14,7 @@ public protocol BLEScannerInterface {
     var isScanning: Bool { get }
     var scanningTimeout: Int { get }
     var timerObservable: Observable<Int> { get }
-    var peripheralsObservable: Observable<CBPeripheral> { get }
+    var peripheralsObservable: Observable<(CBPeripheral, [String: Any], NSNumber)> { get }
 
     func start(timeout: Int)
     func stop()

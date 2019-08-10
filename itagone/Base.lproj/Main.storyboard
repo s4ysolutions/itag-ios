@@ -491,6 +491,9 @@
                             <button opaque="NO" contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdO-ZJ-oXD" userLabel="Tag">
                                 <rect key="frame" x="4" y="36" width="312" height="364"/>
                                 <state key="normal" image="tagGold"/>
+                                <connections>
+                                    <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
                                 <rect key="frame" x="0.0" y="404" width="320" height="56"/>

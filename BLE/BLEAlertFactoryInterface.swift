@@ -1,5 +1,5 @@
 //
-//  BLEScannerFactoryInterface.swift
+//  BLEAlertFactoryInterface.swift
 //  BLE
 //
 //  Created by  Sergey Dolin on 10/08/2019.
@@ -9,6 +9,6 @@
 import CoreBluetooth
 import Foundation
 
-protocol BLEScannerFactoryInterface {
-    func scanner(manager: CBCentralManager) -> BLEScannerInterface
+protocol BLEAlertFactoryInterface {
+    func finder(store: BLEConnectionsStoreInterface) -> BLEAlertInterface
 }

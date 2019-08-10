@@ -6,6 +6,7 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import BLE
 import Rasat
 import UIKit
 
@@ -28,9 +29,11 @@ class BLETagViewController: UIViewController {
     
     var disposable: DisposeBag?
     var tag: TagInterface?
+    let ble: BLEInterface
     
     required init?(coder aDecoder: NSCoder) {
         store = TagStoreDefault.shared
+        ble = BLEDefault.shared
         super.init(coder: aDecoder)
     }
     
@@ -113,6 +116,12 @@ class BLETagViewController: UIViewController {
         
         self.present(alert, animated: true)
     }
+    
+    @IBAction func onTag(_ sender: UIView) {
+        guard let tag = tag else { return }
+        ble.finder.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+    }
+    
     /*
     // MARK: - Navigation
 

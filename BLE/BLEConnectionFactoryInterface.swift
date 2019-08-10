@@ -6,8 +6,9 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import CoreBluetooth
 import Foundation
 
 protocol BLEConnectionFactoryInterface {
-    func connection(id: String) -> BLEConnectionInterface
+    func connection(manager: CBCentralManager, peripheralObserverFactory: BLEPeripheralObserverFactoryInterface, id: String) -> BLEConnectionInterface
 }

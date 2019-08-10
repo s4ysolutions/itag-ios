@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 
 class BLEScannerFactoryDefault: BLEScannerFactoryInterface {
-    func scanner(manager: CBCentralManager, observer: BLEObserverInterface) -> BLEScannerInterface {
-        return BLEScannerDefault(manager: manager, observer: observer)
+    func scanner(manager: CBCentralManager) -> BLEScannerInterface {
+        return BLEScannerDefault(manager: manager)
     }
 }

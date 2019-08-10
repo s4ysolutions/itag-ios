@@ -31,7 +31,7 @@ class PeripheralsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable?.add(ble.scanner.peripheralsObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {peripheral in
+        disposable?.add(ble.scanner.peripheralsObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {(peripheral, data, rssi) in
             self.updatePeripheral(peripheral)
         }))
         disposable?.add(store.observable.subscribe(on: DispatchQueue.main, id: "scaning store", handler: {op in

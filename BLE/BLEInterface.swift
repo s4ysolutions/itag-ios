@@ -14,15 +14,7 @@ import Rasat
 let SCAN_TIMEOUT = 60
 
 public protocol BLEInterface {
-//    var state: CBManagerState { get }
+    var timeout: Int { get set }
     var scanner: BLEScannerInterface { get }
-    /*
-    var scannerTimerObservable: Observable<Int> { get }
-    var scannerObservable: Observable<CBPeripheral> { get }
-    var isScanning: Bool { get }
-    var scanningTimeout: Int { get }
-    func startScan(timeout: Int)
-    func stopScan()
-    func startCallTag(id: String)
- */
+    var finder: BLEAlertInterface { get }
 }
