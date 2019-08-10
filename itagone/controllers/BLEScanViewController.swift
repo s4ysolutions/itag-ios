@@ -6,15 +6,18 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
-import UIKit
-import Rasat
+import BLE
 import CoreBluetooth
+import Rasat
+import UIKit
 
 class BLEScanViewController: UIViewController {
+    static let SCAN_TIMEOUT = 60
+    
     @IBOutlet
     weak var progressBar: UIProgressView?
     var disposable: DisposeBag?
-    let ble: BLE
+    let ble: BLEInterface
 
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
@@ -29,16 +32,16 @@ class BLEScanViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable?.add(ble.scannerTimerObservable.subscribe(on: DispatchQueue.main, id: "scanningTimer", handler: {timeout in
+        disposable?.add(ble.scanner.timerObservable.subscribe(on: DispatchQueue.main, id: "scanningTimer", handler: {timeout in
             self.updateProgress(timeout)
         }))
         progressBar?.isHidden = false
         progressBar?.progress = 1.0
-        ble.startScan(timeout: SCAN_TIMEOUT)
+        ble.scanner.start(timeout: BLEScanViewController.SCAN_TIMEOUT)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        ble.stopScan()
+        ble.scanner.stop()
         disposable?.dispose()
         disposable = nil
     }
@@ -61,7 +64,7 @@ class BLEScanViewController: UIViewController {
     // MARK: - observe scanning
     func updateProgress(_ timeout: Int) {
         progressBar?.isHidden = timeout <= 0
-        progressBar?.progress = Float(timeout ) / Float(SCAN_TIMEOUT)
+        progressBar?.progress = Float(timeout ) / Float(BLEScanViewController.SCAN_TIMEOUT)
     }
     
 

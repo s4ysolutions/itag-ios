@@ -6,6 +6,7 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import BLE
 import CoreBluetooth
 import Rasat
 import UIKit
@@ -13,7 +14,7 @@ import UIKit
 class PeripheralsTableViewController: UITableViewController {
     var disposable: DisposeBag?
     var peripherals = [] as [CBPeripheral]
-    let ble: BLE
+    let ble: BLEInterface
     let store: TagStoreInterface
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,7 +31,7 @@ class PeripheralsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable?.add(ble.scannerObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {peripheral in
+        disposable?.add(ble.scanner.peripheralsObservable.subscribe(on: DispatchQueue.main, id: "scanning", handler: {peripheral in
             self.updatePeripheral(peripheral)
         }))
         disposable?.add(store.observable.subscribe(on: DispatchQueue.main, id: "scaning store", handler: {op in

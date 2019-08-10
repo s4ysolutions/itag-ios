@@ -1,25 +1,28 @@
 //
-//  BLEScanner.swift
-//  itagone
+//  BLEScannerDefault.swift
+//  BLE
 //
-//  Created by  Sergey Dolin on 06/08/2019.
+//  Created by  Sergey Dolin on 10/08/2019.
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 import Rasat
 
-class BLEScanner {
+class BLEScannerDefault: BLEScannerInterface {
+    
     var timeoutSubject = Subject(0)
     var timer: Timer? = nil
     let manager: CBCentralManager
+    let observer: BLEObserverInterface
     
-    init (_ manager: CBCentralManager) {
+    init (manager: CBCentralManager, observer: BLEObserverInterface) {
         self.manager = manager
+        self.observer = observer
     }
     
-    func start(manager: CBCentralManager, timeout: Int) {
+    func start(timeout: Int) {
         if timer != nil {
             stop()
         }
@@ -55,6 +58,18 @@ class BLEScanner {
     var scanningTimeout: Int {
         get {
             return timeoutSubject.value
+        }
+    }
+    
+    var timerObservable: Observable<Int> {
+        get{
+            return timeoutSubject.observable
+        }
+    }
+    
+    var peripheralsObservable: Observable<CBPeripheral> {
+        get {
+            return observer.scanObservable
         }
     }
 }

@@ -6,13 +6,14 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import BLE
 import UIKit
 import Rasat
 
 class BLERootViewController: UIViewController {
     @IBOutlet weak var containerView: UIView?
 
-    let ble: BLE
+    let ble: BLEInterface
     let store: TagStoreInterface
     var contentID = ""
 

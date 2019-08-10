@@ -48,6 +48,16 @@
                ReferencedContainer = "container:itagone.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4177C95B22FEAE4F003F4423"
+               BuildableName = "BLETests.xctest"
+               BlueprintName = "BLETests"
+               ReferencedContainer = "container:itagone.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

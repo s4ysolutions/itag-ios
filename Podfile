@@ -17,4 +17,14 @@ target 'itagone' do
     use_frameworks!
   end
 
+  target 'BLE' do
+    inherit! :complete
+    use_frameworks!
+  end
+
+  target 'BLETests' do
+    inherit! :complete
+    use_frameworks!
+  end
+
 end
