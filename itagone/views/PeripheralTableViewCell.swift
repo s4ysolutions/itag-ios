@@ -58,8 +58,17 @@ class PeripheralTableViewCell: UITableViewCell {
         if store.remembered(id: peripheral.identifier.uuidString) {
             store.forget(id: peripheral.identifier.uuidString)
         } else {
-            let tag = factory.tag(id: peripheral.identifier.uuidString, name: peripheral.description)
-            store.remember(tag: tag)
+            store.remember(tag: createTag(fromPeripheral: peripheral))
+        }
+    }
+    
+    private func createTag(fromPeripheral: CBPeripheral) -> TagInterface {
+        let id = fromPeripheral.identifier.uuidString
+        let existing = store.by(id: id)
+        if existing == nil {
+            return TagDefault(id: id, name: fromPeripheral.name?.trimmingCharacters(in: .whitespacesAndNewlines), color: nil, alert: nil)
+        } else {
+            return TagDefault(id: id, name: existing!.name, color: existing!.color, alert: existing!.alert)
         }
     }
     

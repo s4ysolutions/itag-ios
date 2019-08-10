@@ -13,13 +13,18 @@ import Rasat
 enum StoreOp {
     case remember
     case forget
+    case change
 }
 
 protocol TagStoreInterface {
     var count: Int { get }
     var observable: Observable<StoreOp> { get }
-    subscript(id: String) -> TagInterface? {get}
+    func by(id: String) -> TagInterface?
+    func tagBy(pos: Int) -> TagInterface?
     func forget(id: String)
     func remember(tag: TagInterface)
     func remembered(id: String) -> Bool
+    func set(alert: Bool, forTag: TagInterface)
+    func set(color: TagColor, forTag: TagInterface)
+    func set(name: String, forTag: TagInterface)
 }

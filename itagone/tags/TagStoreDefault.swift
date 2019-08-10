@@ -11,11 +11,11 @@ import Foundation
 import Rasat
 
 class TagStoreDefault: TagStoreInterface {
-    static let shared = TagStoreDefault(factory: TagFactoryDefault())
+    static let shared = TagStoreDefault(factory: TagFactoryDefault.shared)
     
     let channel = Channel<StoreOp>()
     let factory: TagFactoryInterface
-    let defaults = UserDefaults()
+    let defaults = UserDefaults.standard
     var tags = [String: TagInterface]()
     var ids = [String]()
     
@@ -23,19 +23,24 @@ class TagStoreDefault: TagStoreInterface {
         self.factory = factory
  
         ids = defaults.array(forKey: "ids") as? [String] ?? []
+        print("tag ids <- store:", ids)
+        
         for id in ids {
-            let dict = defaults.dictionary(forKey: "tag \(id)")
-            if dict != nil {
-                tags[id] = factory.tag(id: id, dict: dict!)
-            }
+            guard let dict = defaults.dictionary(forKey: "tag \(id)") else {continue}
+            tags[id] = factory.tag(id: id, dict: dict)
+            print("tag <- store:", tags[id]?.toString() ?? "", dict)
         }
- 
-        print("tag ids in store:", ids)
-        print("tags in store:", tags)
     }
     
-    subscript(id: String) -> TagInterface? {
+    func by(id: String) -> TagInterface? {
         return tags[id]
+    }
+    
+    func tagBy(pos: Int) -> TagInterface? {
+        if pos >= ids.count {
+            return nil
+        }
+        return by(id: ids[pos])
     }
     
     var count: Int {
@@ -60,9 +65,12 @@ class TagStoreDefault: TagStoreInterface {
     
     private func storeToDefaults() {
         defaults.set(ids, forKey: "ids")
+        print("tag ids -> store:", ids)
+
         for id in ids {
             guard let tag = tags[id] else { continue }
             defaults.set(tag.toDict(), forKey: "tag \(id)")
+            print("tag -> store:", tags[id]?.toString() ?? "",tag.toDict())
         }
     }
     
@@ -71,8 +79,6 @@ class TagStoreDefault: TagStoreInterface {
             ids.append(tag.id)
             tags[tag.id] = tag
             storeToDefaults()
-            print("tag ids in store after append", ids)
-            print("tags in store after append", tags)
             channel.broadcast(StoreOp.remember)
         }
     }
@@ -81,14 +87,36 @@ class TagStoreDefault: TagStoreInterface {
         if let i = ids.firstIndex(of: id) {
             ids.remove(at: i)
             storeToDefaults()
-            print("tag ids in store after remove", ids)
-            print("tags in store after remove", tags)
             channel.broadcast(StoreOp.forget)
         }
     }
     
     func remembered(id: String) -> Bool {
         return ids.contains(id)
+    }
+
+    func set(alert: Bool, forTag: TagInterface) {
+        // TODO: report if not found
+        guard var tag0 = tags[forTag.id] else { return }
+        tag0.alert = alert
+        storeToDefaults()
+        channel.broadcast(StoreOp.change)
+    }
+    
+    func set(color: TagColor, forTag: TagInterface) {
+        // TODO: report if not found
+        guard var tag0 = tags[forTag.id] else { return }
+        tag0.color = color
+        storeToDefaults()
+        channel.broadcast(StoreOp.change)
+    }
+    
+    func set(name: String, forTag: TagInterface) {
+        // TODO: report if not found
+        guard var tag0 = tags[forTag.id] else { return }
+        tag0.name = name
+        storeToDefaults()
+        channel.broadcast(StoreOp.change)
     }
 
 }
