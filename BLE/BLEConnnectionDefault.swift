@@ -332,12 +332,45 @@ class BLEConnectionDefault: BLEConnectionInterface {
                 return .other(writeError!)
             }
         }
+        
         return nil
     }
     
     private func setNotify(_ enabled: Bool, characteristic: CBCharacteristic) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
         peripheral.setNotifyValue(enabled, for: characteristic)
+        return nil
+    }
+    
+    private func read(characteristic: CBCharacteristic, timeout: DispatchTime) -> BLEError? {
+        guard let peripheral = peripheral else { return .noPeripheral}
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        let disposable = DisposeBag()
+        
+        var readError: Error? = nil
+        
+        let observer = peripheral.delegate as! BLEPeripheralObservablesInterface
+        disposable.add(observer.didUpdateValueForCharacteristic.subscribe(handler: {tuple in
+            if tuple.peripheral.identifier == peripheral.identifier && tuple.characteristic.uuid == characteristic.uuid {
+                readError = tuple.error
+                semaphore.signal()
+            }
+        }))
+        defer {
+            disposable.dispose()
+        }
+        
+        peripheral.readValue(for: characteristic)
+        
+        if semaphore.wait(timeout: timeout) == .timedOut {
+            return .timeout
+        }
+        
+        if readError != nil {
+            return .other(readError!)
+        }
+        
         return nil
     }
     
