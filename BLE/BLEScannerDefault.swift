@@ -67,9 +67,9 @@ class BLEScannerDefault: BLEScannerInterface {
         }
     }
     
-    var peripheralsObservable: Observable<(CBPeripheral, [String: Any], NSNumber)> {
+    var peripheralsObservable: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> {
         get {
-            return observer.discoverObservable
+            return observer.didDiscoverPeripheral
         }
     }
 }

@@ -21,7 +21,7 @@ enum AlertVolume: Int {
     }
 }
 
-enum BLEConnectError: Error {
+enum BLEError: Error {
     case timeout
     case noPeripheral
     case badUUID
@@ -32,6 +32,8 @@ enum BLEConnectError: Error {
 
 protocol BLEConnectionInterface {
     var isConnected: Bool { get }
-    func makeAvailabe(timeout: Int)  -> BLEConnectError?
-    func writeImmediateAlert(volume: AlertVolume)
+    func disconnect(timeout: Int) -> BLEError?
+    func makeAvailabe(timeout: Int)  -> BLEError?
+    func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError?
+    func writeImmediateAlert(volume: AlertVolume) -> BLEError?
 }

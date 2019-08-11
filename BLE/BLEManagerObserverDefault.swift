@@ -11,28 +11,50 @@ import Foundation
 import Rasat
 
 class BLEManagerObserverDefault: NSObject, BLEManagerObserverInterface {
-    let discoverPeripheralChannel = Channel<(CBPeripheral, [String: Any], NSNumber)>()
-    var discoverObservable: Observable<(CBPeripheral, [String: Any], NSNumber)> {
+    let didConnectPeripheralChannel = Channel<CBPeripheral>()
+    var didConnectPeripheral: Observable<CBPeripheral> {
         get {
-            return discoverPeripheralChannel.observable
+            return didConnectPeripheralChannel.observable
+        }
+    }
+    
+    let didFailToConnectPeripheralChannel = Channel<(peripheral: CBPeripheral, error: Error?)>()
+    var didFailToConnectPeripheral: Observable<(peripheral: CBPeripheral, error: Error?)> {
+        get {
+            return didFailToConnectPeripheralChannel.observable
+        }
+    }
+    
+    let disconnectPeripheralsErrorChannel = Channel<(peripheral: CBPeripheral,error: Error?)>()
+    var disconnectErrorObservable: Observable<(peripheral: CBPeripheral,error: Error?)> {
+        get {
+            return disconnectPeripheralsErrorChannel.observable
+        }
+    }
+    
+    let didDiscoverPeripheralChannel = Channel<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)>()
+    var didDiscoverPeripheral: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> {
+        get {
+            return didDiscoverPeripheralChannel.observable
+        }
+    }
+    
+    let didUpdateStateChannel = Channel<CBManagerState>()
+    var didUpdateState: Observable<CBManagerState> {
+        get {
+            return didUpdateStateChannel.observable
+        }
+    }
+    
+    let didDisconnectPeripheralChannel = Channel<(peripheral: CBPeripheral, error: Error?)>()
+    var didDisconnectPeripheral: Observable<(peripheral: CBPeripheral, error: Error?)> {
+        get {
+            return didDisconnectPeripheralChannel.observable
         }
     }
 
-    let connectPeripheralsChannel = Channel<CBPeripheral>()
-    var connectObservable: Observable<CBPeripheral> {
-        get {
-            return connectPeripheralsChannel.observable
-        }
-    }
-    
-    let connectPeripheralsErrorChannel = Channel<(CBPeripheral,Error?)>()
-    var connectErrorObservable: Observable<(CBPeripheral,Error?)> {
-        get {
-            return connectPeripheralsErrorChannel.observable
-        }
-    }
-    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        didUpdateStateChannel.broadcast(central.state)
         switch central.state {
         case .unknown:
             print("central.state is .unknown")
@@ -53,18 +75,23 @@ class BLEManagerObserverDefault: NSObject, BLEManagerObserverInterface {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        discoverPeripheralChannel.broadcast((peripheral, advertisementData, RSSI))
+        didDiscoverPeripheralChannel.broadcast((peripheral, advertisementData, RSSI))
     }
 
     func centralManager(_ central: CBCentralManager,
                         didConnect peripheral: CBPeripheral) {
-        connectPeripheralsChannel.broadcast(peripheral)
+        print("connect peripheral", peripheral)
+        didConnectPeripheralChannel.broadcast(peripheral)
     }
     
     func centralManager(_ central: CBCentralManager,
                                  didFailToConnect peripheral: CBPeripheral,
                                  error: Error?) {
-        connectPeripheralsErrorChannel.broadcast((peripheral, error))
+        didFailToConnectPeripheralChannel.broadcast((peripheral, error))
     }
 
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("disconnect peripheral", peripheral)
+        disconnectPeripheralsErrorChannel.broadcast((peripheral, error))
+    }
 }

@@ -6,21 +6,25 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import BLE
 import CoreBluetooth
 import Foundation
 import Rasat
 
 class TagStoreDefault: TagStoreInterface {
-    static let shared = TagStoreDefault(factory: TagFactoryDefault.shared)
+    static let shared = TagStoreDefault(factory: TagFactoryDefault.shared, ble: BLEDefault.shared)
     
+    let ble: BLEInterface
     let channel = Channel<StoreOp>()
-    let factory: TagFactoryInterface
     let defaults = UserDefaults.standard
-    var tags = [String: TagInterface]()
+    let factory: TagFactoryInterface
+
     var ids = [String]()
+    var tags = [String: TagInterface]()
     
-    init(factory: TagFactoryInterface) {
+    init(factory: TagFactoryInterface, ble: BLEInterface) {
         self.factory = factory
+        self.ble = ble
  
         ids = defaults.array(forKey: "ids") as? [String] ?? []
         print("tag ids <- store:", ids)
@@ -119,4 +123,13 @@ class TagStoreDefault: TagStoreInterface {
         channel.broadcast(StoreOp.change)
     }
 
+    func connectAll() {
+        print("connect all ble", tags)
+        for (_, tag) in tags {
+            print("connect  ble", tag.id, tag.alert)
+            if tag.alert {
+                ble.connect(id: tag.id,timeout: 10)
+            }
+        }
+    }
 }

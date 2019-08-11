@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol BLEAlertInterface {
+    func toggleAlert(id: String, timeout: Int)
     func startAlert(id: String, timeout: Int)
-    func stopAlert(id: String)
+    func stopAlert(id: String, timeout: Int)
 }

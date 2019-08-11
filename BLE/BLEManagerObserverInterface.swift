@@ -11,7 +11,9 @@ import Foundation
 import Rasat
 
 protocol BLEManagerObserverInterface: CBCentralManagerDelegate {
-    var connectObservable: Observable<CBPeripheral> { get }
-    var connectErrorObservable: Observable<(CBPeripheral,Error?)> { get }
-    var discoverObservable: Observable<(CBPeripheral, [String: Any], NSNumber)> { get }
+    var didConnectPeripheral: Observable<CBPeripheral> { get }
+    var didFailToConnectPeripheral: Observable<(peripheral: CBPeripheral,error: Error?)> { get }
+    var didDisconnectPeripheral: Observable<(peripheral: CBPeripheral,error: Error?)> { get }
+    var didDiscoverPeripheral: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> { get }
+    var didUpdateState: Observable<CBManagerState> { get }
 }

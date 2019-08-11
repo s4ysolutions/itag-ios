@@ -27,4 +27,5 @@ protocol TagStoreInterface {
     func set(alert: Bool, forTag: TagInterface)
     func set(color: TagColor, forTag: TagInterface)
     func set(name: String, forTag: TagInterface)
+    func connectAll()
 }

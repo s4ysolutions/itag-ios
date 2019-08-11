@@ -119,7 +119,7 @@ class BLETagViewController: UIViewController {
     
     @IBAction func onTag(_ sender: UIView) {
         guard let tag = tag else { return }
-        ble.finder.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+        ble.alert.toggleAlert(id: tag.id, timeout: BLE_TIMEOUT)
     }
     
     /*

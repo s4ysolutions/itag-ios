@@ -41,7 +41,8 @@ class BLEConnectionDefault: BLEConnectionInterface {
             return peripheral != nil && peripheral?.state == .connected
         }
     }
-    private func waitForConnect(timeout: DispatchTime) -> BLEConnectError? {
+    
+    private func waitForConnect(timeout: DispatchTime) -> BLEError? {
         guard let peripheral = peripheral else {return .noPeripheral}
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -49,21 +50,19 @@ class BLEConnectionDefault: BLEConnectionInterface {
         let disposable = DisposeBag()
         var errorConnect: Error? = nil
         
-        
-        disposable.add(managerObserver.connectObservable.subscribe(handler: { connected in
+        disposable.add(managerObserver.didConnectPeripheral.subscribe(handler: { connected in
             if connected.identifier == peripheral.identifier {
                 print("connect ok")
                 semaphore.signal()
             }
         }))
-        disposable.add(managerObserver.connectErrorObservable.subscribe(handler: { (failed, error) in
-            if failed.identifier == peripheral.identifier {
-                print("connect error", error)
-                errorConnect = error
+        
+        disposable.add(managerObserver.didFailToConnectPeripheral.subscribe(handler: { tuple in
+            if tuple.peripheral.identifier == peripheral.identifier {
+                print("connect error", tuple)
+                errorConnect = tuple.error
                 semaphore.signal()
-                self.manager.cancelPeripheralConnection(failed)
-            } else {
-                print("strange connect error", failed, error)
+                self.manager.cancelPeripheralConnection(tuple.peripheral)
             }
         }))
         defer {
@@ -83,14 +82,14 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    private func waitForDiscover(timeout: DispatchTime) -> BLEConnectError? {
+    private func waitForDiscover(timeout: DispatchTime) -> BLEError? {
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
-        disposable.add(managerObserver.discoverObservable.subscribe(handler: {(discovered, data, rssi) in
-            if discovered.identifier.uuidString == self.id {
+        disposable.add(managerObserver.didDiscoverPeripheral.subscribe(handler: {tuple in
+            if tuple.peripheral.identifier.uuidString == self.id {
                 print("discover ok")
-                self.peripheral = discovered
+                self.peripheral = tuple.peripheral
                 semaphore.signal()
             }
         }))
@@ -99,7 +98,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             disposable.dispose()
         }
         print("discover start")
-        manager.scanForPeripherals(withServices: nil)
+        manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE])
         if semaphore.wait(timeout: timeout) == .timedOut {
             print("discover timeout")
             return .timeout
@@ -108,14 +107,14 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    private func waitForDiscoverServices(timeout: DispatchTime) -> BLEConnectError?  {
+    private func waitForDiscoverServices(timeout: DispatchTime) -> BLEError?  {
         guard let peripheral = peripheral else { return .noPeripheral}
         
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
         let observer = peripheral.delegate as! BLEPeripheralObserverInterface
-        disposable.add(observer.discoverServicesObservable.subscribe(handler: {discovered in
+        disposable.add(observer.didDiscoverServices.subscribe(handler: {discovered in
             if discovered.identifier == peripheral.identifier {
                 semaphore.signal()
             }
@@ -132,7 +131,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     
-    private func waitForDiscoverCharacteristics(forService: CBService, timeout: DispatchTime) -> BLEConnectError?  {
+    private func waitForDiscoverCharacteristics(forService: CBService, timeout: DispatchTime) -> BLEError?  {
         guard let peripheral = peripheral else { return .noPeripheral}
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -141,9 +140,9 @@ class BLEConnectionDefault: BLEConnectionInterface {
         var discoverError: Error? = nil
         
         let observer = peripheral.delegate as! BLEPeripheralObserverInterface
-        disposable.add(observer.discoverCharacteristicsObservable.subscribe(handler: {(discovered, service, error) in
-            discoverError = error
-            if discovered.identifier == peripheral.identifier && service.uuid == forService.uuid {
+        disposable.add(observer.didDiscoverCharacteristicsForService.subscribe(handler: {tuple in
+            if tuple.peripheral.identifier == peripheral.identifier && tuple.service.uuid == forService.uuid {
+                discoverError = tuple.error
                 semaphore.signal()
             }
         }))
@@ -158,7 +157,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    func makeAvailabe(timeout: Int) -> BLEConnectError? {
+    func makeAvailabe(timeout: Int) -> BLEError? {
         print("peripheral make available")
 
         if peripheral == nil {
@@ -186,7 +185,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             characteristicImmediateAlert = nil
             serviceImmediateAlert = nil
             let scanError = waitForDiscover(timeout: maxTimeout)
-            print("peripheral descover", scanError)
+            print("peripheral discover", scanError)
             if scanError != nil { return .other(scanError!)}
             let connectError = waitForConnect(timeout: maxTimeout)
             if connectError != nil { return .other(connectError!)}
@@ -201,7 +200,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         if characteristicImmediateAlert == nil {
             if serviceImmediateAlert == nil {
                 let discoverServiceError = waitForDiscoverServices(timeout: maxTimeout)
-                print("peripheral descover services", peripheral.services, discoverServiceError)
+                print("peripheral discover services", peripheral.services, discoverServiceError)
                 if discoverServiceError != nil { return .other(discoverServiceError!)}
 
                 for service in peripheral.services ?? [] {
@@ -213,7 +212,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             guard let serviceImmediateAlert = serviceImmediateAlert else { return .noImmediateAletService }
 
             let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceImmediateAlert, timeout: maxTimeout)
-            print("peripheral descover characteristics", serviceImmediateAlert.characteristics, discoverCharacteristicsError)
+            print("peripheral discover characteristics", serviceImmediateAlert.characteristics, discoverCharacteristicsError)
             if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
             for characteristic in serviceImmediateAlert.characteristics ?? [] {
                 if characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
@@ -228,8 +227,78 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    func writeImmediateAlert(volume: AlertVolume) {
-        if characteristicImmediateAlert == nil { return }
-        peripheral?.writeValue(volume.data, for: characteristicImmediateAlert!, type: .withoutResponse)
+    func disconnect(timeout: Int) -> BLEError? {
+        guard let peripheral = peripheral else { return .noPeripheral}
+        let semaphore = DispatchSemaphore(value: 0)
+        let disposable = DisposeBag()
+        
+        var disconnectError: Error? = nil
+        
+        let observer = manager.delegate as! BLEManagerObserverInterface
+        disposable.add(observer.didDisconnectPeripheral.subscribe(handler: {tuple in
+            if tuple.peripheral.identifier == peripheral.identifier {
+                disconnectError = tuple.error
+                semaphore.signal()
+            }
+        }))
+        defer {
+            disposable.dispose()
+        }
+        
+        manager.cancelPeripheralConnection(peripheral)
+
+        if semaphore.wait(timeout: timeout.dispatchTime) == .timedOut {
+            return .timeout
+        }
+        
+        if disconnectError != nil {
+            return .other(disconnectError!)
+        }
+        
+        return nil
+    }
+    
+    private func write(data: Data, characteristic: CBCharacteristic, timeout: DispatchTime?) -> BLEError? {
+        guard let peripheral = peripheral else { return .noPeripheral}
+        
+        if timeout == nil {
+            peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
+        } else {
+            let semaphore = DispatchSemaphore(value: 0)
+            let disposable = DisposeBag()
+            
+            var writeError: Error? = nil
+            
+            let observer = peripheral.delegate as! BLEPeripheralObserverInterface
+            disposable.add(observer.didWriteValueForCharacteristic.subscribe(handler: {tuple in
+                if tuple.peripheral.identifier == peripheral.identifier && tuple.characteristic.uuid == characteristic.uuid {
+                    writeError = tuple.error
+                    semaphore.signal()
+                }
+            }))
+            defer {
+                disposable.dispose()
+            }
+            
+            peripheral.writeValue(data, for: characteristic, type: .withResponse)
+            
+            if semaphore.wait(timeout: timeout!) == .timedOut {
+                return .timeout
+            }
+            
+            if writeError != nil {
+                return .other(writeError!)
+            }
+        }
+        return nil
+    }
+    
+    func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError? {
+        if characteristicImmediateAlert == nil { return .noImmediateAletCharacteristic}
+        return write(data: volume.data, characteristic: characteristicImmediateAlert!, timeout: timeout == 0 ? nil : timeout.dispatchTime)
+    }
+    
+    func writeImmediateAlert(volume: AlertVolume) -> BLEError? {
+        return writeImmediateAlert(volume: volume, timeout: 0)
     }
 }

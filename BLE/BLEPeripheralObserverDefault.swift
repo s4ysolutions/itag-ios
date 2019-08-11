@@ -11,28 +11,41 @@ import Foundation
 import Rasat
 
 class BLEPeripheralObserverDefault: NSObject, BLEPeripheralObserverInterface {    
-    let discoverServicesChannel = Channel<CBPeripheral>()
-    var discoverServicesObservable: Observable<CBPeripheral> {
+    let didDiscoverServicesChannel = Channel<CBPeripheral>()
+    var didDiscoverServices: Observable<CBPeripheral> {
         get {
-            return discoverServicesChannel.observable
+            return didDiscoverServicesChannel.observable
         }
     }
     
-    let discoverCharacteristicsChannel = Channel<(CBPeripheral, CBService, Error?)>()
-    var discoverCharacteristicsObservable: Observable<(CBPeripheral, CBService, Error?)> {
+    let didDiscoverCharacteristicsForServiceChannel = Channel<(peripheral: CBPeripheral, service: CBService, error: Error?)>()
+    var didDiscoverCharacteristicsForService: Observable<(peripheral: CBPeripheral, service: CBService, error: Error?)> {
         get {
-            return discoverCharacteristicsChannel.observable
+            return didDiscoverCharacteristicsForServiceChannel.observable
+        }
+    }
+    
+    let didWriteValueForCharacteristicChannel = Channel<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)>()
+    var didWriteValueForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> {
+        get {
+            return didWriteValueForCharacteristicChannel.observable
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral,
                     didDiscoverServices error: Error?) {
-        discoverServicesChannel.broadcast(peripheral)
+        didDiscoverServicesChannel.broadcast(peripheral)
     }
     
     func peripheral(_ peripheral: CBPeripheral,
                     didDiscoverCharacteristicsFor service: CBService,
                     error: Error?) {
-        discoverCharacteristicsChannel.broadcast((peripheral, service, error))
+        didDiscoverCharacteristicsForServiceChannel.broadcast((peripheral: peripheral, service: service, error: error))
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral,
+                    didWriteValueFor characteristic: CBCharacteristic,
+                    error: Error?) {
+        didWriteValueForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
     }
 }

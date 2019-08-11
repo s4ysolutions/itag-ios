@@ -6,16 +6,32 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import BLE
 import UIKit
+import Rasat
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let dispose = DisposeBag()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if BLEDefault.shared.state == .on {
+            print("connect all BLE on app deligate")
+            DispatchQueue.global(qos: .background).async {
+                TagStoreDefault.shared.connectAll()
+            }
+        }
+        dispose.add(BLEDefault.shared.stateObservable.subscribe(id: "BLE powered on", handler: {state in
+            if state == .on {
+                print("connect all BLE on power on")
+                DispatchQueue.global(qos: .background).async {
+                    TagStoreDefault.shared.connectAll()
+                }
+            }
+        }))
         return true
     }
 
@@ -38,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        dispose.dispose()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 

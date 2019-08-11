@@ -21,11 +21,21 @@ public class BLEDefault: BLEInterface {
         scannerFactory: BLEScannerFactoryDefault(),
         storeFactory: BLEConnectionsStoreFactoryDefault()
     )
-    
-    public let finder: BLEAlertInterface
+
+    private let manager: CBCentralManager
+    private let store: BLEConnectionsStoreInterface
+
+    public let alert: BLEAlertInterface
     public let scanner: BLEScannerInterface
+    public var stateObservable: Observable<BLEState> { get {
+        return stateChannel.observable
+        }
+    }
     public var timeout = 60
     
+    let disposable = DisposeBag()
+    let stateChannel = Channel<BLEState>()
+
     init(
         connectionFactory: BLEConnectionFactoryInterface,
         finderFactory: BLEAlertFactoryInterface,
@@ -36,10 +46,23 @@ public class BLEDefault: BLEInterface {
         ) {
         
         // NOTE: delegate MUST be of BLEManagerObserverInterface
-        let manager = CBCentralManager(delegate: observer, queue: DispatchQueue.global(qos: .background))
-        let store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
+        manager = CBCentralManager(delegate: observer, queue: DispatchQueue.global(qos: .background))
+        store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
         scanner = scannerFactory.scanner(manager: manager)
-        finder = finderFactory.finder(store: store)
+        alert = finderFactory.finder(store: store)
+        disposable.add(observer.didUpdateState.subscribe(id: "BLE", handler: {state in
+            self.stateChannel.broadcast(state == CBManagerState.poweredOn ? .on : .off)
+        }))
+    }
+    
+    public func connect(id: String, timeout: Int) {
+        let connection = store.getOrMake(id: id)
+        connection.makeAvailabe(timeout: timeout)
+    }
+    
+    public var state: BLEState { get {
+        return manager.state == CBManagerState.poweredOn ? .on : .off
+        }
     }
     
 }

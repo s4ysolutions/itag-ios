@@ -23,7 +23,7 @@ class TagDefault: TagInterface {
     
     init(id: String, dict: [String: Any?]) {
         self.id =  id
-        self.name = dict["name"] as? String ?? "unknonw".localized
+        self.name = dict["name"] as? String ?? "unknown".localized
         self.color = TagColor.from(string: dict["color"] as? String ?? nil)
         self.alert = dict["alert"] as? Bool ?? false
     }

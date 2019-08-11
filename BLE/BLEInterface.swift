@@ -13,8 +13,17 @@ import Rasat
 
 let SCAN_TIMEOUT = 60
 
+public enum BLEState {
+    case on
+    case off
+}
+
 public protocol BLEInterface {
-    var timeout: Int { get set }
+    var alert: BLEAlertInterface { get }
     var scanner: BLEScannerInterface { get }
-    var finder: BLEAlertInterface { get }
+    var state: BLEState { get }
+    var stateObservable: Observable<BLEState> { get }
+    var timeout: Int { get set }
+
+    func connect(id: String, timeout: Int)
 }

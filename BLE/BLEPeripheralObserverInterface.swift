@@ -11,6 +11,7 @@ import Foundation
 import Rasat
 
 protocol BLEPeripheralObserverInterface: CBPeripheralDelegate {
-    var discoverServicesObservable: Observable<CBPeripheral> { get }
-    var discoverCharacteristicsObservable: Observable<(CBPeripheral, CBService, Error?)> { get }
+    var didDiscoverServices: Observable<CBPeripheral> { get }
+    var didDiscoverCharacteristicsForService: Observable<(peripheral: CBPeripheral, service: CBService, error: Error?)> { get }
+    var didWriteValueForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> { get }
 }
