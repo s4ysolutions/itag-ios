@@ -25,7 +25,13 @@ class PeripheralTableViewCell: UITableViewCell {
         set (it) {
             _peripheral = it
             uuid?.text = it?.identifier.uuidString
-            name?.text = it?.name
+            let pname = it?.name?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
+            let sname = store.by(id: it?.identifier.uuidString ?? "")?.name ?? ""
+            if pname != sname && sname != "" {
+                name?.text = "\(pname) (\(sname))"
+            } else {
+                name?.text = pname
+            }
             let remembered = it != nil && store.remembered(id: it!.identifier.uuidString)
             button?.setImage(remembered ? imageMinus : imagePlus, for: .normal)
         }

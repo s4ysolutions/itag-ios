@@ -25,11 +25,11 @@ class BLETagViewController: UIViewController {
     static let imageAlert = UIImage(named: "btnAlert")
     static let imageNoAlert = UIImage(named: "btnNoAlert")
 
+    let ble: BLEInterface
     let store: TagStoreInterface
     
     var disposable: DisposeBag?
     var tag: TagInterface?
-    let ble: BLEInterface
     
     required init?(coder aDecoder: NSCoder) {
         store = TagStoreDefault.shared
@@ -119,7 +119,14 @@ class BLETagViewController: UIViewController {
     
     @IBAction func onTag(_ sender: UIView) {
         guard let tag = tag else { return }
-        ble.alert.toggleAlert(id: tag.id, timeout: BLE_TIMEOUT)
+        DispatchQueue.global(qos: .background).async{
+            self.ble.alert.toggleAlert(id: tag.id, timeout: BLE_TIMEOUT)
+        }
+    }
+    
+    @IBAction func onForget(_ sender: UIView) {
+        guard let tag = tag else { return }
+        store.forget(id: tag.id)
     }
     
     /*

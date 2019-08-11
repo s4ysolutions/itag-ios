@@ -10,11 +10,10 @@ import Foundation
 import CoreBluetooth
 import Rasat
 
-
-
 public class BLEDefault: BLEInterface {
     public static let shared = BLEDefault(
         connectionFactory: BLEConnectionFactoryDefault(),
+        connectionsFactory: BLEConnectionsFactoryDefault(),
         finderFactory: BLEAlertFactoryDefault(),
         observer: BLEManagerObservablesDefault(),
         peripheralObserverFactory: BLEPeripheralObserverFactoryDefault(),
@@ -26,6 +25,7 @@ public class BLEDefault: BLEInterface {
     private let store: BLEConnectionsStoreInterface
 
     public let alert: BLEAlertInterface
+    public let connections: BLEConnectionsInterface
     public let scanner: BLEScannerInterface
     public var stateObservable: Observable<BLEState> { get {
         return stateChannel.observable
@@ -38,6 +38,7 @@ public class BLEDefault: BLEInterface {
 
     init(
         connectionFactory: BLEConnectionFactoryInterface,
+        connectionsFactory: BLEConnectionsFactoryInterface,
         finderFactory: BLEAlertFactoryInterface,
         observer: BLEManagerObservablesInterface,
         peripheralObserverFactory: BLEPeripheralObserverFactoryInterface,
@@ -50,6 +51,7 @@ public class BLEDefault: BLEInterface {
         store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
         scanner = scannerFactory.scanner(manager: manager)
         alert = finderFactory.finder(store: store)
+        connections = connectionsFactory.connections(store: store)
         disposable.add(observer.didUpdateState.subscribe(id: "BLE", handler: {state in
             self.stateChannel.broadcast(state == CBManagerState.poweredOn ? .on : .off)
         }))

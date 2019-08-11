@@ -1,5 +1,5 @@
 //
-//  BLEConnectionsStoreInterface.swift
+//  BLEConnectionsInterface.swift
 //  BLE
 //
 //  Created by  Sergey Dolin on 11/08/2019.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol BLEConnectionsStoreInterface {
-    func getOrMake(id: String) -> BLEConnectionInterface
+public protocol BLEConnectionsInterface {
+    func disconnect(id: String)
 }

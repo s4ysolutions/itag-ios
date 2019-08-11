@@ -15,8 +15,10 @@ class BLERootViewController: UIViewController {
 
     let ble: BLEInterface
     let store: TagStoreInterface
+    
     var contentID = ""
-
+    var disposable: DisposeBag?
+    
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
         store = TagStoreDefault.shared
@@ -28,9 +30,19 @@ class BLERootViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        disposable?.dispose()
+        disposable = DisposeBag()
+        disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_root", handler: {_ in
+            self.setupContent()
+        }))
         setupContent()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        disposable?.dispose()
+        super.viewWillDisappear(animated)
+    }
+    
     // MARK: - Manage Content
     
     func setupContent() {

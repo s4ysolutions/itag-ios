@@ -22,6 +22,10 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
         self.manager = manager
     }
     
+    func get(id: String) -> BLEConnectionInterface? {
+        return map[id]
+    }
+    
     func getOrMake(id: String) -> BLEConnectionInterface {
         if map[id] == nil || !map[id]!.isConnected {
              map[id] = connectionFactory.connection(

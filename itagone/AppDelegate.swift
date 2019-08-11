@@ -13,23 +13,35 @@ import Rasat
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+    let ble = BLEDefault.shared
     let dispose = DisposeBag()
+    let store = TagStoreDefault.shared
 
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if BLEDefault.shared.state == .on {
+        if ble.state == .on {
             print("connect all BLE on app deligate")
             DispatchQueue.global(qos: .background).async {
-                TagStoreDefault.shared.connectAll()
+                self.store.connectAll()
             }
         }
-        dispose.add(BLEDefault.shared.stateObservable.subscribe(id: "BLE powered on", handler: {state in
+        dispose.add(ble.stateObservable.subscribe(id: "BLE powered on", handler: {state in
             if state == .on {
                 print("connect all BLE on power on")
                 DispatchQueue.global(qos: .background).async {
-                    TagStoreDefault.shared.connectAll()
+                    self.store.connectAll()
                 }
+            }
+        }))
+        dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), handler: {op in
+            switch op {
+            case .remember(_):
+                return
+            case .forget(let tag ):
+                self.ble.connections.disconnect(id: tag.id)
+            case .change(_):
+                return
             }
         }))
         return true

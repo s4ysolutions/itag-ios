@@ -83,7 +83,7 @@ class TagStoreDefault: TagStoreInterface {
             ids.append(tag.id)
             tags[tag.id] = tag
             storeToDefaults()
-            channel.broadcast(StoreOp.remember)
+            channel.broadcast(.remember(tag))
         }
     }
     
@@ -91,7 +91,9 @@ class TagStoreDefault: TagStoreInterface {
         if let i = ids.firstIndex(of: id) {
             ids.remove(at: i)
             storeToDefaults()
-            channel.broadcast(StoreOp.forget)
+            if tags[id] != nil {
+                channel.broadcast(.forget(tags[id]!))
+            }
         }
     }
     
@@ -101,26 +103,26 @@ class TagStoreDefault: TagStoreInterface {
 
     func set(alert: Bool, forTag: TagInterface) {
         // TODO: report if not found
-        guard var tag0 = tags[forTag.id] else { return }
-        tag0.alert = alert
+        guard var tag = tags[forTag.id] else { return }
+        tag.alert = alert
         storeToDefaults()
-        channel.broadcast(StoreOp.change)
+        channel.broadcast(.change(tag))
     }
     
     func set(color: TagColor, forTag: TagInterface) {
         // TODO: report if not found
-        guard var tag0 = tags[forTag.id] else { return }
-        tag0.color = color
+        guard var tag = tags[forTag.id] else { return }
+        tag.color = color
         storeToDefaults()
-        channel.broadcast(StoreOp.change)
+        channel.broadcast(.change(tag))
     }
     
     func set(name: String, forTag: TagInterface) {
         // TODO: report if not found
-        guard var tag0 = tags[forTag.id] else { return }
-        tag0.name = name
+        guard var tag = tags[forTag.id] else { return }
+        tag.name = name
         storeToDefaults()
-        channel.broadcast(StoreOp.change)
+        channel.broadcast(.change(tag))
     }
 
     func connectAll() {

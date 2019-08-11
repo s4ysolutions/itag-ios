@@ -135,7 +135,7 @@
         <!--Tag1 View Controller-->
         <scene sceneID="toP-1e-ivV">
             <objects>
-                <viewController storyboardIdentifier="tag1" id="h1m-RW-VtY" userLabel="Tag1 View Controller" customClass="BleTag1ViewController" customModule="itagone" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="tag1" id="h1m-RW-VtY" userLabel="Tag1 View Controller" customClass="BLETag1ViewController" customModule="itagone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PMU-fW-Fpz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -485,18 +485,18 @@
             <objects>
                 <viewController id="Dxr-Xp-f19" customClass="BLETagViewController" customModule="itagone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Aws-oI-hZ7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdO-ZJ-oXD" userLabel="Tag">
-                                <rect key="frame" x="4" y="36" width="312" height="364"/>
+                                <rect key="frame" x="4" y="36" width="312" height="134"/>
                                 <state key="normal" image="tagGold"/>
                                 <connections>
                                     <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
-                                <rect key="frame" x="0.0" y="404" width="320" height="56"/>
+                                <rect key="frame" x="0.0" y="174" width="320" height="56"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ajw-pV-di0">
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="56"/>
@@ -546,6 +546,9 @@
                                             <constraint firstAttribute="width" constant="56" id="hVE-vS-mza"/>
                                         </constraints>
                                         <state key="normal" title="Button" image="btnMinus"/>
+                                        <connections>
+                                            <action selector="onForget:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="Hc7-dh-Acv"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0uM-TW-uie">
                                         <rect key="frame" x="320" y="0.0" width="0.0" height="56"/>
@@ -607,6 +610,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ced-KO-KvI"/>
+        <segue reference="idc-IC-EfF"/>
     </inferredMetricsTieBreakers>
 </document>

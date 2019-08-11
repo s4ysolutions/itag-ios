@@ -10,13 +10,6 @@ import CoreBluetooth
 import Foundation
 import Rasat
 
-let IMMEDIATE_ALERT_SERVICE = CBUUID(string: "00001802-0000-1000-8000-00805f9b34fb")
-let ALERT_LEVEL_CHARACTERISTIC = CBUUID(string: "00002a06-0000-1000-8000-00805f9b34fb")
-
-class PeripheralDelegate: NSObject, CBPeripheralDelegate {
-    
-}
-
 class BLEConnectionDefault: BLEConnectionInterface {
     let id: String
     let manager: CBCentralManager
@@ -33,13 +26,17 @@ class BLEConnectionDefault: BLEConnectionInterface {
         set (p){
             _peripheral = p
             immediateAlertDispose?.dispose()
-            immediateAlertDispose = peripheralObserver.didWriteValueForCharacteristic.subscribe(handler: {tuple in
-                guard let peripheral = self.peripheral else { return }
-                if tuple.peripheral.identifier == peripheral.identifier &&
-                    tuple.characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
-                    self.immediateAlertUpdateNotificationChannel.broadcast((id: peripheral.identifier.uuidString, tuple.characteristic.value?.alertVolume ?? .NO_ALERT))
-                }
-            })
+            if p == nil {
+                immediateAlertDispose = nil
+            } else {
+                immediateAlertDispose = peripheralObserver.didWriteValueForCharacteristic.subscribe(handler: {tuple in
+                    guard let peripheral = self.peripheral else { return }
+                    if tuple.peripheral.identifier == peripheral.identifier &&
+                        tuple.characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
+                        self.immediateAlertUpdateNotificationChannel.broadcast((id: peripheral.identifier.uuidString, tuple.characteristic.value?.alertVolume ?? .NO_ALERT))
+                    }
+                })
+            }
         }
     }
     
@@ -266,6 +263,12 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     func disconnect(timeout: Int) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
+        
+        if timeout <= 0 {
+            manager.cancelPeripheralConnection(peripheral)
+            return nil
+        }
+        
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         

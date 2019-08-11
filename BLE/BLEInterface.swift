@@ -20,6 +20,7 @@ public enum BLEState {
 
 public protocol BLEInterface {
     var alert: BLEAlertInterface { get }
+    var connections: BLEConnectionsInterface { get }
     var scanner: BLEScannerInterface { get }
     var state: BLEState { get }
     var stateObservable: Observable<BLEState> { get }

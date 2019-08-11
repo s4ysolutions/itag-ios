@@ -46,6 +46,11 @@ class PeripheralsTableViewController: UITableViewController {
     }
     
     func updatePeripheral(_ peripheral: CBPeripheral) {
+
+        if store.by(id: peripheral.identifier.uuidString) != nil {
+            return
+        }
+        
         for p in peripherals {
             if (p.identifier == peripheral.identifier) {
                 return

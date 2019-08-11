@@ -11,9 +11,9 @@ import Foundation
 import Rasat
 
 enum StoreOp {
-    case remember
-    case forget
-    case change
+    case remember(TagInterface)
+    case forget(TagInterface)
+    case change(TagInterface)
 }
 
 protocol TagStoreInterface {
