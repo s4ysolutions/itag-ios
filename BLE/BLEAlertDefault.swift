@@ -8,13 +8,42 @@
 
 import CoreBluetooth
 import Foundation
+import Rasat
+
+enum AlertVolume: UInt8 {
+    case NO_ALERT = 0x00
+    case MEDIUM_ALERT = 0x01
+    case HIGH_ALERT = 0x02
+    var data: Data {
+        get {
+            var value = self.rawValue
+            return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
+        }
+    }
+}
+
+extension Data {
+    var alertVolume: AlertVolume {
+        get {
+            var rawValue: UInt8 = 0
+            self.copyBytes(to:&rawValue, count: MemoryLayout<UInt8>.size)
+            return AlertVolume(rawValue: rawValue)!
+        }
+    }
+}
+
 
 class BLEAlertDefault: BLEAlertInterface {
     let store: BLEConnectionsStoreInterface
     var alerts: Set<String> = []
-    
+    let disposables = DisposeBag()
+
     init(store: BLEConnectionsStoreInterface) {
         self.store = store
+    }
+    
+    func isAlerting(id: String) ->  Bool {
+       return alerts.contains(id)
     }
     
     func startAlert(id: String, timeout: Int) {

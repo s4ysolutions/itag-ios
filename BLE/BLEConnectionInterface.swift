@@ -8,18 +8,7 @@
 
 import CoreBluetooth
 import Foundation
-
-enum AlertVolume: Int {
-    case NO_ALERT = 0x00
-    case MEDIUM_ALERT = 0x01
-    case HIGH_ALERT = 0x02
-    var data: Data {
-        get {
-            var value = self.rawValue
-            return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
-        }
-    }
-}
+import Rasat
 
 enum BLEError: Error {
     case timeout
@@ -32,6 +21,8 @@ enum BLEError: Error {
 
 protocol BLEConnectionInterface {
     var isConnected: Bool { get }
+    var immediateAlertUpdateNotification: Observable<(id: String, volume: AlertVolume)> { get }
+ 
     func disconnect(timeout: Int) -> BLEError?
     func makeAvailabe(timeout: Int)  -> BLEError?
     func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError?

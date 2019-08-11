@@ -9,5 +9,5 @@
 import Foundation
 
 protocol BLEPeripheralObserverFactoryInterface {
-    func observer() -> BLEPeripheralObserverInterface
+    func observer() -> BLEPeripheralObservablesInterface
 }

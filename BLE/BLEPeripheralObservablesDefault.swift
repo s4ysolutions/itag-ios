@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 import Rasat
 
-class BLEPeripheralObserverDefault: NSObject, BLEPeripheralObserverInterface {    
+class BLEPeripheralObservablesDefault: NSObject, BLEPeripheralObservablesInterface {    
     let didDiscoverServicesChannel = Channel<CBPeripheral>()
     var didDiscoverServices: Observable<CBPeripheral> {
         get {
@@ -22,6 +22,19 @@ class BLEPeripheralObserverDefault: NSObject, BLEPeripheralObserverInterface {
     var didDiscoverCharacteristicsForService: Observable<(peripheral: CBPeripheral, service: CBService, error: Error?)> {
         get {
             return didDiscoverCharacteristicsForServiceChannel.observable
+        }
+    }
+    
+    let didUpdateNotificationStateForCharacteristicChannel = Channel<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)>()
+    var didUpdateNotificationStateForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> { get {
+        return didUpdateNotificationStateForCharacteristicChannel.observable
+        } }
+    
+    
+    let didUpdateValueForCharacteristicChannel = Channel<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)>()
+    var didUpdateValueForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> {
+        get {
+            return didUpdateValueForCharacteristicChannel.observable
         }
     }
     
@@ -47,5 +60,19 @@ class BLEPeripheralObserverDefault: NSObject, BLEPeripheralObserverInterface {
                     didWriteValueFor characteristic: CBCharacteristic,
                     error: Error?) {
         didWriteValueForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral,
+                    didUpdateNotificationStateFor characteristic: CBCharacteristic,
+                    error: Error?) {
+        print("characteristic notify state", characteristic)
+        didUpdateNotificationStateForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral,
+                    didUpdateValueFor characteristic: CBCharacteristic,
+                    error: Error?) {
+        print("characteristic notify value", characteristic)
+        didUpdateValueForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
     }
 }

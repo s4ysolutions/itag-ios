@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 import Rasat
 
-protocol BLEManagerObserverInterface: CBCentralManagerDelegate {
+protocol BLEManagerObservablesInterface: CBCentralManagerDelegate {
     var didConnectPeripheral: Observable<CBPeripheral> { get }
     var didFailToConnectPeripheral: Observable<(peripheral: CBPeripheral,error: Error?)> { get }
     var didDisconnectPeripheral: Observable<(peripheral: CBPeripheral,error: Error?)> { get }

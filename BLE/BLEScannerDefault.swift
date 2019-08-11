@@ -15,11 +15,11 @@ class BLEScannerDefault: BLEScannerInterface {
     var timeoutSubject = Subject(0)
     var timer: Timer? = nil
     let manager: CBCentralManager
-    let observer: BLEManagerObserverInterface
+    let observer: BLEManagerObservablesInterface
     
     init (manager: CBCentralManager) {
         self.manager = manager
-        self.observer = manager.delegate as! BLEManagerObserverInterface
+        self.observer = manager.delegate as! BLEManagerObservablesInterface
     }
     
     func start(timeout: Int) {

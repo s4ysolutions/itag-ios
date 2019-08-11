@@ -20,20 +20,35 @@ class PeripheralDelegate: NSObject, CBPeripheralDelegate {
 class BLEConnectionDefault: BLEConnectionInterface {
     let id: String
     let manager: CBCentralManager
-    let managerObserver: BLEManagerObserverInterface
-    let peripheralObserver: BLEPeripheralObserverInterface
+    let managerObserver: BLEManagerObservablesInterface
+    let peripheralObserver: BLEPeripheralObservablesInterface
     
-    var peripheral: CBPeripheral?
+    var _peripheral: CBPeripheral?
+    var immediateAlertDispose: Disposable?
     
-    var characteristicImmediateAlert: CBCharacteristic?
-    var serviceImmediateAlert: CBService?
+    var peripheral: CBPeripheral? {
+        get {
+            return _peripheral
+        }
+        set (p){
+            _peripheral = p
+            immediateAlertDispose?.dispose()
+            immediateAlertDispose = peripheralObserver.didWriteValueForCharacteristic.subscribe(handler: {tuple in
+                guard let peripheral = self.peripheral else { return }
+                if tuple.peripheral.identifier == peripheral.identifier &&
+                    tuple.characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
+                    self.immediateAlertUpdateNotificationChannel.broadcast((id: peripheral.identifier.uuidString, tuple.characteristic.value?.alertVolume ?? .NO_ALERT))
+                }
+            })
+        }
+    }
     
     init(manager: CBCentralManager, peripheralObserverFactory: BLEPeripheralObserverFactoryInterface, id: String) {
         self.id = id
         self.manager = manager
         self.peripheralObserver = peripheralObserverFactory.observer()
         // NOTE: manager.delegate must be BLEManagerObserverInterface
-        self.managerObserver = manager.delegate as! BLEManagerObserverInterface
+        self.managerObserver = manager.delegate as! BLEManagerObservablesInterface
     }
     
     var isConnected: Bool {
@@ -41,6 +56,35 @@ class BLEConnectionDefault: BLEConnectionInterface {
             return peripheral != nil && peripheral?.state == .connected
         }
     }
+    
+    var immediateAlertService : CBService? {
+        get {
+            guard let peripheral = peripheral else {return nil}
+            for service in peripheral.services ?? [] {
+                if service.uuid == IMMEDIATE_ALERT_SERVICE {
+                    return service
+                }
+            }
+            return nil
+        }
+    }
+    
+    var immediateAlertCharacteristic: CBCharacteristic? {
+        get {
+            guard let service = immediateAlertService else {return nil}
+            for characteristic in service.characteristics ?? [] {
+                if characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
+                    return characteristic
+                }
+            }
+            return nil
+        }
+    }
+    
+    let immediateAlertUpdateNotificationChannel = Channel<(id: String, volume: AlertVolume)>()
+    var immediateAlertUpdateNotification: Observable<(id: String, volume: AlertVolume)> { get {
+        return immediateAlertUpdateNotificationChannel.observable
+        }}
     
     private func waitForConnect(timeout: DispatchTime) -> BLEError? {
         guard let peripheral = peripheral else {return .noPeripheral}
@@ -65,6 +109,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
                 self.manager.cancelPeripheralConnection(tuple.peripheral)
             }
         }))
+        
         defer {
             print("connect dispose")
             disposable.dispose()
@@ -113,7 +158,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
-        let observer = peripheral.delegate as! BLEPeripheralObserverInterface
+        let observer = peripheral.delegate as! BLEPeripheralObservablesInterface
         disposable.add(observer.didDiscoverServices.subscribe(handler: {discovered in
             if discovered.identifier == peripheral.identifier {
                 semaphore.signal()
@@ -139,7 +184,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         
         var discoverError: Error? = nil
         
-        let observer = peripheral.delegate as! BLEPeripheralObserverInterface
+        let observer = peripheral.delegate as! BLEPeripheralObservablesInterface
         disposable.add(observer.didDiscoverCharacteristicsForService.subscribe(handler: {tuple in
             if tuple.peripheral.identifier == peripheral.identifier && tuple.service.uuid == forService.uuid {
                 discoverError = tuple.error
@@ -154,12 +199,17 @@ class BLEConnectionDefault: BLEConnectionInterface {
         if semaphore.wait(timeout: timeout) == .timedOut {
             return .timeout
         }
+        
+        if discoverError != nil {
+            return .other(discoverError!)
+        }
+        
         return nil
     }
     
     func makeAvailabe(timeout: Int) -> BLEError? {
         print("peripheral make available")
-
+        
         if peripheral == nil {
             guard let uuid = UUID(uuidString: id) else { return .badUUID }
             let known = manager.retrievePeripherals(withIdentifiers: [uuid])
@@ -179,50 +229,37 @@ class BLEConnectionDefault: BLEConnectionInterface {
                 }
             }
         }
-
+        
         let maxTimeout = timeout.dispatchTime
         if peripheral == nil {
-            characteristicImmediateAlert = nil
-            serviceImmediateAlert = nil
             let scanError = waitForDiscover(timeout: maxTimeout)
             print("peripheral discover", scanError)
             if scanError != nil { return .other(scanError!)}
             let connectError = waitForConnect(timeout: maxTimeout)
             if connectError != nil { return .other(connectError!)}
-
         }
         
         guard let peripheral = peripheral else {return .noPeripheral}
         if peripheral.delegate == nil {
             peripheral.delegate = peripheralObserver
         }
-
-        if characteristicImmediateAlert == nil {
-            if serviceImmediateAlert == nil {
-                let discoverServiceError = waitForDiscoverServices(timeout: maxTimeout)
-                print("peripheral discover services", peripheral.services, discoverServiceError)
-                if discoverServiceError != nil { return .other(discoverServiceError!)}
-
-                for service in peripheral.services ?? [] {
-                    if service.uuid == IMMEDIATE_ALERT_SERVICE {
-                        serviceImmediateAlert = service
-                    }
-                }
-            }
-            guard let serviceImmediateAlert = serviceImmediateAlert else { return .noImmediateAletService }
-
+        
+        if immediateAlertService == nil {
+            let discoverServiceError = waitForDiscoverServices(timeout: maxTimeout)
+            print("peripheral discover services", peripheral.services, discoverServiceError)
+            if discoverServiceError != nil { return .other(discoverServiceError!)}
+        }
+        
+        guard let serviceImmediateAlert = immediateAlertService else { return .noImmediateAletService }
+        if immediateAlertCharacteristic == nil {
             let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceImmediateAlert, timeout: maxTimeout)
             print("peripheral discover characteristics", serviceImmediateAlert.characteristics, discoverCharacteristicsError)
             if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
-            for characteristic in serviceImmediateAlert.characteristics ?? [] {
-                if characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
-                    characteristicImmediateAlert = characteristic
-                }
-            }
         }
         
-        if characteristicImmediateAlert == nil { return .noImmediateAletCharacteristic }
-
+        guard let immediateAlertCharacteristic = immediateAlertCharacteristic else { return .noImmediateAletCharacteristic }
+        
+        setNotify(true, characteristic: immediateAlertCharacteristic)
         print("peripheral ok")
         return nil
     }
@@ -234,7 +271,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         
         var disconnectError: Error? = nil
         
-        let observer = manager.delegate as! BLEManagerObserverInterface
+        let observer = manager.delegate as! BLEManagerObservablesInterface
         disposable.add(observer.didDisconnectPeripheral.subscribe(handler: {tuple in
             if tuple.peripheral.identifier == peripheral.identifier {
                 disconnectError = tuple.error
@@ -245,8 +282,13 @@ class BLEConnectionDefault: BLEConnectionInterface {
             disposable.dispose()
         }
         
+        // must unsubscribe before connect
+        if immediateAlertCharacteristic != nil {
+            setNotify(false, characteristic: immediateAlertCharacteristic!)
+        }
+        
         manager.cancelPeripheralConnection(peripheral)
-
+        
         if semaphore.wait(timeout: timeout.dispatchTime) == .timedOut {
             return .timeout
         }
@@ -269,7 +311,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             
             var writeError: Error? = nil
             
-            let observer = peripheral.delegate as! BLEPeripheralObserverInterface
+            let observer = peripheral.delegate as! BLEPeripheralObservablesInterface
             disposable.add(observer.didWriteValueForCharacteristic.subscribe(handler: {tuple in
                 if tuple.peripheral.identifier == peripheral.identifier && tuple.characteristic.uuid == characteristic.uuid {
                     writeError = tuple.error
@@ -293,9 +335,15 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
+    private func setNotify(_ enabled: Bool, characteristic: CBCharacteristic) -> BLEError? {
+        guard let peripheral = peripheral else { return .noPeripheral}
+        peripheral.setNotifyValue(enabled, for: characteristic)
+        return nil
+    }
+    
     func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError? {
-        if characteristicImmediateAlert == nil { return .noImmediateAletCharacteristic}
-        return write(data: volume.data, characteristic: characteristicImmediateAlert!, timeout: timeout == 0 ? nil : timeout.dispatchTime)
+        if immediateAlertCharacteristic == nil { return .noImmediateAletCharacteristic}
+        return write(data: volume.data, characteristic: immediateAlertCharacteristic!, timeout: timeout == 0 ? nil : timeout.dispatchTime)
     }
     
     func writeImmediateAlert(volume: AlertVolume) -> BLEError? {

@@ -23,16 +23,16 @@
 		4177C97D22FEB0FE003F4423 /* BLEScannerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C97C22FEB0FE003F4423 /* BLEScannerDefault.swift */; };
 		4177C97F22FEB1C1003F4423 /* BLEScannerFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C97E22FEB1C1003F4423 /* BLEScannerFactoryInterface.swift */; };
 		4177C98122FEB211003F4423 /* BLEScannerFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98022FEB211003F4423 /* BLEScannerFactoryDefault.swift */; };
-		4177C98322FEB39D003F4423 /* BLEManagerObserverDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98222FEB39D003F4423 /* BLEManagerObserverDefault.swift */; };
-		4177C98522FEB433003F4423 /* BLEManagerObserverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98422FEB433003F4423 /* BLEManagerObserverInterface.swift */; };
+		4177C98322FEB39D003F4423 /* BLEManagerObservablesDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98222FEB39D003F4423 /* BLEManagerObservablesDefault.swift */; };
+		4177C98522FEB433003F4423 /* BLEManagerObservablesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98422FEB433003F4423 /* BLEManagerObservablesInterface.swift */; };
 		4177C98722FF11E3003F4423 /* BLEAlertInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98622FF11E3003F4423 /* BLEAlertInterface.swift */; };
 		4177C98922FF12D2003F4423 /* BLEAlertDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98822FF12D2003F4423 /* BLEAlertDefault.swift */; };
 		4177C98F22FF1EAD003F4423 /* BLEAlertFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C98E22FF1EAD003F4423 /* BLEAlertFactoryInterface.swift */; };
 		4177C99122FF1F3B003F4423 /* BLEAlertFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99022FF1F3B003F4423 /* BLEAlertFactoryDefault.swift */; };
 		4177C99422FF2D7F003F4423 /* Int+extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99322FF2D7F003F4423 /* Int+extenstions.swift */; };
 		4177C99622FF3F6D003F4423 /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99522FF3F6D003F4423 /* constants.swift */; };
-		4177C99822FF53BC003F4423 /* BLEPeripheralObserverDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99722FF53BC003F4423 /* BLEPeripheralObserverDefault.swift */; };
-		4177C99A22FF558F003F4423 /* BLEPeripheralObserverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99922FF558F003F4423 /* BLEPeripheralObserverInterface.swift */; };
+		4177C99822FF53BC003F4423 /* BLEPeripheralObservablesDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99722FF53BC003F4423 /* BLEPeripheralObservablesDefault.swift */; };
+		4177C99A22FF558F003F4423 /* BLEPeripheralObservablesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99922FF558F003F4423 /* BLEPeripheralObservablesInterface.swift */; };
 		4177C99C22FF5711003F4423 /* BLEPeripheralObserverFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99B22FF5711003F4423 /* BLEPeripheralObserverFactoryInterface.swift */; };
 		4177C99E22FF5760003F4423 /* BLEPeripheralObserverFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99D22FF5760003F4423 /* BLEPeripheralObserverFactoryDefault.swift */; };
 		4177C9A022FF6A01003F4423 /* BLEConnectionsStoreInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C99F22FF6A01003F4423 /* BLEConnectionsStoreInterface.swift */; };
@@ -138,16 +138,16 @@
 		4177C97C22FEB0FE003F4423 /* BLEScannerDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScannerDefault.swift; sourceTree = "<group>"; };
 		4177C97E22FEB1C1003F4423 /* BLEScannerFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScannerFactoryInterface.swift; sourceTree = "<group>"; };
 		4177C98022FEB211003F4423 /* BLEScannerFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScannerFactoryDefault.swift; sourceTree = "<group>"; };
-		4177C98222FEB39D003F4423 /* BLEManagerObserverDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManagerObserverDefault.swift; sourceTree = "<group>"; };
-		4177C98422FEB433003F4423 /* BLEManagerObserverInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManagerObserverInterface.swift; sourceTree = "<group>"; };
+		4177C98222FEB39D003F4423 /* BLEManagerObservablesDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManagerObservablesDefault.swift; sourceTree = "<group>"; };
+		4177C98422FEB433003F4423 /* BLEManagerObservablesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManagerObservablesInterface.swift; sourceTree = "<group>"; };
 		4177C98622FF11E3003F4423 /* BLEAlertInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEAlertInterface.swift; sourceTree = "<group>"; };
 		4177C98822FF12D2003F4423 /* BLEAlertDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEAlertDefault.swift; sourceTree = "<group>"; };
 		4177C98E22FF1EAD003F4423 /* BLEAlertFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEAlertFactoryInterface.swift; sourceTree = "<group>"; };
 		4177C99022FF1F3B003F4423 /* BLEAlertFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEAlertFactoryDefault.swift; sourceTree = "<group>"; };
 		4177C99322FF2D7F003F4423 /* Int+extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extenstions.swift"; sourceTree = "<group>"; };
 		4177C99522FF3F6D003F4423 /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
-		4177C99722FF53BC003F4423 /* BLEPeripheralObserverDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObserverDefault.swift; sourceTree = "<group>"; };
-		4177C99922FF558F003F4423 /* BLEPeripheralObserverInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObserverInterface.swift; sourceTree = "<group>"; };
+		4177C99722FF53BC003F4423 /* BLEPeripheralObservablesDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObservablesDefault.swift; sourceTree = "<group>"; };
+		4177C99922FF558F003F4423 /* BLEPeripheralObservablesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObservablesInterface.swift; sourceTree = "<group>"; };
 		4177C99B22FF5711003F4423 /* BLEPeripheralObserverFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObserverFactoryInterface.swift; sourceTree = "<group>"; };
 		4177C99D22FF5760003F4423 /* BLEPeripheralObserverFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralObserverFactoryDefault.swift; sourceTree = "<group>"; };
 		4177C99F22FF6A01003F4423 /* BLEConnectionsStoreInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionsStoreInterface.swift; sourceTree = "<group>"; };
@@ -288,10 +288,10 @@
 				4177C95622FEAE4E003F4423 /* BLE.h */,
 				41F67C2B22F98DD400BCC628 /* BLEInterface.swift */,
 				41F67C2D22F990B300BCC628 /* BLEDefault.swift */,
-				4177C98422FEB433003F4423 /* BLEManagerObserverInterface.swift */,
-				4177C98222FEB39D003F4423 /* BLEManagerObserverDefault.swift */,
-				4177C99922FF558F003F4423 /* BLEPeripheralObserverInterface.swift */,
-				4177C99722FF53BC003F4423 /* BLEPeripheralObserverDefault.swift */,
+				4177C98422FEB433003F4423 /* BLEManagerObservablesInterface.swift */,
+				4177C98222FEB39D003F4423 /* BLEManagerObservablesDefault.swift */,
+				4177C99922FF558F003F4423 /* BLEPeripheralObservablesInterface.swift */,
+				4177C99722FF53BC003F4423 /* BLEPeripheralObservablesDefault.swift */,
 				4177C99B22FF5711003F4423 /* BLEPeripheralObserverFactoryInterface.swift */,
 				4177C99D22FF5760003F4423 /* BLEPeripheralObserverFactoryDefault.swift */,
 				4177C98622FF11E3003F4423 /* BLEAlertInterface.swift */,
@@ -855,11 +855,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4177C99A22FF558F003F4423 /* BLEPeripheralObserverInterface.swift in Sources */,
+				4177C99A22FF558F003F4423 /* BLEPeripheralObservablesInterface.swift in Sources */,
 				4177C99122FF1F3B003F4423 /* BLEAlertFactoryDefault.swift in Sources */,
 				4177C97A22FEAE76003F4423 /* BLEInterface.swift in Sources */,
 				4177C98922FF12D2003F4423 /* BLEAlertDefault.swift in Sources */,
-				4177C99822FF53BC003F4423 /* BLEPeripheralObserverDefault.swift in Sources */,
+				4177C99822FF53BC003F4423 /* BLEPeripheralObservablesDefault.swift in Sources */,
 				4177C9A622FF6D9E003F4423 /* BLEConnectionsStoreFactoryDefault.swift in Sources */,
 				4177C99E22FF5760003F4423 /* BLEPeripheralObserverFactoryDefault.swift in Sources */,
 				4177C97522FEAE76003F4423 /* BLEConnectionFactoryInterface.swift in Sources */,
@@ -870,8 +870,8 @@
 				4177C9A222FF6A47003F4423 /* BLEConnectionsStoreDefault.swift in Sources */,
 				4177C99C22FF5711003F4423 /* BLEPeripheralObserverFactoryInterface.swift in Sources */,
 				4177C97922FEAE76003F4423 /* BLEDefault.swift in Sources */,
-				4177C98522FEB433003F4423 /* BLEManagerObserverInterface.swift in Sources */,
-				4177C98322FEB39D003F4423 /* BLEManagerObserverDefault.swift in Sources */,
+				4177C98522FEB433003F4423 /* BLEManagerObservablesInterface.swift in Sources */,
+				4177C98322FEB39D003F4423 /* BLEManagerObservablesDefault.swift in Sources */,
 				4177C9A422FF6D46003F4423 /* BLEConnectionsStoreFactoryInterface.swift in Sources */,
 				4177C98122FEB211003F4423 /* BLEScannerFactoryDefault.swift in Sources */,
 				4177C97622FEAE76003F4423 /* BLEConnectionFactoryDefault.swift in Sources */,

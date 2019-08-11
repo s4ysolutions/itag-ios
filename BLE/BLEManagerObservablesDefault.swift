@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 import Rasat
 
-class BLEManagerObserverDefault: NSObject, BLEManagerObserverInterface {
+class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
     let didConnectPeripheralChannel = Channel<CBPeripheral>()
     var didConnectPeripheral: Observable<CBPeripheral> {
         get {

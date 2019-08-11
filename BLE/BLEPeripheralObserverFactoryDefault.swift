@@ -9,7 +9,7 @@
 import Foundation
 
 class BLEPeripheralObserverFactoryDefault: BLEPeripheralObserverFactoryInterface {
-    func observer() -> BLEPeripheralObserverInterface {
-        return BLEPeripheralObserverDefault()
+    func observer() -> BLEPeripheralObservablesInterface {
+        return BLEPeripheralObservablesDefault()
     }
 }

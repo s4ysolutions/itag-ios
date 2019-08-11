@@ -16,7 +16,7 @@ public class BLEDefault: BLEInterface {
     public static let shared = BLEDefault(
         connectionFactory: BLEConnectionFactoryDefault(),
         finderFactory: BLEAlertFactoryDefault(),
-        observer: BLEManagerObserverDefault(),
+        observer: BLEManagerObservablesDefault(),
         peripheralObserverFactory: BLEPeripheralObserverFactoryDefault(),
         scannerFactory: BLEScannerFactoryDefault(),
         storeFactory: BLEConnectionsStoreFactoryDefault()
@@ -39,7 +39,7 @@ public class BLEDefault: BLEInterface {
     init(
         connectionFactory: BLEConnectionFactoryInterface,
         finderFactory: BLEAlertFactoryInterface,
-        observer: BLEManagerObserverInterface,
+        observer: BLEManagerObservablesInterface,
         peripheralObserverFactory: BLEPeripheralObserverFactoryInterface,
         scannerFactory: BLEScannerFactoryInterface,
         storeFactory: BLEConnectionsStoreFactoryInterface

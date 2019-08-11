@@ -10,8 +10,11 @@ import CoreBluetooth
 import Foundation
 import Rasat
 
-protocol BLEPeripheralObserverInterface: CBPeripheralDelegate {
+protocol BLEPeripheralObservablesInterface: CBPeripheralDelegate {
     var didDiscoverServices: Observable<CBPeripheral> { get }
     var didDiscoverCharacteristicsForService: Observable<(peripheral: CBPeripheral, service: CBService, error: Error?)> { get }
     var didWriteValueForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> { get }
+    var didUpdateNotificationStateForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> { get }
+    var didUpdateValueForCharacteristic: Observable<(peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?)> {
+        get }
 }
