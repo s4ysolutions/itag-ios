@@ -36,4 +36,10 @@ class TagDefault: TagInterface {
     func toString() -> String {
         return "id: \(id), name: \(name), color: \(color.string), alert: \(alert)"
     }
+    
+    func copy(fromTag: TagInterface) {
+        name = fromTag.name
+        color = fromTag.color
+        alert = fromTag.alert
+    }
 }

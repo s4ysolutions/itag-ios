@@ -21,6 +21,7 @@ protocol TagStoreInterface {
     var observable: Observable<StoreOp> { get }
     func by(id: String) -> TagInterface?
     func tagBy(pos: Int) -> TagInterface?
+    func everBy(id: String) -> TagInterface?
     func forget(id: String)
     func remember(tag: TagInterface)
     func remembered(id: String) -> Bool

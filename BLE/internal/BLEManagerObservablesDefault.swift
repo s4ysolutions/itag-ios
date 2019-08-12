@@ -68,7 +68,6 @@ class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        print("discover ",peripheral)
         didDiscoverPeripheralChannel.broadcast((peripheral, advertisementData, RSSI))
     }
 

@@ -26,7 +26,7 @@ class PeripheralTableViewCell: UITableViewCell {
             _peripheral = it
             uuid?.text = it?.identifier.uuidString
             let pname = it?.name?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
-            let sname = store.by(id: it?.identifier.uuidString ?? "")?.name ?? ""
+            let sname = store.everBy(id: it?.identifier.uuidString ?? "")?.name ?? ""
             if pname != sname && sname != "" {
                 name?.text = "\(pname) (\(sname))"
             } else {

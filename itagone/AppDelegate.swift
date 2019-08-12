@@ -43,12 +43,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }))
         dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), handler: {op in
             switch op {
-            case .remember(let tag):
-                self.ble.connections.connect(id: tag.id)
+            case .remember(_):
                 return
             case .forget(let tag ):
                 self.ble.connections.disconnect(id: tag.id)
-            case .change(_):
+            case .change(let tag ):
+                if (tag.alert) {
+                    self.ble.connections.connect(id: tag.id)
+                } else {
+                    self.ble.connections.disconnect(id: tag.id)
+                }
                 return
             }
         }))

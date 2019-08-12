@@ -20,6 +20,7 @@ class TagStoreDefault: TagStoreInterface {
     let factory: TagFactoryInterface
 
     var ids = [String]()
+    var idsforever = [String]()
     var tags = [String: TagInterface]()
     
     init(factory: TagFactoryInterface, ble: BLEInterface) {
@@ -27,17 +28,33 @@ class TagStoreDefault: TagStoreInterface {
         self.ble = ble
  
         ids = defaults.array(forKey: "ids") as? [String] ?? []
+        idsforever = defaults.array(forKey: "idsforever") as? [String] ?? []
         print("tag ids <- store:", ids)
+        print("tag idsforever <- store:", idsforever)
         
-        for id in ids {
+        for id in idsforever {
             guard let dict = defaults.dictionary(forKey: "tag \(id)") else {continue}
-            tags[id] = factory.tag(id: id, dict: dict)
-            print("tag <- store:", tags[id]?.toString() ?? "", dict)
+            if ids.contains(id) {
+                tags[id] = factory.tag(id: id, dict: dict)
+                print("tag remembered <- store:", tags[id]?.toString() ?? "", dict)
+            } else {
+                print("tag forgotten <- store:", tags[id]?.toString() ?? "", dict)
+            }
         }
     }
     
     func by(id: String) -> TagInterface? {
         return tags[id]
+    }
+    
+    func everBy(id: String) -> TagInterface? {
+        let active = by(id: id)
+        if active != nil {
+            return active
+        }
+        
+        guard let dict = defaults.dictionary(forKey: "tag \(id)") else {return nil}
+        return factory.tag(id: id, dict: dict)
     }
     
     func tagBy(pos: Int) -> TagInterface? {
@@ -69,7 +86,9 @@ class TagStoreDefault: TagStoreInterface {
     
     private func storeToDefaults() {
         defaults.set(ids, forKey: "ids")
+        defaults.set(idsforever, forKey: "idsforever")
         print("tag ids -> store:", ids)
+        print("tag ids forever -> store:", idsforever)
 
         for id in ids {
             guard let tag = tags[id] else { continue }
@@ -81,10 +100,20 @@ class TagStoreDefault: TagStoreInterface {
     func remember(tag: TagInterface) {
         if !ids.contains(tag.id) {
             ids.append(tag.id)
-            tags[tag.id] = tag
-            storeToDefaults()
-            channel.broadcast(.remember(tag))
         }
+        
+        if !idsforever.contains(tag.id) {
+            idsforever.append(tag.id)
+        }
+        
+        if let existing = everBy(id: tag.id) {
+            tag.copy(fromTag:existing)
+        }
+
+        tags[tag.id] = tag
+        
+        storeToDefaults()
+        channel.broadcast(.remember(tag))
     }
     
     func forget(id: String) {
@@ -106,11 +135,6 @@ class TagStoreDefault: TagStoreInterface {
         guard var tag = tags[forTag.id] else { return }
         tag.alert = alert
         storeToDefaults()
-        if (tag.alert) {
-            channel.broadcast(.remember(tag))
-        } else {
-            channel.broadcast(.forget(tag))
-        }
         channel.broadcast(.change(tag))
     }
     
