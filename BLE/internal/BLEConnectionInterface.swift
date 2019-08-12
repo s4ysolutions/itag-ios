@@ -22,7 +22,7 @@ enum BLEError: Error {
 protocol BLEConnectionInterface {
     var isConnected: Bool { get }
     var immediateAlertUpdateNotification: Observable<(id: String, volume: AlertVolume)> { get }
- 
+    var hasPeripheral: Bool {get}
     func connect() -> BLEError?
     func disconnect(timeout: Int) -> BLEError?
     func makeAvailabe(timeout: Int)  -> BLEError?

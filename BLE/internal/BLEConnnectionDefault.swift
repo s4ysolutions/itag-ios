@@ -49,6 +49,10 @@ class BLEConnectionDefault: BLEConnectionInterface {
         self.managerObservervables = manager.delegate as! BLEManagerObservablesInterface
     }
     
+    var hasPeripheral: Bool {get{
+            return peripheral != nil
+        }
+    }
     var isConnected: Bool {
         get{
             return peripheral != nil && peripheral?.state == .connected
@@ -249,7 +253,16 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     func connect() -> BLEError? {
-        guard let peripheral = peripheral else {return .noPeripheral}
+        if peripheral == nil {
+            guard let uuid = UUID(uuidString: id) else { return .badUUID }
+            let known = manager.retrievePeripherals(withIdentifiers: [uuid])
+            if known.count > 0 {
+                peripheral = known[0]
+            } else {
+                peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
+            }
+        }
+        guard let peripheral = peripheral else { return .noPeripheral }
         manager.connect(peripheral, options: [:])
         return nil
     }

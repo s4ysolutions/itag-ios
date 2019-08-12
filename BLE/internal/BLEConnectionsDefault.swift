@@ -51,7 +51,7 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
     }
     
     func connect(id: String) {
-        guard let connection = store.get(id: id) else {return}
+        let connection = store.getOrMake(id: id)
         _ = connection.connect()
     }
     

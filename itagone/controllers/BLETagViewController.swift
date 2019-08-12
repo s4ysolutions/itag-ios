@@ -151,22 +151,24 @@ class BLETagViewController: UIViewController {
     
     let sound = SoundDefault()
     @IBAction func onTag(_ sender: UIView) {
+        if (sound.isPlaying) {
+            sound.stop()
+            return
+        }
         guard var tag = tag else { return }
         DispatchQueue.global(qos: .background).async{
             if tag.isAlerting {
                 DispatchQueue.main.async{
                     self.stopAnimation()
                 }
-          //      self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
                 tag.isAlerting = false
-               self.sound.stop()
             } else {
                 DispatchQueue.main.async {
                     self.startAnimation()
                 }
-           //     self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
                 tag.isAlerting = true
-                 self.sound.start()
             }
         }
     }
