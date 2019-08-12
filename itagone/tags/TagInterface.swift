@@ -69,6 +69,7 @@ protocol TagInterface {
     var name: String { get set }
     var color: TagColor { get set }
     var alert: Bool { get set }
+    var isAlerting: Bool { get set }
     func copy(fromTag: TagInterface)
     func toDict() -> [String: Any?]
     func toString() -> String

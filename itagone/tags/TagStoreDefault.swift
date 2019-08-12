@@ -157,10 +157,9 @@ class TagStoreDefault: TagStoreInterface {
     }
 
     func connectAll() {
-        print("connect all ble", ids)
         for (_, tag) in tags {
             if tag.alert {
-                ble.connect(id: tag.id,timeout: 10)
+                ble.connect(id: tag.id,timeout: BLE_TIMEOUT)
             }
         }
     }

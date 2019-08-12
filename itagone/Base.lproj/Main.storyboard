@@ -499,18 +499,18 @@
             <objects>
                 <viewController id="Dxr-Xp-f19" customClass="BLETagViewController" customModule="itagone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Aws-oI-hZ7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="230"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdO-ZJ-oXD" userLabel="Tag">
-                                <rect key="frame" x="10" y="8" width="300" height="356"/>
+                                <rect key="frame" x="-11" y="8" width="300" height="126"/>
                                 <state key="normal" image="tagGold"/>
                                 <connections>
                                     <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
-                                <rect key="frame" x="0.0" y="404" width="320" height="56"/>
+                                <rect key="frame" x="0.0" y="174" width="278" height="56"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ajw-pV-di0">
                                         <rect key="frame" x="0.0" y="0.0" width="4" height="56"/>
@@ -521,7 +521,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQW-Nk-Fet" userLabel="Alert">
-                                        <rect key="frame" x="21.5" y="0.0" width="56" height="56"/>
+                                        <rect key="frame" x="4" y="0.0" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="rQW-Nk-Fet" secondAttribute="height" multiplier="1:1" id="3On-Tz-taY"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="GVe-J7-8fy"/>
@@ -532,7 +532,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBr-LV-IjR" userLabel="Edit">
-                                        <rect key="frame" x="95" y="0.0" width="56" height="56"/>
+                                        <rect key="frame" x="60" y="0.0" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="8hn-zK-Qyh"/>
                                             <constraint firstAttribute="width" secondItem="ZBr-LV-IjR" secondAttribute="height" multiplier="1:1" id="cuE-5j-bi5"/>
@@ -543,7 +543,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iC-WF-8qC" userLabel="Color">
-                                        <rect key="frame" x="169" y="0.0" width="56" height="56"/>
+                                        <rect key="frame" x="116" y="0.0" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="1iC-WF-8qC" secondAttribute="height" multiplier="1:1" id="iVi-1Y-rU8"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="ud8-hh-sNM"/>
@@ -554,7 +554,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSM-0f-EUv" userLabel="Delete">
-                                        <rect key="frame" x="242.5" y="0.0" width="56" height="56"/>
+                                        <rect key="frame" x="172" y="0.0" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="sSM-0f-EUv" secondAttribute="height" multiplier="1:1" id="Bf3-b1-hwx"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="hVE-vS-mza"/>
@@ -565,7 +565,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0uM-TW-uie">
-                                        <rect key="frame" x="316" y="0.0" width="4" height="56"/>
+                                        <rect key="frame" x="228" y="0.0" width="50" height="56"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="4" id="ahD-Og-k4c"/>
@@ -580,13 +580,13 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZt-uP-uQr" userLabel="Label Name">
-                                <rect key="frame" x="16" y="372" width="288" height="24"/>
+                                <rect key="frame" x="16" y="142" width="246" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btConnected" translatesAutoresizingMaskIntoConstraints="NO" id="Nxa-cu-fA5">
-                                <rect key="frame" x="248.5" y="24" width="44" height="44"/>
+                                <rect key="frame" x="178" y="24" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ZM2-qM-XBd"/>
                                     <constraint firstAttribute="width" constant="44" id="tRN-6Y-D0X"/>
@@ -639,6 +639,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ced-KO-KvI"/>
+        <segue reference="n8t-Rc-JwU"/>
     </inferredMetricsTieBreakers>
 </document>

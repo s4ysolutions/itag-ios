@@ -54,6 +54,7 @@ class BLETagViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +75,18 @@ class BLETagViewController: UIViewController {
             self.setupState()
             self.setupTag()
         }))
+        let button = buttonTag!
+        // button.layer.anchorPoint = CGPoint(x: 0.5, y: 0.2)
+        
+        //let dy: CGFloat = 0.3 * button.frame.height
+        //button.layer.position.y = 100//-dy
+        
+        let anchorPoint = CGPoint(x: 0.5, y: 0.2)
+        let rotationPoint = CGPoint(x: 0, //button.layer.frame.width * anchorPoint.x,
+                                    y: -100) //50) //button.layer.frame.height * anchorPoint.y)
+        //button.layer.anchorPoint = anchorPoint
+        button.layer.position = rotationPoint
+        
         super.viewWillAppear(animated)
     }
     
@@ -136,10 +149,25 @@ class BLETagViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
+    let sound = SoundDefault()
     @IBAction func onTag(_ sender: UIView) {
-        guard let tag = tag else { return }
+        guard var tag = tag else { return }
         DispatchQueue.global(qos: .background).async{
-            self.ble.alert.toggleAlert(id: tag.id, timeout: BLE_TIMEOUT)
+            if tag.isAlerting {
+                DispatchQueue.main.async{
+                    self.stopAnimation()
+                }
+          //      self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                tag.isAlerting = false
+               self.sound.stop()
+            } else {
+                DispatchQueue.main.async {
+                    self.startAnimation()
+                }
+           //     self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                tag.isAlerting = true
+                 self.sound.start()
+            }
         }
     }
     
@@ -210,5 +238,50 @@ class BLETagViewController: UIViewController {
         }
         
         imageState?.image = image
+    }
+    
+    var y: CGFloat = 0
+    private func stopAnimation() {
+        guard let view = buttonTag else { return }
+        view.layer.removeAllAnimations()
+        if y != 0 {
+            view.layer.position.y = y
+            view.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            view.transform = .identity
+        }
+        view.layoutIfNeeded()
+    }
+    
+    let anchorY: CGFloat = 0.2
+    let transform0 = CGAffineTransform(rotationAngle: 0)
+    let transform1 = CGAffineTransform(rotationAngle: -CGFloat.pi/7)
+    let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/7)
+
+    private func startAnimation() {
+        guard let view = buttonTag else { return }
+        y = view.layer.position.y
+
+        let oldY = view.bounds.size.height * view.layer.anchorPoint.y
+        let newY = view.bounds.size.height * anchorY
+        
+        
+        view.layer.position.y = view.layer.position.y - oldY + newY
+        view.layer.anchorPoint = CGPoint(x: 0.5, y: anchorY)
+        view.transform = transform1
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0, delay: 0, options: [.allowUserInteraction], animations: {
+            view.transform = self.transform0
+            self.view.layoutIfNeeded()
+        },completion: { _ in
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: {
+                view.transform = self.transform1
+                self.view.layoutIfNeeded()
+            }, completion: { _ in
+                 UIView.animate(withDuration: 0.6, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
+                 view.transform = self.transform2
+                 }, completion: nil)
+            })
+        })
     }
 }
