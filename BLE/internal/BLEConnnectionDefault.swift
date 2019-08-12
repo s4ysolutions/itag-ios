@@ -252,7 +252,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    func connect() -> BLEError? {
+    private func assertPeripheral() -> BLEError? {
         if peripheral == nil {
             guard let uuid = UUID(uuidString: id) else { return .badUUID }
             let known = manager.retrievePeripherals(withIdentifiers: [uuid])
@@ -262,12 +262,20 @@ class BLEConnectionDefault: BLEConnectionInterface {
                 peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
             }
         }
+        return nil
+    }
+    
+    func connect() -> BLEError? {
+        let err = assertPeripheral()
+        if err != nil {return err }
         guard let peripheral = peripheral else { return .noPeripheral }
         manager.connect(peripheral, options: [:])
         return nil
     }
     
     func disconnect(timeout: Int) -> BLEError? {
+        let err = assertPeripheral()
+        if err != nil {return err }
         guard let peripheral = peripheral else { return .noPeripheral}
         connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
         
