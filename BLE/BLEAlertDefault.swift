@@ -50,7 +50,7 @@ class BLEAlertDefault: BLEAlertInterface {
         let connection = store.getOrMake(id: id)
         let error = connection.makeAvailabe(timeout: timeout)
         if error == nil {
-            let writeError = connection.writeImmediateAlert(volume: .HIGH_ALERT)
+            let writeError = connection.writeImmediateAlert(volume: .HIGH_ALERT, timeout: timeout)
             if writeError == nil {
                 alerts.insert(id)
             } else {

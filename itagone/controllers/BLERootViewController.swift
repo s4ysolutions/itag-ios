@@ -46,9 +46,7 @@ class BLERootViewController: UIViewController {
     // MARK: - Manage Content
     
     func setupContent() {
-        print("count", store.count)
         contentID = store.count == 0 ? "tags0" : store.count == 1 ? "tag1" : store.count == 2 ? "tags2" : store.count == 3 ? "tags3" : "tags4"
-        print(contentID)
         guard let contentViewController = self.storyboard?.instantiateViewController(withIdentifier: contentID) else { return }
         guard let contentView = contentViewController.view else { return }
         addChild(contentViewController)

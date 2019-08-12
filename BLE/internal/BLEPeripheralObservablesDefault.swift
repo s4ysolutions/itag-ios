@@ -65,14 +65,12 @@ class BLEPeripheralObservablesDefault: NSObject, BLEPeripheralObservablesInterfa
     func peripheral(_ peripheral: CBPeripheral,
                     didUpdateNotificationStateFor characteristic: CBCharacteristic,
                     error: Error?) {
-        print("characteristic notify state", characteristic)
         didUpdateNotificationStateForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
     }
     
     func peripheral(_ peripheral: CBPeripheral,
                     didUpdateValueFor characteristic: CBCharacteristic,
                     error: Error?) {
-        print("characteristic notify value", characteristic)
         didUpdateValueForCharacteristicChannel.broadcast((peripheral: peripheral, characteristic: characteristic, error: error))
     }
 }

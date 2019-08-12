@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol BLEPeripheralObserverFactoryInterface {
-    func observer() -> BLEPeripheralObservablesInterface
+protocol BLEPeripheralObservablesFactoryInterface {
+    func observables() -> BLEPeripheralObservablesInterface
 }

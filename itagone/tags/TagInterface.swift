@@ -14,12 +14,6 @@ enum TagBindState {
     case BindAndAlert
 }
 
-enum TagConnectionState {
-    case NotConnected
-    case Connecting
-    case Connected
-}
-
 enum TagLostState {
     case NotLost
     case Lost

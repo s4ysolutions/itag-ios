@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 
 class BLEConnectionsStoreFactoryDefault: BLEConnectionsStoreFactoryInterface {
-    func store(connectionFactory: BLEConnectionFactoryInterface, manager: CBCentralManager, peripheralObserverFactory: BLEPeripheralObserverFactoryInterface) -> BLEConnectionsStoreInterface {
-        return BLEConnectionsStoreDefault(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
+    func store(connectionFactory: BLEConnectionFactoryInterface, manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface) -> BLEConnectionsStoreInterface {
+        return BLEConnectionsStoreDefault(connectionFactory: connectionFactory, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
     }
 }

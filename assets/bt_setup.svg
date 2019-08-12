@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="264" height="264" version="1.1" viewBox="0 0 264 264" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="settings-bluetooth" transform="matrix(12.992 0 0 11 49.5 0)" fill-rule="evenodd">
+  <path id="Shape" d="m6 24h2v-2h-2zm-4 0h2v-2h-2zm8 0h2v-2h-2zm2.7-18.3-5.7-5.7h-1v7.6l-4.6-4.6-1.4 1.4 5.6 5.6-5.6 5.6 1.4 1.4 4.6-4.6v7.6h1l5.7-5.7-4.3-4.3zm-4.7-1.9 1.9 1.9-1.9 1.9zm1.9 10.5-1.9 1.9v-3.8z"/>
+ </g>
+</svg>

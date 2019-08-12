@@ -10,5 +10,5 @@ import CoreBluetooth
 import Foundation
 
 protocol BLEConnectionFactoryInterface {
-    func connection(manager: CBCentralManager, peripheralObserverFactory: BLEPeripheralObserverFactoryInterface, id: String) -> BLEConnectionInterface
+    func connection(connectionsControl: BLEConnectionsControlInterface, manager: CBCentralManager,  peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, id: String) -> BLEConnectionInterface
 }

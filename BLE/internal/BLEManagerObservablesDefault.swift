@@ -25,13 +25,6 @@ class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
         }
     }
     
-    let disconnectPeripheralsErrorChannel = Channel<(peripheral: CBPeripheral,error: Error?)>()
-    var disconnectErrorObservable: Observable<(peripheral: CBPeripheral,error: Error?)> {
-        get {
-            return disconnectPeripheralsErrorChannel.observable
-        }
-    }
-    
     let didDiscoverPeripheralChannel = Channel<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)>()
     var didDiscoverPeripheral: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> {
         get {
@@ -81,7 +74,6 @@ class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
 
     func centralManager(_ central: CBCentralManager,
                         didConnect peripheral: CBPeripheral) {
-        print("connect peripheral", peripheral)
         didConnectPeripheralChannel.broadcast(peripheral)
     }
     
@@ -92,7 +84,6 @@ class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("disconnect peripheral", peripheral)
-        disconnectPeripheralsErrorChannel.broadcast((peripheral, error))
+        didDisconnectPeripheralChannel.broadcast((peripheral, error))
     }
 }

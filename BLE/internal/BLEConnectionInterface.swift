@@ -23,6 +23,7 @@ protocol BLEConnectionInterface {
     var isConnected: Bool { get }
     var immediateAlertUpdateNotification: Observable<(id: String, volume: AlertVolume)> { get }
  
+    func connect() -> BLEError?
     func disconnect(timeout: Int) -> BLEError?
     func makeAvailabe(timeout: Int)  -> BLEError?
     func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError?

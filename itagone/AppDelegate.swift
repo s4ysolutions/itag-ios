@@ -21,14 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if ble.state == .on {
-            print("connect all BLE on app deligate")
             DispatchQueue.global(qos: .background).async {
                 self.store.connectAll()
             }
         }
+        dispose.add(ble.connections.stateObservable.subscribe(handler: {(id: String, state: BLEConnectionState) in
+            if state == .disconnected {
+                guard let tag = self.store.by(id: id) else { return }
+                if !tag.alert { return }
+                DispatchQueue.global(qos: .background).async {
+                    self.ble.connections.connect(id: id) // wait forever
+                }
+            }
+        }))
         dispose.add(ble.stateObservable.subscribe(id: "BLE powered on", handler: {state in
             if state == .on {
-                print("connect all BLE on power on")
                 DispatchQueue.global(qos: .background).async {
                     self.store.connectAll()
                 }
@@ -36,7 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }))
         dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), handler: {op in
             switch op {
-            case .remember(_):
+            case .remember(let tag):
+                self.ble.connections.connect(id: tag.id)
                 return
             case .forget(let tag ):
                 self.ble.connections.disconnect(id: tag.id)

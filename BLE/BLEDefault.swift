@@ -13,10 +13,11 @@ import Rasat
 public class BLEDefault: BLEInterface {
     public static let shared = BLEDefault(
         connectionFactory: BLEConnectionFactoryDefault(),
+        connectionsControlFactory: BLEConnectionsControlFactoryDefault(),
         connectionsFactory: BLEConnectionsFactoryDefault(),
         finderFactory: BLEAlertFactoryDefault(),
-        observer: BLEManagerObservablesDefault(),
-        peripheralObserverFactory: BLEPeripheralObserverFactoryDefault(),
+        managerObservables: BLEManagerObservablesDefault(),
+        peripheralObservablesFactory: BLEPeripheralObservablesFactoryDefault(),
         scannerFactory: BLEScannerFactoryDefault(),
         storeFactory: BLEConnectionsStoreFactoryDefault()
     )
@@ -38,28 +39,34 @@ public class BLEDefault: BLEInterface {
 
     init(
         connectionFactory: BLEConnectionFactoryInterface,
+        connectionsControlFactory: BLEConnectionsControlFactoryInterface,
         connectionsFactory: BLEConnectionsFactoryInterface,
         finderFactory: BLEAlertFactoryInterface,
-        observer: BLEManagerObservablesInterface,
-        peripheralObserverFactory: BLEPeripheralObserverFactoryInterface,
+        managerObservables: BLEManagerObservablesInterface,
+        peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface,
         scannerFactory: BLEScannerFactoryInterface,
         storeFactory: BLEConnectionsStoreFactoryInterface
         ) {
         
         // NOTE: delegate MUST be of BLEManagerObserverInterface
-        manager = CBCentralManager(delegate: observer, queue: DispatchQueue.global(qos: .background))
-        store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObserverFactory: peripheralObserverFactory)
+        manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background))
+        
+        store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
         scanner = scannerFactory.scanner(manager: manager)
         alert = finderFactory.finder(store: store)
-        connections = connectionsFactory.connections(store: store)
-        disposable.add(observer.didUpdateState.subscribe(id: "BLE", handler: {state in
+        connections = connectionsFactory.connections(store: store, managerObservables: managerObservables)
+        // this is cycle dependency ugly resolving
+        // connections <- store <- connectionsControl <- connections
+        // as a result store.setConnections is msut
+        store.setConnectionsControl(connectionsControl: connectionsControlFactory.connectionsControl(connections: connections))
+        disposable.add(managerObservables.didUpdateState.subscribe(id: "BLE", handler: {state in
             self.stateChannel.broadcast(state == CBManagerState.poweredOn ? .on : .off)
         }))
     }
     
     public func connect(id: String, timeout: Int) {
         let connection = store.getOrMake(id: id)
-        connection.makeAvailabe(timeout: timeout)
+        _ = connection.makeAvailabe(timeout: timeout)
     }
     
     public var state: BLEState { get {

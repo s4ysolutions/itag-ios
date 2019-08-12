@@ -11,10 +11,11 @@ import Foundation
 import Rasat
 
 class BLEConnectionDefault: BLEConnectionInterface {
+    let connectionsControl: BLEConnectionsControlInterface
     let id: String
     let manager: CBCentralManager
-    let managerObserver: BLEManagerObservablesInterface
-    let peripheralObserver: BLEPeripheralObservablesInterface
+    let managerObservervables: BLEManagerObservablesInterface
+    let peripheralObservables: BLEPeripheralObservablesInterface
     
     var _peripheral: CBPeripheral?
     var immediateAlertDispose: Disposable?
@@ -29,23 +30,23 @@ class BLEConnectionDefault: BLEConnectionInterface {
             if p == nil {
                 immediateAlertDispose = nil
             } else {
-                immediateAlertDispose = peripheralObserver.didWriteValueForCharacteristic.subscribe(handler: {tuple in
-                    guard let peripheral = self.peripheral else { return }
-                    if tuple.peripheral.identifier == peripheral.identifier &&
+                immediateAlertDispose = peripheralObservables.didWriteValueForCharacteristic.subscribe(handler: {tuple in
+                    if tuple.peripheral.identifier == p!.identifier &&
                         tuple.characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
-                        self.immediateAlertUpdateNotificationChannel.broadcast((id: peripheral.identifier.uuidString, tuple.characteristic.value?.alertVolume ?? .NO_ALERT))
+                        self.immediateAlertUpdateNotificationChannel.broadcast((id: p!.identifier.uuidString, tuple.characteristic.value?.alertVolume ?? .NO_ALERT))
                     }
                 })
             }
         }
     }
     
-    init(manager: CBCentralManager, peripheralObserverFactory: BLEPeripheralObserverFactoryInterface, id: String) {
+    init(connectionsControl: BLEConnectionsControlInterface, manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, id: String) {
+        self.connectionsControl = connectionsControl
         self.id = id
         self.manager = manager
-        self.peripheralObserver = peripheralObserverFactory.observer()
+        self.peripheralObservables = peripheralObservablesFactory.observables()
         // NOTE: manager.delegate must be BLEManagerObserverInterface
-        self.managerObserver = manager.delegate as! BLEManagerObservablesInterface
+        self.managerObservervables = manager.delegate as! BLEManagerObservablesInterface
     }
     
     var isConnected: Bool {
@@ -85,22 +86,21 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     private func waitForConnect(timeout: DispatchTime) -> BLEError? {
         guard let peripheral = peripheral else {return .noPeripheral}
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .connecting)
         
         let semaphore = DispatchSemaphore(value: 0)
         
         let disposable = DisposeBag()
         var errorConnect: Error? = nil
         
-        disposable.add(managerObserver.didConnectPeripheral.subscribe(handler: { connected in
+        disposable.add(managerObservervables.didConnectPeripheral.subscribe(handler: { connected in
             if connected.identifier == peripheral.identifier {
-                print("connect ok")
                 semaphore.signal()
             }
         }))
         
-        disposable.add(managerObserver.didFailToConnectPeripheral.subscribe(handler: { tuple in
+        disposable.add(managerObservervables.didFailToConnectPeripheral.subscribe(handler: { tuple in
             if tuple.peripheral.identifier == peripheral.identifier {
-                print("connect error", tuple)
                 errorConnect = tuple.error
                 semaphore.signal()
                 self.manager.cancelPeripheralConnection(tuple.peripheral)
@@ -108,50 +108,43 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }))
         
         defer {
-            print("connect dispose")
             disposable.dispose()
         }
-        print("connect start")
         manager.connect(peripheral, options: [:])
         if semaphore.wait(timeout: timeout) == .timedOut {
-            print("connect timeout")
             self.manager.cancelPeripheralConnection(peripheral)
             return .timeout
         }
         
-        print("connect exit", errorConnect)
         if errorConnect != nil { return .other(errorConnect!)}
         return nil
     }
     
     private func waitForDiscover(timeout: DispatchTime) -> BLEError? {
+        connectionsControl.setState(id: id, state: .connecting)
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
-        disposable.add(managerObserver.didDiscoverPeripheral.subscribe(handler: {tuple in
+        disposable.add(managerObservervables.didDiscoverPeripheral.subscribe(handler: {tuple in
             if tuple.peripheral.identifier.uuidString == self.id {
-                print("discover ok")
                 self.peripheral = tuple.peripheral
                 semaphore.signal()
             }
         }))
         defer {
-            print("discover dispose")
             disposable.dispose()
         }
-        print("discover start")
         manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE])
         if semaphore.wait(timeout: timeout) == .timedOut {
-            print("discover timeout")
             return .timeout
         }
-        print("discover exit")
         return nil
     }
     
     private func waitForDiscoverServices(timeout: DispatchTime) -> BLEError?  {
         guard let peripheral = peripheral else { return .noPeripheral}
-        
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .discoveringServices)
+
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
@@ -175,7 +168,9 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     private func waitForDiscoverCharacteristics(forService: CBService, timeout: DispatchTime) -> BLEError?  {
         guard let peripheral = peripheral else { return .noPeripheral}
-        
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state:
+            .discoveringCharacteristics)
+
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
@@ -205,20 +200,16 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     func makeAvailabe(timeout: Int) -> BLEError? {
-        print("peripheral make available")
-        
         if peripheral == nil {
             guard let uuid = UUID(uuidString: id) else { return .badUUID }
             let known = manager.retrievePeripherals(withIdentifiers: [uuid])
             if known.count > 0 {
                 peripheral = known[0]
-                print("peripheral known", peripheral)
                 if waitForConnect(timeout: timeout.dispatchTime) != nil {
                     peripheral = nil
                 }
             } else {
                 peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
-                print("peripheral connected", peripheral)
                 if peripheral != nil {
                     if waitForConnect(timeout: timeout.dispatchTime) != nil {
                         peripheral = nil
@@ -230,7 +221,6 @@ class BLEConnectionDefault: BLEConnectionInterface {
         let maxTimeout = timeout.dispatchTime
         if peripheral == nil {
             let scanError = waitForDiscover(timeout: maxTimeout)
-            print("peripheral discover", scanError)
             if scanError != nil { return .other(scanError!)}
             let connectError = waitForConnect(timeout: maxTimeout)
             if connectError != nil { return .other(connectError!)}
@@ -238,31 +228,35 @@ class BLEConnectionDefault: BLEConnectionInterface {
         
         guard let peripheral = peripheral else {return .noPeripheral}
         if peripheral.delegate == nil {
-            peripheral.delegate = peripheralObserver
+            peripheral.delegate = peripheralObservables
         }
         
         if immediateAlertService == nil {
             let discoverServiceError = waitForDiscoverServices(timeout: maxTimeout)
-            print("peripheral discover services", peripheral.services, discoverServiceError)
             if discoverServiceError != nil { return .other(discoverServiceError!)}
         }
         
         guard let serviceImmediateAlert = immediateAlertService else { return .noImmediateAletService }
         if immediateAlertCharacteristic == nil {
             let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceImmediateAlert, timeout: maxTimeout)
-            print("peripheral discover characteristics", serviceImmediateAlert.characteristics, discoverCharacteristicsError)
             if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
         }
         
-        guard let immediateAlertCharacteristic = immediateAlertCharacteristic else { return .noImmediateAletCharacteristic }
+        if immediateAlertCharacteristic == nil { return .noImmediateAletCharacteristic }
         
-        setNotify(true, characteristic: immediateAlertCharacteristic)
-        print("peripheral ok")
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .connected)
+        return nil
+    }
+    
+    func connect() -> BLEError? {
+        guard let peripheral = peripheral else {return .noPeripheral}
+        manager.connect(peripheral, options: [:])
         return nil
     }
     
     func disconnect(timeout: Int) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
         
         if timeout <= 0 {
             manager.cancelPeripheralConnection(peripheral)
@@ -283,11 +277,12 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }))
         defer {
             disposable.dispose()
+            connectionsControl.setState(id: peripheral.identifier.uuidString, state: peripheral.state == .connected ? .connected : .disconnected)
         }
         
         // must unsubscribe before connect
         if immediateAlertCharacteristic != nil {
-            setNotify(false, characteristic: immediateAlertCharacteristic!)
+            _ = setNotify(false, characteristic: immediateAlertCharacteristic!)
         }
         
         manager.cancelPeripheralConnection(peripheral)
@@ -305,10 +300,11 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     private func write(data: Data, characteristic: CBCharacteristic, timeout: DispatchTime?) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
-        
+
         if timeout == nil {
             peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
         } else {
+            connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
             let semaphore = DispatchSemaphore(value: 0)
             let disposable = DisposeBag()
             
@@ -323,6 +319,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             }))
             defer {
                 disposable.dispose()
+                connectionsControl.setState(id: peripheral.identifier.uuidString, state: peripheral.state == .connected ? .connected : .disconnected)
             }
             
             peripheral.writeValue(data, for: characteristic, type: .withResponse)
@@ -347,6 +344,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     private func read(characteristic: CBCharacteristic, timeout: DispatchTime) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .reading)
         
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
@@ -362,6 +360,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }))
         defer {
             disposable.dispose()
+            connectionsControl.setState(id: peripheral.identifier.uuidString, state: peripheral.state == .connected ? .connected : .disconnected)
         }
         
         peripheral.readValue(for: characteristic)

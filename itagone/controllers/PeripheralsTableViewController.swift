@@ -35,7 +35,6 @@ class PeripheralsTableViewController: UITableViewController {
             self.updatePeripheral(peripheral)
         }))
         disposable?.add(store.observable.subscribe(on: DispatchQueue.main, id: "scaning store", handler: {op in
-            print("peripherals got notification store changed")
             self.tableView.reloadData()
         }))
     }
@@ -56,7 +55,6 @@ class PeripheralsTableViewController: UITableViewController {
                 return
             }
         }
-        print("add peripheral into tableview", peripheral)
         peripherals.append(peripheral)
         tableView.reloadData()
     }

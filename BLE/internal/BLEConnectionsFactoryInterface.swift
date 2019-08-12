@@ -9,5 +9,5 @@
 import Foundation
 
 protocol BLEConnectionsFactoryInterface {
-    func connections(store: BLEConnectionsStoreInterface) -> BLEConnectionsInterface
+    func connections(store: BLEConnectionsStoreInterface, managerObservables: BLEManagerObservablesInterface) -> BLEConnectionsInterface
 }

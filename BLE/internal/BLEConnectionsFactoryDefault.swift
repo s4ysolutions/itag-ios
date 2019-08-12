@@ -9,7 +9,7 @@
 import Foundation
 
 class BLEConnectionsFactoryDefault: BLEConnectionsFactoryInterface {
-    func connections(store: BLEConnectionsStoreInterface) -> BLEConnectionsInterface {
-        return BLEConnectionsDefault(store: store)
+    func connections(store: BLEConnectionsStoreInterface, managerObservables: BLEManagerObservablesInterface) -> BLEConnectionsInterface {
+        return BLEConnectionsDefault(store: store, managerObservables: managerObservables)
     }
 }

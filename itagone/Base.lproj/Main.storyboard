@@ -495,7 +495,7 @@
                                     <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
                                 <rect key="frame" x="0.0" y="174" width="320" height="56"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ajw-pV-di0">
@@ -561,22 +561,31 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZt-uP-uQr" userLabel="Label Name">
-                                <rect key="frame" x="8" y="8" width="304" height="24"/>
+                                <rect key="frame" x="16" y="8" width="288" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btConnected" translatesAutoresizingMaskIntoConstraints="NO" id="Nxa-cu-fA5">
+                                <rect key="frame" x="257" y="36" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ZM2-qM-XBd"/>
+                                    <constraint firstAttribute="width" constant="44" id="tRN-6Y-D0X"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="oSx-Ob-p7h" firstAttribute="bottom" secondItem="tuw-s3-E91" secondAttribute="bottom" id="EXF-aH-Pmd"/>
                             <constraint firstItem="kZt-uP-uQr" firstAttribute="top" secondItem="oSx-Ob-p7h" secondAttribute="top" constant="8" id="Ggg-Ar-36j"/>
-                            <constraint firstItem="oSx-Ob-p7h" firstAttribute="trailing" secondItem="kZt-uP-uQr" secondAttribute="trailing" constant="8" id="K19-KZ-ROl"/>
-                            <constraint firstItem="kZt-uP-uQr" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" constant="8" id="LMi-Zv-Nql"/>
+                            <constraint firstItem="oSx-Ob-p7h" firstAttribute="trailing" secondItem="kZt-uP-uQr" secondAttribute="trailing" constant="16" id="K19-KZ-ROl"/>
+                            <constraint firstItem="kZt-uP-uQr" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" constant="16" id="LMi-Zv-Nql"/>
+                            <constraint firstItem="Nxa-cu-fA5" firstAttribute="top" secondItem="kZt-uP-uQr" secondAttribute="bottom" constant="4" id="P6i-rQ-0r7"/>
                             <constraint firstItem="tuw-s3-E91" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" id="QOr-o4-iZT"/>
                             <constraint firstItem="DdO-ZJ-oXD" firstAttribute="bottom" secondItem="tuw-s3-E91" secondAttribute="top" constant="-4" id="Wvw-o4-1Vs"/>
                             <constraint firstAttribute="trailing" secondItem="tuw-s3-E91" secondAttribute="trailing" id="ePn-Yb-t4q"/>
                             <constraint firstItem="DdO-ZJ-oXD" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" constant="4" id="fZj-cD-vTh"/>
+                            <constraint firstItem="sSM-0f-EUv" firstAttribute="right" secondItem="Nxa-cu-fA5" secondAttribute="right" id="t8m-55-yEx"/>
                             <constraint firstItem="DdO-ZJ-oXD" firstAttribute="top" secondItem="kZt-uP-uQr" secondAttribute="bottom" constant="4" id="uki-5u-zjm"/>
                             <constraint firstItem="oSx-Ob-p7h" firstAttribute="trailing" secondItem="DdO-ZJ-oXD" secondAttribute="trailing" constant="4" id="w3r-eS-dyV"/>
                         </constraints>
@@ -585,6 +594,7 @@
                     <connections>
                         <outlet property="buttonAlert" destination="rQW-Nk-Fet" id="dDr-9O-LzI"/>
                         <outlet property="buttonTag" destination="DdO-ZJ-oXD" id="qRv-Eh-hWt"/>
+                        <outlet property="imageState" destination="Nxa-cu-fA5" id="I0g-M7-5dA"/>
                         <outlet property="labelName" destination="kZt-uP-uQr" id="Meo-Si-YbS"/>
                     </connections>
                 </viewController>
@@ -594,6 +604,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="btConnected" width="198" height="198"/>
         <image name="btnEdit" width="384" height="384"/>
         <image name="btnMinus" width="384" height="384"/>
         <image name="btnNoAlert" width="384" height="384"/>

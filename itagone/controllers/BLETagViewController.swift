@@ -14,13 +14,20 @@ class BLETagViewController: UIViewController {
     @IBOutlet weak var buttonAlert: UIButton?
     @IBOutlet weak var buttonTag: UIButton?
     @IBOutlet weak var labelName: UILabel?
-    
+    @IBOutlet weak var imageState: UIImageView?
+
     static let imageBlack = UIImage(named: "tagBlack")
     static let imageBlue = UIImage(named: "tagBlue")
     static let imageGold = UIImage(named: "tagGold")
     static let imageGreen = UIImage(named: "tagGreen")
     static let imageRed = UIImage(named: "tagRed")
     static let imageWhite = UIImage(named: "tagWhite")
+
+    static let imageConnecting = UIImage(named: "btConnecting")
+    static let imageConnected = UIImage(named: "btConnected")
+    static let imageDisabled = UIImage(named: "btDisabled")
+    static let imageScanning = UIImage(named: "btScanning")
+    static let imageSetup = UIImage(named: "btSetup")
 
     static let imageAlert = UIImage(named: "btnAlert")
     static let imageNoAlert = UIImage(named: "btnNoAlert")
@@ -30,6 +37,13 @@ class BLETagViewController: UIViewController {
     
     var disposable: DisposeBag?
     var tag: TagInterface?
+    
+    var alertState: Bool {
+        get {
+            guard let tag = tag else { return false}
+            return tag.alert || ble.connections.state[tag.id] == .connected
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         store = TagStoreDefault.shared
@@ -48,11 +62,16 @@ class BLETagViewController: UIViewController {
             tag = store.tagBy(pos: pos!)
             if tag != nil {
                 setupTag()
+                setupState()
             }
         }
         disposable?.dispose()
         disposable = DisposeBag()
         disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_\(pos ?? 99)", handler: {_ in
+            self.setupTag()
+        }))
+        disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "state_\(pos ?? 99)", handler: {_ in
+            self.setupState()
             self.setupTag()
         }))
         super.viewWillAppear(animated)
@@ -66,7 +85,7 @@ class BLETagViewController: UIViewController {
     @IBAction
     func onAlert(_ sender: UIView) {
         guard let tag = tag else { return }
-        self.store.set(alert: !tag.alert, forTag: tag)
+        self.store.set(alert: !alertState, forTag: tag)
     }
 
     @IBAction
@@ -161,8 +180,35 @@ class BLETagViewController: UIViewController {
         buttonTag?.setImage(image, for: .normal)
         buttonTag?.imageView?.contentMode = .scaleAspectFit
         
-        buttonAlert?.setImage(tag.alert ? BLETagViewController.imageAlert : BLETagViewController.imageNoAlert, for: .normal)
+        buttonAlert?.setImage(alertState ? BLETagViewController.imageAlert : BLETagViewController.imageNoAlert, for: .normal)
         
         labelName?.text = tag.name
+    }
+    
+    private func setupState() {
+        guard let tag = tag else { return }
+        let state = ble.connections.state[tag.id]
+        
+        var image: UIImage? = nil
+        switch state {
+        case .disconnected:
+            image = BLETagViewController.imageDisabled
+        case .connecting:
+            image = BLETagViewController.imageConnecting
+        case .discovering:
+            image = BLETagViewController.imageSetup
+        case .discoveringServices:
+            image = BLETagViewController.imageSetup
+        case .discoveringCharacteristics:
+            image = BLETagViewController.imageSetup
+        case .connected:
+            image = BLETagViewController.imageConnected
+        case .writting:
+            image = BLETagViewController.imageScanning
+        case .reading:
+            image = BLETagViewController.imageScanning
+        }
+        
+        imageState?.image = image
     }
 }

@@ -7,7 +7,31 @@
 //
 
 import Foundation
+import Rasat
+
+public enum BLEConnectionState {
+    case disconnected
+    case connecting
+    case discovering
+    case discoveringServices
+    case discoveringCharacteristics
+    case connected
+    case writting
+    case reading
+}
+
+public protocol BLEConnectionStateArray {
+    subscript(id: String) -> BLEConnectionState { get }
+}
 
 public protocol BLEConnectionsInterface {
+    var stateObservable: Observable<(id: String, state: BLEConnectionState)> { get }
+    var state: BLEConnectionStateArray { get }
+    func connect(id: String)
     func disconnect(id: String)
+}
+
+
+protocol BLEConnectionsControlInterface {
+    func setState(id: String, state: BLEConnectionState)
 }

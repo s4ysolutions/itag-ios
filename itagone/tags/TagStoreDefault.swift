@@ -106,6 +106,11 @@ class TagStoreDefault: TagStoreInterface {
         guard var tag = tags[forTag.id] else { return }
         tag.alert = alert
         storeToDefaults()
+        if (tag.alert) {
+            channel.broadcast(.remember(tag))
+        } else {
+            channel.broadcast(.forget(tag))
+        }
         channel.broadcast(.change(tag))
     }
     
@@ -122,13 +127,14 @@ class TagStoreDefault: TagStoreInterface {
         guard var tag = tags[forTag.id] else { return }
         tag.name = name
         storeToDefaults()
+        // important: broadacst even the same value
+        // beacase alert state depends on connect state
         channel.broadcast(.change(tag))
     }
 
     func connectAll() {
-        print("connect all ble", tags)
+        print("connect all ble", ids)
         for (_, tag) in tags {
-            print("connect  ble", tag.id, tag.alert)
             if tag.alert {
                 ble.connect(id: tag.id,timeout: 10)
             }
