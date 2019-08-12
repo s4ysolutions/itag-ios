@@ -14,8 +14,10 @@ enum BLEError: Error {
     case timeout
     case noPeripheral
     case badUUID
-    case noImmediateAletService
-    case noImmediateAletCharacteristic
+    case noImmediateAlertService
+    case noFindMeAlertService
+    case noImmediateAlertCharacteristic
+    case noFindMeAlertCharacteristic
     case other(_ error: Error)
 }
 

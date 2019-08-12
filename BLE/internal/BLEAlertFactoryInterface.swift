@@ -10,5 +10,5 @@ import CoreBluetooth
 import Foundation
 
 protocol BLEAlertFactoryInterface {
-    func finder(store: BLEConnectionsStoreInterface) -> BLEAlertInterface
+    func alert(store: BLEConnectionsStoreInterface) -> BLEAlertInterface
 }

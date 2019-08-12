@@ -12,6 +12,7 @@ import Rasat
 
 class BLEConnectionDefault: BLEConnectionInterface {
     let connectionsControl: BLEConnectionsControlInterface
+    let disposables = DisposeBag()
     let id: String
     let manager: CBCentralManager
     let managerObservervables: BLEManagerObservablesInterface
@@ -40,13 +41,22 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }
     }
     
-    init(connectionsControl: BLEConnectionsControlInterface, manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, id: String) {
+    init(connectionsControl: BLEConnectionsControlInterface, findMeControl: BLEFindMeControlInterface ,manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, id: String) {
         self.connectionsControl = connectionsControl
         self.id = id
         self.manager = manager
         self.peripheralObservables = peripheralObservablesFactory.observables()
         // NOTE: manager.delegate must be BLEManagerObserverInterface
         self.managerObservervables = manager.delegate as! BLEManagerObservablesInterface
+        disposables.add(peripheralObservables.didUpdateValueForCharacteristic.subscribe(
+            on: DispatchQueue.global(qos: .background),
+            handler: {tuple in
+                if tuple.peripheral.identifier == self.peripheral?.identifier &&
+                    tuple.characteristic.uuid == FINDME_CHARACTERISTIC
+                {
+                    findMeControl.onClick(id: tuple.peripheral.identifier.uuidString)
+                }
+        }))
     }
     
     var hasPeripheral: Bool {get{
@@ -71,11 +81,35 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }
     }
     
+    var findMeService : CBService? {
+        get {
+            guard let peripheral = peripheral else {return nil}
+            for service in peripheral.services ?? [] {
+                if service.uuid == FINDME_SERVICE {
+                    return service
+                }
+            }
+            return nil
+        }
+    }
+    
     var immediateAlertCharacteristic: CBCharacteristic? {
         get {
             guard let service = immediateAlertService else {return nil}
             for characteristic in service.characteristics ?? [] {
                 if characteristic.uuid == ALERT_LEVEL_CHARACTERISTIC {
+                    return characteristic
+                }
+            }
+            return nil
+        }
+    }
+    
+    var findMeCharacteristic: CBCharacteristic? {
+        get {
+            guard let service = findMeService else {return nil}
+            for characteristic in service.characteristics ?? [] {
+                if characteristic.uuid == FINDME_CHARACTERISTIC {
                     return characteristic
                 }
             }
@@ -138,7 +172,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         defer {
             disposable.dispose()
         }
-        manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE])
+        manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE, FINDME_SERVICE])
         if semaphore.wait(timeout: timeout) == .timedOut {
             return .timeout
         }
@@ -162,7 +196,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             disposable.dispose()
         }
         
-        peripheral.discoverServices([IMMEDIATE_ALERT_SERVICE])
+        peripheral.discoverServices([IMMEDIATE_ALERT_SERVICE, FINDME_SERVICE])
         if semaphore.wait(timeout: timeout) == .timedOut {
             return .timeout
         }
@@ -222,6 +256,17 @@ class BLEConnectionDefault: BLEConnectionInterface {
             }
         }
         
+        defer {
+            let p = peripheral // avoid race condition, keep reference to peripheral
+            let connected =
+                p != nil &&
+                p!.state == .connected &&
+                immediateAlertCharacteristic != nil &&
+                findMeCharacteristic != nil
+
+            connectionsControl.setState(id: p!.identifier.uuidString, state:connected ? .connected : .disconnected)
+        }
+        
         let maxTimeout = timeout.dispatchTime
         if peripheral == nil {
             let scanError = waitForDiscover(timeout: maxTimeout)
@@ -240,15 +285,32 @@ class BLEConnectionDefault: BLEConnectionInterface {
             if discoverServiceError != nil { return .other(discoverServiceError!)}
         }
         
-        guard let serviceImmediateAlert = immediateAlertService else { return .noImmediateAletService }
+        guard let serviceImmediateAlert = immediateAlertService else { return .noImmediateAlertService }
+        
         if immediateAlertCharacteristic == nil {
             let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceImmediateAlert, timeout: maxTimeout)
             if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
         }
+        if immediateAlertCharacteristic == nil { return .noImmediateAlertCharacteristic }
+
+        guard let serviceFindMe = findMeService else { return .noImmediateAlertService }
+        if findMeCharacteristic == nil {
+            let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceFindMe, timeout: maxTimeout)
+            if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
+        }
+
+        guard let findMeCharacteristic = findMeCharacteristic else { return .noFindMeAlertCharacteristic }
         
-        if immediateAlertCharacteristic == nil { return .noImmediateAletCharacteristic }
-        
-        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .connected)
+        /*
+        print("====")
+        for s in peripheral.services ?? [] {
+            print("service ", s.uuid.uuidString)
+            for c in s.characteristics ?? [] {
+                print ("ch ", c.uuid.uuidString)
+            }
+        }
+ */
+        _ = setNotify(true, characteristic: findMeCharacteristic)
         return nil
     }
     
@@ -398,7 +460,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     func writeImmediateAlert(volume: AlertVolume, timeout: Int)  -> BLEError? {
-        if immediateAlertCharacteristic == nil { return .noImmediateAletCharacteristic}
+        if immediateAlertCharacteristic == nil { return .noImmediateAlertCharacteristic}
         return write(data: volume.data, characteristic: immediateAlertCharacteristic!, timeout: timeout == 0 ? nil : timeout.dispatchTime)
     }
     

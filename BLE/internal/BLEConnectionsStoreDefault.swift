@@ -13,6 +13,7 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
 
     
     let connectionFactory: BLEConnectionFactoryInterface
+    let findMeControl: BLEFindMeControlInterface
     let manager: CBCentralManager
     let peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface
 
@@ -21,9 +22,11 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
 
     init(
         connectionFactory: BLEConnectionFactoryInterface,
+        findMeControl: BLEFindMeControlInterface,
         manager: CBCentralManager,
         peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface) {
         self.connectionFactory = connectionFactory
+        self.findMeControl = findMeControl
         self.peripheralObservablesFactory = peripheralObservablesFactory
         self.manager = manager
     }
@@ -46,6 +49,7 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
         if map[id] == nil || !map[id]!.isConnected {
              map[id] = connectionFactory.connection(
                 connectionsControl: connectionsControl,
+                findMeControl: findMeControl,
                 manager: manager,
                 peripheralObservablesFactory: peripheralObservablesFactory,
                 id: id)

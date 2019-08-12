@@ -11,11 +11,14 @@ import CoreBluetooth
 import Rasat
 
 public class BLEDefault: BLEInterface {
+    
     public static let shared = BLEDefault(
         connectionFactory: BLEConnectionFactoryDefault(),
         connectionsControlFactory: BLEConnectionsControlFactoryDefault(),
         connectionsFactory: BLEConnectionsFactoryDefault(),
         finderFactory: BLEAlertFactoryDefault(),
+        findMe: BLEFindMeDefault(),
+        findMeControlFactory: BLEFindMeControlFactoryDefault(),
         managerObservables: BLEManagerObservablesDefault(),
         peripheralObservablesFactory: BLEPeripheralObservablesFactoryDefault(),
         scannerFactory: BLEScannerFactoryDefault(),
@@ -27,6 +30,7 @@ public class BLEDefault: BLEInterface {
 
     public let alert: BLEAlertInterface
     public let connections: BLEConnectionsInterface
+    public let findMe: BLEFindMeInterface
     public let scanner: BLEScannerInterface
     public var stateObservable: Observable<BLEState> { get {
         return stateChannel.observable
@@ -42,22 +46,25 @@ public class BLEDefault: BLEInterface {
         connectionsControlFactory: BLEConnectionsControlFactoryInterface,
         connectionsFactory: BLEConnectionsFactoryInterface,
         finderFactory: BLEAlertFactoryInterface,
+        findMe: BLEFindMeInterface,
+        findMeControlFactory: BLEFindMeControlFactoryInterface,
         managerObservables: BLEManagerObservablesInterface,
         peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface,
         scannerFactory: BLEScannerFactoryInterface,
         storeFactory: BLEConnectionsStoreFactoryInterface
         ) {
-        
+
+        self.findMe = findMe
         // NOTE: delegate MUST be of BLEManagerObserverInterface
         manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background),options: [CBCentralManagerOptionShowPowerAlertKey: true/*, CBCentralManagerOptionRestoreIdentifierKey: "itagone"*/])
-        
-        store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
+        let findMeControl = findMeControlFactory.findMeControl(findMe: findMe)
+        store = storeFactory.store(connectionFactory: connectionFactory, findMeControl: findMeControl, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
         connections = connectionsFactory.connections(store: store, managerObservables: managerObservables)
         // this is cycle dependency ugly resolving
         // connections <- store <- connectionsControl <- connections
         // as a result store.setConnections is msut
         store.setConnectionsControl(connectionsControl: connectionsControlFactory.connectionsControl(connections: connections))
-        alert = finderFactory.finder(store: store)
+        alert = finderFactory.alert(store: store)
         scanner = scannerFactory.scanner(connections: connections, manager: manager)
 
         disposable.add(managerObservables.didUpdateState.subscribe(id: "BLE", handler: {state in

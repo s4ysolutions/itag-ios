@@ -56,6 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
         }))
+        dispose.add(ble.findMe.clicksObservable.subscribe(on: DispatchQueue.global(qos: .background),
+                                                          handler: {clicks in
+                                                            print("click")
+        }))
         return true
     }
 
