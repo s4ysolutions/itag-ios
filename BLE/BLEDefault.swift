@@ -49,16 +49,17 @@ public class BLEDefault: BLEInterface {
         ) {
         
         // NOTE: delegate MUST be of BLEManagerObserverInterface
-        manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background))
+        manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background),options: [CBCentralManagerOptionShowPowerAlertKey: true/*, CBCentralManagerOptionRestoreIdentifierKey: "itagone"*/])
         
         store = storeFactory.store(connectionFactory: connectionFactory, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
-        scanner = scannerFactory.scanner(manager: manager)
-        alert = finderFactory.finder(store: store)
         connections = connectionsFactory.connections(store: store, managerObservables: managerObservables)
         // this is cycle dependency ugly resolving
         // connections <- store <- connectionsControl <- connections
         // as a result store.setConnections is msut
         store.setConnectionsControl(connectionsControl: connectionsControlFactory.connectionsControl(connections: connections))
+        alert = finderFactory.finder(store: store)
+        scanner = scannerFactory.scanner(connections: connections, manager: manager)
+
         disposable.add(managerObservables.didUpdateState.subscribe(id: "BLE", handler: {state in
             self.stateChannel.broadcast(state == CBManagerState.poweredOn ? .on : .off)
         }))

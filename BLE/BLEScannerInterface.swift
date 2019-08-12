@@ -16,7 +16,7 @@ public protocol BLEScannerInterface {
     var timerObservable: Observable<Int> { get }
     var peripheralsObservable: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> { get }
 
-    func start(timeout: Int)
+    func start(timeout: Int, forceCancelIds: [String])
     func stop()
     
 }

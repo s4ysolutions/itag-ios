@@ -10,5 +10,5 @@ import CoreBluetooth
 import Foundation
 
 protocol BLEScannerFactoryInterface {
-    func scanner(manager: CBCentralManager) -> BLEScannerInterface
+    func scanner(connections: BLEConnectionsInterface, manager: CBCentralManager) -> BLEScannerInterface
 }

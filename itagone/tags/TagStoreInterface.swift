@@ -22,6 +22,7 @@ protocol TagStoreInterface {
     func by(id: String) -> TagInterface?
     func tagBy(pos: Int) -> TagInterface?
     func everBy(id: String) -> TagInterface?
+    func forgottenIds() -> [String]
     func forget(id: String)
     func remember(tag: TagInterface)
     func remembered(id: String) -> Bool

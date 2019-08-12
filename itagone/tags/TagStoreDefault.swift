@@ -164,4 +164,8 @@ class TagStoreDefault: TagStoreInterface {
             }
         }
     }
+    
+    func forgottenIds() -> [String] {
+        return idsforever.filter({id in !ids.contains(id)})
+    }
 }

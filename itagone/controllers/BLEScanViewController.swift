@@ -18,9 +18,11 @@ class BLEScanViewController: UIViewController {
     weak var progressBar: UIProgressView?
     var disposable: DisposeBag?
     let ble: BLEInterface
+    let store: TagStoreInterface
 
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
+        store = TagStoreDefault.shared
         super.init(coder: aDecoder)
     }
     
@@ -37,7 +39,7 @@ class BLEScanViewController: UIViewController {
         }))
         progressBar?.isHidden = false
         progressBar?.progress = 1.0
-        ble.scanner.start(timeout: BLEScanViewController.SCAN_TIMEOUT)
+        ble.scanner.start(timeout: BLEScanViewController.SCAN_TIMEOUT, forceCancelIds: store.forgottenIds())
     }
     
     override func viewDidDisappear(_ animated: Bool) {
