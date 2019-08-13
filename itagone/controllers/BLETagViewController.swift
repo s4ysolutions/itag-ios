@@ -15,23 +15,23 @@ class BLETagViewController: UIViewController {
     @IBOutlet weak var buttonTag: UIButton?
     @IBOutlet weak var labelName: UILabel?
     @IBOutlet weak var imageState: UIImageView?
-
+    
     static let imageBlack = UIImage(named: "tagBlack")
     static let imageBlue = UIImage(named: "tagBlue")
     static let imageGold = UIImage(named: "tagGold")
     static let imageGreen = UIImage(named: "tagGreen")
     static let imageRed = UIImage(named: "tagRed")
     static let imageWhite = UIImage(named: "tagWhite")
-
+    
     static let imageConnecting = UIImage(named: "btConnecting")
     static let imageConnected = UIImage(named: "btConnected")
     static let imageDisabled = UIImage(named: "btDisabled")
     static let imageScanning = UIImage(named: "btScanning")
     static let imageSetup = UIImage(named: "btSetup")
-
+    
     static let imageAlert = UIImage(named: "btnAlert")
     static let imageNoAlert = UIImage(named: "btnNoAlert")
-
+    
     let ble: BLEInterface
     let store: TagStoreInterface
     
@@ -54,7 +54,7 @@ class BLETagViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +64,14 @@ class BLETagViewController: UIViewController {
             if tag != nil {
                 setupTag()
                 setupState()
+                if ble.findMe.isFindMe(id: tag!.id) {
+                    self.startAnimation()
+                } else {
+                    self.stopAnimation()
+                }
             }
         }
+        
         disposable?.dispose()
         disposable = DisposeBag()
         disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_\(pos ?? 99)", handler: {_ in
@@ -75,17 +81,15 @@ class BLETagViewController: UIViewController {
             self.setupState()
             self.setupTag()
         }))
-        let button = buttonTag!
-        // button.layer.anchorPoint = CGPoint(x: 0.5, y: 0.2)
-        
-        //let dy: CGFloat = 0.3 * button.frame.height
-        //button.layer.position.y = 100//-dy
-        
-        let anchorPoint = CGPoint(x: 0.5, y: 0.2)
-        let rotationPoint = CGPoint(x: 0, //button.layer.frame.width * anchorPoint.x,
-                                    y: -100) //50) //button.layer.frame.height * anchorPoint.y)
-        //button.layer.anchorPoint = anchorPoint
-        button.layer.position = rotationPoint
+        disposable!.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.main, handler: { (id, findMe) in
+            guard let tag = self.tag else { return }
+            if tag.id != id { return }
+            if findMe {
+                self.startAnimation()
+            } else {
+                self.stopAnimation()
+            }
+        }))
         
         super.viewWillAppear(animated)
     }
@@ -100,7 +104,7 @@ class BLETagViewController: UIViewController {
         guard let tag = tag else { return }
         self.store.set(alert: !alertState, forTag: tag)
     }
-
+    
     @IBAction
     func onColor(_ sender: UIView) {
         guard let tag = tag else { return }
@@ -143,13 +147,14 @@ class BLETagViewController: UIViewController {
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler: { (_) in
-
+            
         }))
         
         self.present(alert, animated: true)
     }
     
-    let sound = SoundDefault()
+    let sound = SoundDefault.shared
+    
     @IBAction func onTag(_ sender: UIView) {
         if (sound.isPlaying) {
             sound.stop()
@@ -179,15 +184,15 @@ class BLETagViewController: UIViewController {
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
     private func setupTag() {
         guard let tag = tag else { return }
         
@@ -225,6 +230,8 @@ class BLETagViewController: UIViewController {
             image = BLETagViewController.imageDisabled
         case .connecting:
             image = BLETagViewController.imageConnecting
+        case .disconnecting:
+            image = BLETagViewController.imageScanning
         case .discovering:
             image = BLETagViewController.imageSetup
         case .discoveringServices:
@@ -256,13 +263,14 @@ class BLETagViewController: UIViewController {
     
     let anchorY: CGFloat = 0.2
     let transform0 = CGAffineTransform(rotationAngle: 0)
-    let transform1 = CGAffineTransform(rotationAngle: -CGFloat.pi/7)
-    let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/7)
-
+    let transform1 = CGAffineTransform(rotationAngle: -CGFloat.pi/12)
+    let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/12)
+    
     private func startAnimation() {
+        stopAnimation()
         guard let view = buttonTag else { return }
         y = view.layer.position.y
-
+        
         let oldY = view.bounds.size.height * view.layer.anchorPoint.y
         let newY = view.bounds.size.height * anchorY
         
@@ -276,13 +284,13 @@ class BLETagViewController: UIViewController {
             view.transform = self.transform0
             self.view.layoutIfNeeded()
         },completion: { _ in
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: {
                 view.transform = self.transform1
                 self.view.layoutIfNeeded()
             }, completion: { _ in
-                 UIView.animate(withDuration: 0.6, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-                 view.transform = self.transform2
-                 }, completion: nil)
+                UIView.animate(withDuration: 0.4, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
+                    view.transform = self.transform2
+                }, completion: nil)
             })
         })
     }

@@ -10,12 +10,14 @@ import BLE
 import UIKit
 import Rasat
 
+let DELAY_BEFORE_ALERT = 3
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let ble = BLEDefault.shared
     let dispose = DisposeBag()
     let store = TagStoreDefault.shared
+    let sound = SoundDefault.shared
 
     var window: UIWindow?
 
@@ -32,6 +34,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 DispatchQueue.global(qos: .background).async {
                     self.ble.connections.connect(id: id) // wait forever
                 }
+                DispatchQueue.global(qos: .background).asyncAfter(deadline: DELAY_BEFORE_ALERT.dispatchTime) {
+                    if self.ble.connections.state[id] != .connected {
+                        self.sound.startLost()
+                    }
+                }
+            } else if state == .connected {
+                self.sound.stop()
             }
         }))
         dispose.add(ble.stateObservable.subscribe(id: "BLE powered on", handler: {state in
@@ -56,9 +65,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
         }))
-        dispose.add(ble.findMe.clicksObservable.subscribe(on: DispatchQueue.global(qos: .background),
-                                                          handler: {clicks in
-                                                            print("click")
+        dispose.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.global(qos: .background),
+                                                          handler: {tuple in
+                                                            if (tuple.findMe) {
+                                                                self.sound.startFindMe()
+                                                            } else {
+                                                                self.sound.stop()
+                                                            }
         }))
         return true
     }

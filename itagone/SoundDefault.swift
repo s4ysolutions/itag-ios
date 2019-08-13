@@ -14,6 +14,8 @@ import UIKit
 
 
 class SoundDefault {
+    static let shared = SoundDefault()
+    
     var player: AVAudioPlayer?
     
     var isPlaying: Bool {
@@ -24,11 +26,12 @@ class SoundDefault {
     func startLost() {
         start(name: "lost")
     }
-    func startAlert() {
-        start(name: "alarm")
+    func startFindMe() {
+        start(name: "findme")
     }
     
     private func start(name: String) {
+        stop()
         DispatchQueue.main.sync {
             if let asset = NSDataAsset(name: name){
                 do {

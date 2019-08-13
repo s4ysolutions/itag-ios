@@ -9,14 +9,10 @@
 import Foundation
 import Rasat
 
-public enum BLEFindMeClicks {
-    case oneClick
-    case doubleClick
-    case tripleClick
-}
 
 public protocol BLEFindMeInterface {
-    var clicksObservable: Observable<BLEFindMeClicks> { get }
+    var findMeObservable: Observable<(id: String, findMe: Bool)> { get }
+    func isFindMe(id: String) -> Bool
 }
 
 protocol BLEFindMeControlInterface {

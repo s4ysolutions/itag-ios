@@ -237,34 +237,38 @@ class BLEConnectionDefault: BLEConnectionInterface {
         return nil
     }
     
-    func makeAvailabe(timeout: Int) -> BLEError? {
+    private func assertPeripheral() -> BLEError? {
         if peripheral == nil {
             guard let uuid = UUID(uuidString: id) else { return .badUUID }
             let known = manager.retrievePeripherals(withIdentifiers: [uuid])
             if known.count > 0 {
                 peripheral = known[0]
-                if waitForConnect(timeout: timeout.dispatchTime) != nil {
-                    peripheral = nil
-                }
             } else {
                 peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
-                if peripheral != nil {
-                    if waitForConnect(timeout: timeout.dispatchTime) != nil {
-                        peripheral = nil
-                    }
-                }
             }
         }
+        return nil
+    }
+    
+    func makeAvailabe(timeout: Int) -> BLEError? {
+        manager.stopScan()
+        connectionsControl.setState(id:id, state: .connecting)
+        _ = assertPeripheral()
         
+        if peripheral != nil {
+            if waitForConnect(timeout: timeout.dispatchTime) != nil {
+                peripheral = nil
+            }
+        }
+
         defer {
-            let p = peripheral // avoid race condition, keep reference to peripheral
             let connected =
-                p != nil &&
-                p!.state == .connected &&
+                peripheral != nil &&
+                peripheral!.state == .connected &&
                 immediateAlertCharacteristic != nil &&
                 findMeCharacteristic != nil
 
-            connectionsControl.setState(id: p!.identifier.uuidString, state:connected ? .connected : .disconnected)
+            connectionsControl.setState(id: id, state:connected ? .connected : .disconnected)
         }
         
         let maxTimeout = timeout.dispatchTime
@@ -300,46 +304,46 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }
 
         guard let findMeCharacteristic = findMeCharacteristic else { return .noFindMeAlertCharacteristic }
-        
-        /*
-        print("====")
-        for s in peripheral.services ?? [] {
-            print("service ", s.uuid.uuidString)
-            for c in s.characteristics ?? [] {
-                print ("ch ", c.uuid.uuidString)
-            }
-        }
- */
+
         _ = setNotify(true, characteristic: findMeCharacteristic)
         return nil
     }
-    
-    private func assertPeripheral() -> BLEError? {
-        if peripheral == nil {
-            guard let uuid = UUID(uuidString: id) else { return .badUUID }
-            let known = manager.retrievePeripherals(withIdentifiers: [uuid])
-            if known.count > 0 {
-                peripheral = known[0]
-            } else {
-                peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
-            }
-        }
-        return nil
-    }
+
     
     func connect() -> BLEError? {
-        let err = assertPeripheral()
-        if err != nil {return err }
-        guard let peripheral = peripheral else { return .noPeripheral }
+        manager.stopScan()
+        connectionsControl.setState(id: id, state: .connecting)
+        _ = assertPeripheral()
+
+        if peripheral == nil {
+            let disposable = DisposeBag()
+            let semaphore = DispatchSemaphore(value: 0)
+            disposable.add(managerObservervables.didDiscoverPeripheral.subscribe(handler: {tuple in
+                if tuple.peripheral.identifier.uuidString == self.id {
+                    self.peripheral = tuple.peripheral
+                    semaphore.signal()
+                }
+            }))
+            defer {
+                disposable.dispose()
+            }
+            manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE, FINDME_SERVICE])
+            semaphore.wait()
+        }
+        guard let peripheral = peripheral else {
+            connectionsControl.setState(id: id, state: .disconnected)
+            return .noPeripheral
+        }
         manager.connect(peripheral, options: [:])
         return nil
     }
     
     func disconnect(timeout: Int) -> BLEError? {
+        manager.stopScan()
+        connectionsControl.setState(id: id, state: .disconnecting)
         let err = assertPeripheral()
         if err != nil {return err }
         guard let peripheral = peripheral else { return .noPeripheral}
-        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
         
         if timeout <= 0 {
             manager.cancelPeripheralConnection(peripheral)

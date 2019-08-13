@@ -12,6 +12,7 @@ import Rasat
 public enum BLEConnectionState {
     case disconnected
     case connecting
+    case disconnecting
     case discovering
     case discoveringServices
     case discoveringCharacteristics
