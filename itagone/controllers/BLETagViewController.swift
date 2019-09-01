@@ -42,7 +42,7 @@ class BLETagViewController: UIViewController {
     var alertState: Bool {
         get {
             guard let tag = tag else { return false}
-            return tag.alert || ble.connections.state[tag.id] == .connected
+            return tag.alert || ble.connections.state[tag.id] == .connected || ble.connections.state[tag.id] == .writting
         }
     }
     
@@ -213,7 +213,9 @@ class BLETagViewController: UIViewController {
                     self.startAnimation()
                 }
             } else {
-                ble.connections.connect(id: tag.id)
+                DispatchQueue.global(qos: .background).async {
+                    self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                }
             }
         }
     }
