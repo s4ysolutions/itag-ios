@@ -35,14 +35,15 @@ class SoundDefault {
         DispatchQueue.main.sync {
             if let asset = NSDataAsset(name: name){
                 do {
-                    try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                    try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: .default, options: .mixWithOthers)
                     try AVAudioSession.sharedInstance().setActive(true)
                     
                     player = try AVAudioPlayer(data:asset.data, fileTypeHint: AVFileType.mp3.rawValue)
                     player?.prepareToPlay()
+                    player?.numberOfLoops = -1
                     player?.play()
                 }catch let error as NSError {
-                    print(error)
+                    print(error, error.code, error.description)
                 }
             }else{
                 print("no lost")
