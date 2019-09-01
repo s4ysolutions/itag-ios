@@ -10,6 +10,7 @@ import Foundation
 import Rasat
 
 public enum BLEConnectionState {
+    case unknown
     case disconnected
     case connecting
     case disconnecting
@@ -26,7 +27,7 @@ public protocol BLEConnectionStateArray {
 }
 
 public protocol BLEConnectionsInterface {
-    var stateObservable: Observable<(id: String, state: BLEConnectionState)> { get }
+    var stateObservable: Observable<(id: String, fromState: BLEConnectionState, toState: BLEConnectionState)> { get }
     var state: BLEConnectionStateArray { get }
     func connect(id: String)
     func startListen(id: String, timeout: Int)

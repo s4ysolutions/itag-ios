@@ -39,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.store.connectAll()
             }
         }
-        dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, state: BLEConnectionState) in
-            if state == .disconnected {
+        dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
+            if toState == .disconnected {
                 guard let tag = self.store.by(id: id) else { return }
                 if !tag.alert { return }
                 DispatchQueue.global(qos: .background).async {
@@ -51,11 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         self.sound.startLost()
                     }
                 }
-            } else if state == .connected {
+            } else if (toState == .connected && fromState != .writting ){
                 self.sound.stop()
                 guard let tag = self.store.by(id: id) else { return }
                 if tag.alert {
-                    DispatchQueue.global(qos: .background).async{
+                    DispatchQueue.global(qos: .background).asyncAfter(deadline: 0.5.dispatchTime){
                         self.ble.connections.startListen(id: id, timeout: BLE_TIMEOUT)
                     }
                 }

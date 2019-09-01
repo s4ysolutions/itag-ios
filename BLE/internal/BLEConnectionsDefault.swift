@@ -60,8 +60,8 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
         _ = connection.makeAvailabe(timeout: timeout)
     }
 
-    let stateObservableChannel = Channel<(id: String, state: BLEConnectionState)>()
-    var stateObservable: Observable<(id: String, state: BLEConnectionState)> {
+    let stateObservableChannel = Channel<(id: String, fromState: BLEConnectionState, toState: BLEConnectionState)>()
+    var stateObservable: Observable<(id: String, fromState: BLEConnectionState, toState: BLEConnectionState)> {
         get {
             return stateObservableChannel.observable
         }
@@ -69,14 +69,15 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
     
     let setStateQueue = DispatchQueue(label: "setState")
     func setState(id: String, state: BLEConnectionState) {
-        if state == holder.states[id] {
-            return
-        }
+        let fromState: BLEConnectionState = holder.states[id] ?? .unknown
+        
+        if state == fromState { return }
+        
         setStateQueue.sync {
             holder.states[id] = state
         }
         print("connection state changed", id, state)
-        stateObservableChannel.broadcast((id: id, state: state))
+        stateObservableChannel.broadcast((id: id, fromState: fromState, toState: state))
     }
     
 }

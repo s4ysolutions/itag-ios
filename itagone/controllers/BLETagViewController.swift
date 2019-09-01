@@ -53,12 +53,14 @@ class BLETagViewController: UIViewController {
  
 
     override func viewWillAppear(_ animated: Bool) {
+        print("will Appear")
         let pos = view.superview?.tag
         if pos != nil {
             tag = store.tagBy(pos: pos!)
             if tag != nil {
                 setupTag()
-                setupState()
+                setupBottomButtons()
+                setupState(id: tag!.id, fromState: ble.connections.state[tag!.id], toState: ble.connections.state[tag!.id])
                 if ble.findMe.isFindMe(id: tag!.id) {
                     self.startAnimation()
                 } else {
@@ -70,10 +72,12 @@ class BLETagViewController: UIViewController {
         disposable?.dispose()
         disposable = DisposeBag()
         disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "remember/forget view_\(pos ?? 99)", handler: {_ in
-            self.setupTag()
+            self.setupBottomButtons()
         }))
-        disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "connect/disconnect view_\(pos ?? 99)", handler: {_ in
-            self.setupState()
+        disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "connect/disconnect view_\(pos ?? 99)", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
+            print("will setup State", id, fromState,toState)
+            self.setupState(id: id, fromState: fromState, toState: toState)
+            self.setupBottomButtons()
           //  self.setupTag()
         }))
         disposable!.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.main,id: "find me view_\(pos ?? 99)" , handler: { (id, findMe) in
@@ -108,6 +112,7 @@ class BLETagViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
+        print("will Disappear")
         disposable?.dispose()
         if tag != nil {
             DispatchQueue.global(qos: .background).async {
@@ -120,13 +125,13 @@ class BLETagViewController: UIViewController {
     }
     
     var isAnimatingDuringTransition = false
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillLayoutSubviews() {
         isAnimatingDuringTransition = isAnimating
         self.stopAnimation()
-        super.viewWillTransition(to: size, with: coordinator)
+        super.viewWillLayoutSubviews()
     }
-    
     override func viewDidLayoutSubviews() {
+        print("viewDidLayoutSubviews", viewDidLayoutSubviews)
         super.viewDidLayoutSubviews()
         if isAnimatingDuringTransition {
             self.startAnimation()
@@ -226,6 +231,7 @@ class BLETagViewController: UIViewController {
      */
     
     private func setupTag() {
+        print("setupTag", isAnimatingDuringTransition, isAnimating)
         guard let tag = tag else { return }
         var image: UIImage? = nil
         switch tag.color {
@@ -246,17 +252,23 @@ class BLETagViewController: UIViewController {
         buttonTag?.setImage(image, for: .normal)
         buttonTag?.imageView?.contentMode = .scaleAspectFit
         
-        buttonAlert?.setImage(alertState ? BLETagViewController.imageAlert : BLETagViewController.imageNoAlert, for: .normal)
-        
         labelName?.text = tag.name
     }
     
-    private func setupState() {
-        guard let tag = tag else { return }
-        let state = ble.connections.state[tag.id]
+    private func setupBottomButtons() {
+        buttonAlert?.setImage(alertState ? BLETagViewController.imageAlert : BLETagViewController.imageNoAlert, for: .normal)
+    }
+    
+    private func setupState(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) {
+       
+        if  tag == nil || tag!.id != id  { return }
+        
+        print("setupState", id, tag!.alert, fromState, toState, isAnimatingDuringTransition, isAnimating)
         
         var image: UIImage? = nil
-        switch state {
+        switch toState {
+        case .unknown:
+            image = BLETagViewController.imageDisabled
         case .disconnected:
             image = BLETagViewController.imageDisabled
         case .connecting:
@@ -279,10 +291,10 @@ class BLETagViewController: UIViewController {
         
         imageState?.image = image
         
-        if state == .disconnected && tag.alert {
+        if toState == .disconnected && tag!.alert && !isAnimating {
             self.startAnimation()
         } else {
-            if !tag.isAlerting {
+            if toState == .connected && !tag!.isAlerting {
                 self.stopAnimation()
             }
         }
@@ -291,7 +303,9 @@ class BLETagViewController: UIViewController {
     var isAnimating = false
     
     var y: CGFloat = 0
-    private func stopAnimation() {
+    private func stopAnimation()
+    {
+        print("stopAnimation", isAnimatingDuringTransition, isAnimating)
         isAnimating = false
         guard let view = buttonTag else { return }
         view.layer.removeAllAnimations()
@@ -301,7 +315,6 @@ class BLETagViewController: UIViewController {
         }
         view.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         view.transform = .identity
-        view.layoutIfNeeded()
     }
     
     let anchorY: CGFloat = 0.2
@@ -310,8 +323,11 @@ class BLETagViewController: UIViewController {
     let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/12)
     
     private func startAnimation() {
+        print("startAnimation async", isAnimatingDuringTransition, isAnimating)
         DispatchQueue.main.async {
             self.stopAnimation()
+            self.isAnimating = true
+            print("startAnimation sync", self.isAnimatingDuringTransition, self.isAnimating)
             guard let view = self.buttonTag else { return }
             
             let oldY = view.bounds.size.height * view.layer.anchorPoint.y
@@ -320,9 +336,7 @@ class BLETagViewController: UIViewController {
             self.y = view.layer.position.y
             view.layer.position.y = self.y - oldY + newY
             view.layer.anchorPoint = CGPoint(x: 0.5, y: self.anchorY)
-            view.layoutIfNeeded()
             
-            self.isAnimating = true
             UIView.animate(withDuration: 0, delay: 0, options: [.allowUserInteraction], animations: {
                 view.transform = self.transform0
             },completion: { _ in
