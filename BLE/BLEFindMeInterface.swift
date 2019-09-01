@@ -13,6 +13,7 @@ import Rasat
 public protocol BLEFindMeInterface {
     var findMeObservable: Observable<(id: String, findMe: Bool)> { get }
     func isFindMe(id: String) -> Bool
+    func cancelFindMe(id: String) // do not attempt to transmit to itag
 }
 
 protocol BLEFindMeControlInterface {

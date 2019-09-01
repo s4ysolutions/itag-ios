@@ -115,4 +115,12 @@ class BLEFindMeDefault: BLEFindMeInterface, BLEFindMeControlInterface {
             }
         }
     }
+    
+    func cancelFindMe(id: String)  {
+        let findMe = isFindMe(id: id)
+        self.unsetFindMe(id: id)
+        if findMe {
+            self.findMeChannel.broadcast((id: id, findMe: false))
+        }
+    }
 }

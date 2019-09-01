@@ -164,6 +164,16 @@ class TagStoreDefault: TagStoreInterface {
         }
     }
     
+    func stopAlertAll() {
+        for (_, tag) in tags {
+            if tag.isAlerting {
+                DispatchQueue.global(qos: .background).async {
+                    self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                }
+            }
+        }
+    }
+    
     func forgottenIds() -> [String] {
         return idsforever.filter({id in !ids.contains(id)})
     }

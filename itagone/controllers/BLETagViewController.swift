@@ -33,8 +33,9 @@ class BLETagViewController: UIViewController {
     static let imageNoAlert = UIImage(named: "btnNoAlert")
     
     let ble: BLEInterface
+    let sound = SoundDefault.shared
     let store: TagStoreInterface
-    
+
     var disposable: DisposeBag?
     var tag: TagInterface?
     
@@ -51,7 +52,6 @@ class BLETagViewController: UIViewController {
         super.init(coder: aDecoder)
     }
  
-
     override func viewWillAppear(_ animated: Bool) {
         print("will Appear")
         let pos = view.superview?.tag
@@ -92,17 +92,13 @@ class BLETagViewController: UIViewController {
         disposable!.add(applicationStateObservable.subscribe(on: DispatchQueue.main, handler: {state in
             switch state {
             case .ACTIVE:
+                print("app active")
+                if (self.isAnimating) {
+                    self.startAnimation()
+                }
                 break
             case .INACTIVE:
-                if self.tag != nil {
-                    let tag = self.tag!
-                    if tag.isAlerting {
-                        DispatchQueue.global(qos: .background).async {
-                            self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
-                        }
-                        self.tag!.isAlerting = false
-                    }
-                }
+                print("app inactive")
                 self.stopAnimation()
                 break
             }
@@ -192,26 +188,33 @@ class BLETagViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    let sound = SoundDefault.shared
-    
     @IBAction func onTag(_ sender: UIView) {
         if (sound.isPlaying) {
             sound.stop()
-            return
         }
+        stopAnimation()
+        
         guard var tag = tag else { return }
-        if tag.isAlerting {
-            DispatchQueue.global(qos: .background).async {
-                self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
-            }
-            tag.isAlerting = false
-            self.stopAnimation()
+        
+        if ble.findMe.isFindMe(id: tag.id) {
+            ble.findMe.cancelFindMe(id: tag.id)
         } else {
-            DispatchQueue.global(qos: .background).async {
-                self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+            if ble.connections.state[tag.id] == .connected {
+                if tag.isAlerting {
+                    DispatchQueue.global(qos: .background).async {
+                        self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                    }
+                    tag.isAlerting = false
+                } else {
+                    DispatchQueue.global(qos: .background).async {
+                        self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                    }
+                    tag.isAlerting = true
+                    self.startAnimation()
+                }
+            } else {
+                ble.connections.connect(id: tag.id)
             }
-            tag.isAlerting = true
-            self.startAnimation()
         }
     }
     

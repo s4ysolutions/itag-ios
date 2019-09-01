@@ -30,4 +30,5 @@ protocol TagStoreInterface {
     func set(color: TagColor, forTag: TagInterface)
     func set(name: String, forTag: TagInterface)
     func connectAll()
+    func stopAlertAll()
 }
