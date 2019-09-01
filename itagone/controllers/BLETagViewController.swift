@@ -74,7 +74,7 @@ class BLETagViewController: UIViewController {
         }))
         disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "connect/disconnect view_\(pos ?? 99)", handler: {_ in
             self.setupState()
-            self.setupTag()
+          //  self.setupTag()
         }))
         disposable!.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.main,id: "find me view_\(pos ?? 99)" , handler: { (id, findMe) in
             guard let tag = self.tag else { return }
@@ -119,6 +119,20 @@ class BLETagViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
     
+    var isAnimatingDuringTransition = false
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        isAnimatingDuringTransition = isAnimating
+        self.stopAnimation()
+        super.viewWillTransition(to: size, with: coordinator)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if isAnimatingDuringTransition {
+            self.startAnimation()
+            isAnimatingDuringTransition = false // precaution
+        }
+    }
     @IBAction
     func onAlert(_ sender: UIView) {
         guard let tag = tag else { return }
@@ -213,7 +227,6 @@ class BLETagViewController: UIViewController {
     
     private func setupTag() {
         guard let tag = tag else { return }
-        
         var image: UIImage? = nil
         switch tag.color {
         case .black:
@@ -297,7 +310,7 @@ class BLETagViewController: UIViewController {
     let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/12)
     
     private func startAnimation() {
-        DispatchQueue.main.asyncAfter(deadline: 0.5.dispatchTime) {
+        DispatchQueue.main.async {
             self.stopAnimation()
             guard let view = self.buttonTag else { return }
             

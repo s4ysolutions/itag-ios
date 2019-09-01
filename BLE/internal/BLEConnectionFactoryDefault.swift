@@ -11,7 +11,7 @@ import Foundation
 
 class BLEConnectionFactoryDefault: BLEConnectionFactoryInterface {
     func connection(connectionsControl: BLEConnectionsControlInterface, findMeControl: BLEFindMeControlInterface, manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, peripheral: CBPeripheral) -> BLEConnectionInterface {
-        <#code#>
+        return BLEConnectionDefault(connectionsControl: connectionsControl, findMeControl: findMeControl, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory, peripheral: peripheral)
     }
     
     func connection(connectionsControl: BLEConnectionsControlInterface, findMeControl: BLEFindMeControlInterface, manager: CBCentralManager,   peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, id: String) -> BLEConnectionInterface {
