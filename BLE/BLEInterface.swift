@@ -27,5 +27,5 @@ public protocol BLEInterface {
     var stateObservable: Observable<BLEState> { get }
     var timeout: Int { get set }
 
-    func connect(id: String, timeout: Int)
+  //  func connect(id: String, timeout: Int)
 }

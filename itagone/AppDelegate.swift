@@ -10,6 +10,18 @@ import BLE
 import UIKit
 import Rasat
 
+enum ApplicationState {
+    case ACTIVE
+    case INACTIVE
+}
+
+let applicationStateChannel = Channel<ApplicationState>()
+var applicationStateObservable: Observable<ApplicationState> {
+    get {
+        return applicationStateChannel.observable
+    }
+}
+
 let DELAY_BEFORE_ALERT = 3
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.store.connectAll()
             }
         }
-        dispose.add(ble.connections.stateObservable.subscribe(handler: {(id: String, state: BLEConnectionState) in
+        dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, state: BLEConnectionState) in
             if state == .disconnected {
                 guard let tag = self.store.by(id: id) else { return }
                 if !tag.alert { return }
@@ -41,6 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             } else if state == .connected {
                 self.sound.stop()
+                guard let tag = self.store.by(id: id) else { return }
+                if tag.alert {
+                    DispatchQueue.global(qos: .background).async{
+                        self.ble.connections.startListen(id: id, timeout: BLE_TIMEOUT)
+                    }
+                }
             }
         }))
         dispose.add(ble.stateObservable.subscribe(id: "BLE powered on", handler: {state in
@@ -50,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }))
-        dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), handler: {op in
+        dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), id: "remember/forget", handler: {op in
             switch op {
             case .remember(_):
                 return
@@ -66,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }))
         dispose.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.global(qos: .background),
+                                                          id: "find me",
                                                           handler: {tuple in
                                                             if (tuple.findMe) {
                                                                 self.sound.startFindMe()
@@ -77,8 +96,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        ble.scanner.stop()
+        applicationStateChannel.broadcast(.INACTIVE)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {

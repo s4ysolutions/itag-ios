@@ -50,13 +50,8 @@ class BLETagViewController: UIViewController {
         ble = BLEDefault.shared
         super.init(coder: aDecoder)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-    }
-    
+ 
+
     override func viewWillAppear(_ animated: Bool) {
         let pos = view.superview?.tag
         if pos != nil {
@@ -74,14 +69,14 @@ class BLETagViewController: UIViewController {
         
         disposable?.dispose()
         disposable = DisposeBag()
-        disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_\(pos ?? 99)", handler: {_ in
+        disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "remember/forget view_\(pos ?? 99)", handler: {_ in
             self.setupTag()
         }))
-        disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "state_\(pos ?? 99)", handler: {_ in
+        disposable!.add(ble.connections.stateObservable.subscribe(on: DispatchQueue.main, id: "connect/disconnect view_\(pos ?? 99)", handler: {_ in
             self.setupState()
             self.setupTag()
         }))
-        disposable!.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.main, handler: { (id, findMe) in
+        disposable!.add(ble.findMe.findMeObservable.subscribe(on: DispatchQueue.main,id: "find me view_\(pos ?? 99)" , handler: { (id, findMe) in
             guard let tag = self.tag else { return }
             if tag.id != id { return }
             if findMe {
@@ -90,12 +85,37 @@ class BLETagViewController: UIViewController {
                 self.stopAnimation()
             }
         }))
-        
+        disposable!.add(applicationStateObservable.subscribe(on: DispatchQueue.main, handler: {state in
+            switch state {
+            case .ACTIVE:
+                break
+            case .INACTIVE:
+                if self.tag != nil {
+                    let tag = self.tag!
+                    if tag.isAlerting {
+                        DispatchQueue.global(qos: .background).async {
+                            self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
+                        }
+                        self.tag!.isAlerting = false
+                    }
+                }
+                self.stopAnimation()
+                break
+            }
+        }))
         super.viewWillAppear(animated)
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         disposable?.dispose()
+        if tag != nil {
+            DispatchQueue.global(qos: .background).async {
+                self.ble.alert.stopAlert(id: self.tag!.id, timeout: BLE_TIMEOUT)
+            }
+            tag!.isAlerting = false
+        }
+        self.stopAnimation()
         super.viewWillDisappear(animated)
     }
     
@@ -161,20 +181,18 @@ class BLETagViewController: UIViewController {
             return
         }
         guard var tag = tag else { return }
-        DispatchQueue.global(qos: .background).async{
-            if tag.isAlerting {
-                DispatchQueue.main.async{
-                    self.stopAnimation()
-                }
+        if tag.isAlerting {
+            DispatchQueue.global(qos: .background).async {
                 self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
-                tag.isAlerting = false
-            } else {
-                DispatchQueue.main.async {
-                    self.startAnimation()
-                }
-                self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
-                tag.isAlerting = true
             }
+            tag.isAlerting = false
+            self.stopAnimation()
+        } else {
+            DispatchQueue.global(qos: .background).async {
+                self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
+            }
+            tag.isAlerting = true
+            self.startAnimation()
         }
     }
     
@@ -247,17 +265,29 @@ class BLETagViewController: UIViewController {
         }
         
         imageState?.image = image
+        
+        if state == .disconnected && tag.alert {
+            self.startAnimation()
+        } else {
+            if !tag.isAlerting {
+                self.stopAnimation()
+            }
+        }
     }
+    
+    var isAnimating = false
     
     var y: CGFloat = 0
     private func stopAnimation() {
+        isAnimating = false
         guard let view = buttonTag else { return }
         view.layer.removeAllAnimations()
         if y != 0 {
             view.layer.position.y = y
-            view.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            view.transform = .identity
+            y = 0
         }
+        view.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        view.transform = .identity
         view.layoutIfNeeded()
     }
     
@@ -267,31 +297,31 @@ class BLETagViewController: UIViewController {
     let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/12)
     
     private func startAnimation() {
-        stopAnimation()
-        guard let view = buttonTag else { return }
-        y = view.layer.position.y
-        
-        let oldY = view.bounds.size.height * view.layer.anchorPoint.y
-        let newY = view.bounds.size.height * anchorY
-        
-        
-        view.layer.position.y = view.layer.position.y - oldY + newY
-        view.layer.anchorPoint = CGPoint(x: 0.5, y: anchorY)
-        view.transform = transform1
-        self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0, delay: 0, options: [.allowUserInteraction], animations: {
-            view.transform = self.transform0
-            self.view.layoutIfNeeded()
-        },completion: { _ in
-            UIView.animate(withDuration: 0.2, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: {
-                view.transform = self.transform1
-                self.view.layoutIfNeeded()
-            }, completion: { _ in
-                UIView.animate(withDuration: 0.4, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-                    view.transform = self.transform2
-                }, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: 0.5.dispatchTime) {
+            self.stopAnimation()
+            guard let view = self.buttonTag else { return }
+            
+            let oldY = view.bounds.size.height * view.layer.anchorPoint.y
+            let newY = view.bounds.size.height * self.anchorY
+            
+            self.y = view.layer.position.y
+            view.layer.position.y = self.y - oldY + newY
+            view.layer.anchorPoint = CGPoint(x: 0.5, y: self.anchorY)
+            view.layoutIfNeeded()
+            
+            self.isAnimating = true
+            UIView.animate(withDuration: 0, delay: 0, options: [.allowUserInteraction], animations: {
+                view.transform = self.transform0
+            },completion: { _ in
+                UIView.animate(withDuration: 0.2, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: {
+                    view.transform = self.transform1
+                }, completion: { _ in
+                    UIView.animate(withDuration: 0.4, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
+                        view.transform = self.transform2
+                    }, completion: nil)
+                })
             })
-        })
+        }
+        
     }
 }

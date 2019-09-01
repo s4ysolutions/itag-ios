@@ -29,6 +29,7 @@ public protocol BLEConnectionsInterface {
     var stateObservable: Observable<(id: String, state: BLEConnectionState)> { get }
     var state: BLEConnectionStateArray { get }
     func connect(id: String)
+    func startListen(id: String, timeout: Int)
     func disconnect(id: String)
 }
 

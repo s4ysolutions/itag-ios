@@ -55,6 +55,11 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
         _ = connection.connect()
     }
     
+    func startListen(id: String, timeout: Int) {
+        let connection = store.getOrMake(id: id)
+        _ = connection.makeAvailabe(timeout: timeout)
+    }
+
     let stateObservableChannel = Channel<(id: String, state: BLEConnectionState)>()
     var stateObservable: Observable<(id: String, state: BLEConnectionState)> {
         get {

@@ -59,6 +59,28 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }))
     }
     
+    init(connectionsControl: BLEConnectionsControlInterface, findMeControl: BLEFindMeControlInterface ,manager: CBCentralManager, peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface, peripheral: CBPeripheral) {
+        self.connectionsControl = connectionsControl
+        self.id = peripheral.identifier.uuidString
+        self._peripheral = peripheral
+        // deligator will be set before discoverin
+        // sanity assignment
+        self._peripheral!.delegate = nil
+        self.manager = manager
+        self.peripheralObservables = peripheralObservablesFactory.observables()
+        // NOTE: manager.delegate must be BLEManagerObserverInterface
+        self.managerObservervables = manager.delegate as! BLEManagerObservablesInterface
+        disposables.add(peripheralObservables.didUpdateValueForCharacteristic.subscribe(
+            on: DispatchQueue.global(qos: .background),
+            handler: {tuple in
+                if tuple.peripheral.identifier == self.peripheral?.identifier &&
+                    tuple.characteristic.uuid == FINDME_CHARACTERISTIC
+                {
+                    findMeControl.onClick(id: tuple.peripheral.identifier.uuidString)
+                }
+        }))
+    }
+
     var hasPeripheral: Bool {get{
             return peripheral != nil
         }
@@ -124,8 +146,9 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     private func waitForConnect(timeout: DispatchTime) -> BLEError? {
         guard let peripheral = peripheral else {return .noPeripheral}
-        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .connecting)
+        if peripheral.state == .connected { return nil }
         
+        connectionsControl.setState(id: id, state: .connecting)
         let semaphore = DispatchSemaphore(value: 0)
         
         let disposable = DisposeBag()
@@ -159,7 +182,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     private func waitForDiscover(timeout: DispatchTime) -> BLEError? {
-        connectionsControl.setState(id: id, state: .connecting)
+        connectionsControl.setState(id: id, state: .discovering)
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
         
@@ -252,7 +275,6 @@ class BLEConnectionDefault: BLEConnectionInterface {
     
     func makeAvailabe(timeout: Int) -> BLEError? {
         manager.stopScan()
-        connectionsControl.setState(id:id, state: .connecting)
         _ = assertPeripheral()
         
         if peripheral != nil {

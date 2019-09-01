@@ -6,10 +6,12 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import CoreBluetooth
 import Foundation
 
 protocol BLEConnectionsStoreInterface {
     func setConnectionsControl(connectionsControl: BLEConnectionsControlInterface)
     func get(id: String) -> BLEConnectionInterface?
     func getOrMake(id: String) -> BLEConnectionInterface
+    func restorePeripherals(peripherals: [CBPeripheral])
 }

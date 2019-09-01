@@ -10,16 +10,16 @@ import CoreBluetooth
 import Foundation
 
 class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
-
+    
     
     let connectionFactory: BLEConnectionFactoryInterface
     let findMeControl: BLEFindMeControlInterface
     let manager: CBCentralManager
     let peripheralObservablesFactory: BLEPeripheralObservablesFactoryInterface
-
+    
     var _connectionsControl: BLEConnectionsControlInterface?
     var map: [String: BLEConnectionInterface] = [:]
-
+    
     init(
         connectionFactory: BLEConnectionFactoryInterface,
         findMeControl: BLEFindMeControlInterface,
@@ -47,7 +47,7 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
     
     func getOrMake(id: String) -> BLEConnectionInterface {
         if map[id] == nil || !map[id]!.isConnected {
-             map[id] = connectionFactory.connection(
+            map[id] = connectionFactory.connection(
                 connectionsControl: connectionsControl,
                 findMeControl: findMeControl,
                 manager: manager,
@@ -59,5 +59,17 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
     
     func setConnectionsControl(connectionsControl: BLEConnectionsControlInterface) {
         _connectionsControl = connectionsControl
+    }
+    
+    func restorePeripherals(peripherals: [CBPeripheral]) {
+        for peripheral in peripherals {
+            let id = peripheral.identifier.uuidString
+            map[id] = connectionFactory.connection(
+                connectionsControl: connectionsControl,
+                findMeControl: findMeControl,
+                manager: manager,
+                peripheralObservablesFactory: peripheralObservablesFactory,
+                peripheral: peripheral)
+        }
     }
 }

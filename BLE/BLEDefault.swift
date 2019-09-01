@@ -56,7 +56,7 @@ public class BLEDefault: BLEInterface {
 
         self.findMe = findMe
         // NOTE: delegate MUST be of BLEManagerObserverInterface
-        manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background),options: [CBCentralManagerOptionShowPowerAlertKey: true/*, CBCentralManagerOptionRestoreIdentifierKey: "itagone"*/])
+        manager = CBCentralManager(delegate: managerObservables, queue: DispatchQueue.global(qos: .background),options: [CBCentralManagerOptionShowPowerAlertKey: true, CBCentralManagerOptionRestoreIdentifierKey: "itagone"])
         let findMeControl = findMeControlFactory.findMeControl(findMe: findMe)
         store = storeFactory.store(connectionFactory: connectionFactory, findMeControl: findMeControl, manager: manager, peripheralObservablesFactory: peripheralObservablesFactory)
         connections = connectionsFactory.connections(store: store, managerObservables: managerObservables)
@@ -67,14 +67,13 @@ public class BLEDefault: BLEInterface {
         alert = finderFactory.alert(store: store)
         scanner = scannerFactory.scanner(connections: connections, manager: manager)
 
-        disposable.add(managerObservables.didUpdateState.subscribe(id: "BLE", handler: {state in
+        disposable.add(managerObservables.didUpdateState.subscribe(id: "cb manager state", handler: {state in
             self.stateChannel.broadcast(state == CBManagerState.poweredOn ? .on : .off)
         }))
-    }
-    
-    public func connect(id: String, timeout: Int) {
-        let connection = store.getOrMake(id: id)
-        _ = connection.makeAvailabe(timeout: timeout)
+        
+        disposable.add(managerObservables.willRestoreState.subscribe(id: "cb manager restore", handler: {periphirals in
+            self.store.restorePeripherals(peripherals: periphirals)
+        }))
     }
     
     public var state: BLEState { get {

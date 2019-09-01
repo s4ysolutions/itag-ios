@@ -45,6 +45,21 @@ class BLEManagerObservablesDefault: NSObject, BLEManagerObservablesInterface {
             return didDisconnectPeripheralChannel.observable
         }
     }
+    
+    let willRestoreStateChannel = Channel<[CBPeripheral]>()
+    var willRestoreState: Observable<[CBPeripheral]> {
+        get {
+            return willRestoreStateChannel.observable
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+        guard let peripheralsAny = dict[CBCentralManagerRestoredStatePeripheralsKey]
+            else { return }
+        guard let peripherals = peripheralsAny as? [CBPeripheral] else { return }
+        if peripherals.count == 0 { return }
+        willRestoreStateChannel.broadcast(peripherals)
+    }
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         didUpdateStateChannel.broadcast(central.state)

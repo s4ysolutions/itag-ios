@@ -16,4 +16,5 @@ protocol BLEManagerObservablesInterface: CBCentralManagerDelegate {
     var didDisconnectPeripheral: Observable<(peripheral: CBPeripheral,error: Error?)> { get }
     var didDiscoverPeripheral: Observable<(peripheral: CBPeripheral, data: [String: Any], rssi: NSNumber)> { get }
     var didUpdateState: Observable<CBManagerState> { get }
+    var willRestoreState: Observable<[CBPeripheral]> { get }
 }
