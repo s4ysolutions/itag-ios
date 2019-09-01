@@ -64,6 +64,7 @@
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="centerY" secondItem="Ld6-dg-CEP" secondAttribute="centerY" id="30A-nw-io6"/>
                                     <constraint firstAttribute="bottom" secondItem="B3F-ZW-5aW" secondAttribute="bottom" constant="8" id="ESn-5K-ctI"/>
                                     <constraint firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="trailing" constant="8" id="NFB-PU-L5g"/>
+                                    <constraint firstItem="B3F-ZW-5aW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hMZ-aM-S9j" secondAttribute="trailing" constant="8" id="t5L-34-rIP"/>
                                     <constraint firstItem="B3F-ZW-5aW" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="zkh-TJ-R7T"/>
                                 </constraints>
                             </view>
@@ -453,6 +454,7 @@
                             <constraint firstItem="fQI-K4-7I9" firstAttribute="top" secondItem="hNG-j8-iRD" secondAttribute="bottom" constant="8" id="ZOq-I1-ZFW"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="bottom" secondItem="3Wz-Te-6l8" secondAttribute="bottom" constant="2" id="eEn-tx-B0F"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="trailing" secondItem="fQI-K4-7I9" secondAttribute="trailing" id="pqz-zg-CSv"/>
+                            <constraint firstItem="hNG-j8-iRD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="z1h-V4-wJB" secondAttribute="trailing" constant="8" id="sqR-ro-AtV"/>
                             <constraint firstItem="3Wz-Te-6l8" firstAttribute="top" secondItem="fQI-K4-7I9" secondAttribute="bottom" id="yLs-S4-BAZ"/>
                             <constraint firstItem="hNG-j8-iRD" firstAttribute="top" secondItem="lgU-rk-RjQ" secondAttribute="top" constant="8" id="zr2-e4-ydM"/>
                         </constraints>

@@ -199,24 +199,19 @@ class BLETagViewController: UIViewController {
         if ble.findMe.isFindMe(id: tag.id) {
             ble.findMe.cancelFindMe(id: tag.id)
         } else {
-            if ble.connections.state[tag.id] == .connected {
-                if tag.isAlerting {
-                    DispatchQueue.global(qos: .background).async {
-                        self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
-                    }
-                    tag.isAlerting = false
-                } else {
-                    DispatchQueue.global(qos: .background).async {
-                        self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
-                    }
-                    tag.isAlerting = true
-                    self.startAnimation()
+            if ble.connections.state[tag.id] == .connected && tag.isAlerting {
+                DispatchQueue.global(qos: .background).async {
+                    self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
                 }
+                tag.isAlerting = false
             } else {
                 DispatchQueue.global(qos: .background).async {
                     self.ble.alert.startAlert(id: tag.id, timeout: BLE_TIMEOUT)
                 }
+                tag.isAlerting = true
+                self.startAnimation()
             }
+            
         }
     }
     
