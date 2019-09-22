@@ -41,6 +41,13 @@ class TagStoreDefault: TagStoreInterface {
                 print("tag forgotten <- store:", tags[id]?.toString() ?? "", dict)
             }
         }
+        /*
+ fake tag for testing purposes
+        tags.removeAll()
+        ids.removeAll()
+        ids.append("test")
+        tags["test"]=factory.tag(id: "test", name: "Test", color: .black, alert: true)
+ */
     }
     
     func by(id: String) -> TagInterface? {

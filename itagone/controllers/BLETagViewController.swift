@@ -163,6 +163,16 @@ class BLETagViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "White".localized, style: .default) { _ in
             self.store.set(color: .white, forTag: tag)
         })
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX,
+                                                  y: self.view.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+    
         present(alert, animated: true)
     }
     
