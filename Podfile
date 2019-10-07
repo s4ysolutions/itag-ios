@@ -5,7 +5,7 @@ target 'itagone' do
   platform :ios, '12.4'
   use_frameworks!
 
-  pod 'Rasat'
+  pod 'Rasat', :git => 'https://github.com/s4ysolutions/Rasat.git'
 
   target 'itagoneTests' do
     inherit! :complete

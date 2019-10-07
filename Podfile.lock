@@ -2,15 +2,20 @@ PODS:
   - Rasat (1.0.0)
 
 DEPENDENCIES:
-  - Rasat
+  - Rasat (from `https://github.com/s4ysolutions/Rasat.git`)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Rasat
+EXTERNAL SOURCES:
+  Rasat:
+    :git: https://github.com/s4ysolutions/Rasat.git
+
+CHECKOUT OPTIONS:
+  Rasat:
+    :commit: c423e0106e0aeb18ee793476af0302ef8644d6b2
+    :git: https://github.com/s4ysolutions/Rasat.git
 
 SPEC CHECKSUMS:
-  Rasat: fdb8f8a8f401111bf9fed9817e786448301edf3f
+  Rasat: d7f45a231aafb5a0cf13f49451a00fb503c4210e
 
-PODFILE CHECKSUM: f7c0a516a309d6500fae8fa84fa1ecedc2e3edb8
+PODFILE CHECKSUM: ef8ac723bc055d4801a28aaee51c167ac6162691
 
 COCOAPODS: 1.7.4
