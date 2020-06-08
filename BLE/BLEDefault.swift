@@ -62,7 +62,7 @@ public class BLEDefault: BLEInterface {
         connections = connectionsFactory.connections(store: store, managerObservables: managerObservables)
         // this is cycle dependency ugly resolving
         // connections <- store <- connectionsControl <- connections
-        // as a result store.setConnections is msut
+        // as a result store.setConnections is must
         store.setConnectionsControl(connectionsControl: connectionsControlFactory.connectionsControl(connections: connections))
         alert = finderFactory.alert(store: store)
         scanner = scannerFactory.scanner(connections: connections, manager: manager)
