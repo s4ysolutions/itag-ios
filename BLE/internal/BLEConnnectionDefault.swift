@@ -182,6 +182,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     private func waitForDiscover(timeout: DispatchTime) -> BLEError? {
+        // TODO: abort abother scan?
         connectionsControl.setState(id: id, state: .discovering)
         let semaphore = DispatchSemaphore(value: 0)
         let disposable = DisposeBag()
@@ -197,8 +198,10 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }
         manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE, FINDME_SERVICE])
         if semaphore.wait(timeout: timeout) == .timedOut {
+            manager.stopScan();
             return .timeout
         }
+        manager.stopScan();
         return nil
     }
     
@@ -269,6 +272,23 @@ class BLEConnectionDefault: BLEConnectionInterface {
             } else {
                 peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
             }
+            if let peripheral = peripheral {
+                let state: BLEConnectionState = {
+                    switch peripheral.state {
+                    case .connected:
+                        return BLEConnectionState.connected
+                    case .connecting:
+                        return BLEConnectionState.connecting
+                    case .disconnected:
+                        return BLEConnectionState.disconnected
+                    case.disconnecting:
+                        return BLEConnectionState.connecting
+                    default:
+                        return BLEConnectionState.unknown
+                    }
+                }()
+                connectionsControl.setState(id: id, state: state)
+            }
         }
         return nil
     }
@@ -319,7 +339,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
         }
         if immediateAlertCharacteristic == nil { return .noImmediateAlertCharacteristic }
 
-        guard let serviceFindMe = findMeService else { return .noImmediateAlertService }
+        guard let serviceFindMe = findMeService else { return .noFindMeAlertService}
         if findMeCharacteristic == nil {
             let discoverCharacteristicsError = waitForDiscoverCharacteristics(forService: serviceFindMe, timeout: maxTimeout)
             if discoverCharacteristicsError != nil { return .other(discoverCharacteristicsError!)}
@@ -350,7 +370,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
                 disposable.dispose()
             }
             manager.scanForPeripherals(withServices: [IMMEDIATE_ALERT_SERVICE, FINDME_SERVICE])
-            semaphore.wait()
+            semaphore.wait() // TODO: timeout?
         }
         guard let peripheral = peripheral else {
             connectionsControl.setState(id: id, state: .disconnected)
@@ -361,13 +381,20 @@ class BLEConnectionDefault: BLEConnectionInterface {
     }
     
     func disconnect(timeout: Int) -> BLEError? {
-        manager.stopScan()
-        connectionsControl.setState(id: id, state: .disconnecting)
         let err = assertPeripheral()
         if err != nil {return err }
         guard let peripheral = peripheral else { return .noPeripheral}
         
+        if peripheral.state == .disconnected || peripheral.state == .disconnecting {
+            return nil
+        }
+        
+        connectionsControl.setState(id: id, state: .disconnecting)
         if timeout <= 0 {
+            // must unsubscribe before connect
+            if immediateAlertCharacteristic != nil {
+                _ = setNotify(false, characteristic: immediateAlertCharacteristic!)
+            }
             manager.cancelPeripheralConnection(peripheral)
             return nil
         }

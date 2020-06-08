@@ -68,15 +68,17 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
     }
     
     let setStateQueue = DispatchQueue(label: "setState")
+    
     func setState(id: String, state: BLEConnectionState) {
         let fromState: BLEConnectionState = holder.states[id] ?? .unknown
-        
+
         if state == fromState { return }
         
         setStateQueue.sync {
             holder.states[id] = state
         }
-        print("connection state changed", id, state)
+        
+        print("connection state changed", id, fromState, state)
         stateObservableChannel.broadcast((id: id, fromState: fromState, toState: state))
     }
     

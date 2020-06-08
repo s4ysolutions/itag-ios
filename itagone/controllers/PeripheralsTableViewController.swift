@@ -47,7 +47,7 @@ class PeripheralsTableViewController: UITableViewController {
     
     func updatePeripheral(_ peripheral: CBPeripheral) {
         
-        if store.by(id: peripheral.identifier.uuidString) != nil {
+        if store.remembered(id: peripheral.identifier.uuidString) {
             return
         }
         

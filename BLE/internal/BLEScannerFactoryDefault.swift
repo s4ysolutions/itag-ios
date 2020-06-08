@@ -9,7 +9,7 @@
 import CoreBluetooth
 import Foundation
 
-class BLEScannerFactoryDefault: BLEScannerFactoryInterface {
+class BLEScannerFactoryDefault: BLEScannerFactoryInterface{
     func scanner(connections: BLEConnectionsInterface, manager: CBCentralManager) -> BLEScannerInterface {
         // TODO: i do not know what does it mean ".self as! BLEConnectionsInterface"
         return BLEScannerDefault(connections: connections, manager: manager)

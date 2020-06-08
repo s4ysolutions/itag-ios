@@ -41,6 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
             if toState == .disconnected {
+                if !self.store.remembered(id: id) {
+                    return;
+                }
                 guard let tag = self.store.by(id: id) else { return }
                 if !tag.alert { return }
                 DispatchQueue.global(qos: .background).async {

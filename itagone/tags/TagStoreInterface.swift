@@ -14,7 +14,7 @@ enum StoreOp {
     case remember(TagInterface)
     case forget(TagInterface)
     case change(TagInterface)
-}
+}       
 
 protocol TagStoreInterface {
     var count: Int { get }

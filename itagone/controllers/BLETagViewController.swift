@@ -111,10 +111,12 @@ class BLETagViewController: UIViewController {
         print("will Disappear")
         disposable?.dispose()
         if tag != nil {
-            DispatchQueue.global(qos: .background).async {
-                self.ble.alert.stopAlert(id: self.tag!.id, timeout: BLE_TIMEOUT)
+            if (tag!.isAlerting) {
+                DispatchQueue.global(qos: .background).async {
+                    self.ble.alert.stopAlert(id: self.tag!.id, timeout: BLE_TIMEOUT)
+                }
+                tag!.isAlerting = false
             }
-            tag!.isAlerting = false
         }
         self.stopAnimation()
         super.viewWillDisappear(animated)
