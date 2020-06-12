@@ -16,7 +16,6 @@ class VibrationDefault {
     private var vibrating = false;
     
     public func start() {
-        let vibrate = SystemSoundID(kSystemSoundID_Vibrate)
         vibrating = true
         DispatchQueue.global(qos: .background).async {
             while self.vibrating {

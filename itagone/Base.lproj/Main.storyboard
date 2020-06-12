@@ -537,13 +537,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdO-ZJ-oXD" userLabel="Tag">
-                                <rect key="frame" x="10" y="8" width="300" height="136"/>
-                                <state key="normal" image="tagGold"/>
-                                <connections>
-                                    <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OgR-V3-nDU" userLabel="Tag Container">
+                                <rect key="frame" x="49.5" y="8" width="221" height="160"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdO-ZJ-oXD" userLabel="Tag">
+                                        <rect key="frame" x="30.5" y="0.0" width="160" height="160"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="DdO-ZJ-oXD" secondAttribute="height" multiplier="1:1" id="K5z-Dp-zFg"/>
+                                        </constraints>
+                                        <state key="normal" image="tagGold"/>
+                                        <connections>
+                                            <action selector="onTag:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="YOJ-PY-i2O"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="DdO-ZJ-oXD" firstAttribute="centerX" secondItem="OgR-V3-nDU" secondAttribute="centerX" id="75u-vu-IwX"/>
+                                    <constraint firstAttribute="bottom" secondItem="DdO-ZJ-oXD" secondAttribute="bottom" id="Wp6-kA-SwD"/>
+                                    <constraint firstItem="DdO-ZJ-oXD" firstAttribute="top" secondItem="OgR-V3-nDU" secondAttribute="top" id="fIW-mR-lXG"/>
+                                </constraints>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="tuw-s3-E91">
                                 <rect key="frame" x="0.0" y="184" width="320" height="56"/>
                                 <subviews>
@@ -615,13 +628,13 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZt-uP-uQr" userLabel="Label Name">
-                                <rect key="frame" x="16" y="152" width="288" height="24"/>
+                                <rect key="frame" x="16" y="176" width="288" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btConnected" translatesAutoresizingMaskIntoConstraints="NO" id="Nxa-cu-fA5">
-                                <rect key="frame" x="248.5" y="24" width="44" height="44"/>
+                                <rect key="frame" x="248.5" y="8" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ZM2-qM-XBd"/>
                                     <constraint firstAttribute="width" constant="44" id="tRN-6Y-D0X"/>
@@ -630,23 +643,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Nxa-cu-fA5" firstAttribute="top" secondItem="DdO-ZJ-oXD" secondAttribute="top" constant="16" id="Bqg-0v-Zvq"/>
+                            <constraint firstItem="Nxa-cu-fA5" firstAttribute="top" secondItem="Aws-oI-hZ7" secondAttribute="top" constant="8" id="Bqg-0v-Zvq"/>
                             <constraint firstItem="oSx-Ob-p7h" firstAttribute="bottom" secondItem="tuw-s3-E91" secondAttribute="bottom" id="EXF-aH-Pmd"/>
                             <constraint firstItem="oSx-Ob-p7h" firstAttribute="trailing" secondItem="kZt-uP-uQr" secondAttribute="trailing" constant="16" id="K19-KZ-ROl"/>
-                            <constraint firstItem="DdO-ZJ-oXD" firstAttribute="top" secondItem="Aws-oI-hZ7" secondAttribute="top" constant="8" id="KPv-CM-etH"/>
                             <constraint firstItem="kZt-uP-uQr" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" constant="16" id="LMi-Zv-Nql"/>
                             <constraint firstItem="kZt-uP-uQr" firstAttribute="bottom" secondItem="tuw-s3-E91" secondAttribute="top" constant="-8" id="P6i-rQ-0r7"/>
+                            <constraint firstItem="OgR-V3-nDU" firstAttribute="centerX" secondItem="Aws-oI-hZ7" secondAttribute="centerX" id="PPv-iZ-bo2"/>
                             <constraint firstItem="tuw-s3-E91" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" id="QOr-o4-iZT"/>
-                            <constraint firstItem="DdO-ZJ-oXD" firstAttribute="centerX" secondItem="Aws-oI-hZ7" secondAttribute="centerX" id="Qhn-5k-XjA"/>
-                            <constraint firstItem="DdO-ZJ-oXD" firstAttribute="bottom" secondItem="kZt-uP-uQr" secondAttribute="top" constant="-8" id="Wvw-o4-1Vs"/>
                             <constraint firstAttribute="trailing" secondItem="tuw-s3-E91" secondAttribute="trailing" id="ePn-Yb-t4q"/>
+                            <constraint firstItem="OgR-V3-nDU" firstAttribute="bottom" secondItem="kZt-uP-uQr" secondAttribute="top" constant="-8" id="ijt-iP-MO2"/>
+                            <constraint firstItem="OgR-V3-nDU" firstAttribute="trailing" secondItem="Nxa-cu-fA5" secondAttribute="centerX" id="ptz-UR-y6Q"/>
                             <constraint firstItem="sSM-0f-EUv" firstAttribute="centerX" secondItem="Nxa-cu-fA5" secondAttribute="centerX" id="t8m-55-yEx"/>
+                            <constraint firstItem="OgR-V3-nDU" firstAttribute="top" secondItem="Aws-oI-hZ7" secondAttribute="top" constant="8" id="vDH-3X-OS9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="oSx-Ob-p7h"/>
                     </view>
                     <connections>
                         <outlet property="buttonAlert" destination="rQW-Nk-Fet" id="dDr-9O-LzI"/>
                         <outlet property="buttonTag" destination="DdO-ZJ-oXD" id="qRv-Eh-hWt"/>
+                        <outlet property="buttonTagContainer" destination="OgR-V3-nDU" id="ebV-hA-dr3"/>
                         <outlet property="imageState" destination="Nxa-cu-fA5" id="I0g-M7-5dA"/>
                         <outlet property="labelName" destination="kZt-uP-uQr" id="Meo-Si-YbS"/>
                     </connections>

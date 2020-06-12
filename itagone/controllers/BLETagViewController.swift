@@ -12,6 +12,7 @@ import UIKit
 
 class BLETagViewController: UIViewController {
     @IBOutlet weak var buttonAlert: UIButton?
+    @IBOutlet weak var buttonTagContainer: UIView?
     @IBOutlet weak var buttonTag: UIButton?
     @IBOutlet weak var labelName: UILabel?
     @IBOutlet weak var imageState: UIImageView?
@@ -22,7 +23,7 @@ class BLETagViewController: UIViewController {
     static let imageGreen = UIImage(named: "tagGreen")
     static let imageRed = UIImage(named: "tagRed")
     static let imageWhite = UIImage(named: "tagWhite")
-
+    
     static let imageConnecting = UIImage(named: "btConnecting")
     static let imageConnected = UIImage(named: "btConnected")
     static let imageDisabled = UIImage(named: "btDisabled")
@@ -45,7 +46,8 @@ class BLETagViewController: UIViewController {
             return tag.alert || ble.connections.state[tag.id] == .connected || ble.connections.state[tag.id] == .writting
         }
     }
-    
+    private let ROTATTION_POINT = CGPoint(x: 0.5, y: 0.2)
+
     required init?(coder aDecoder: NSCoder) {
         store = TagStoreDefault.shared
         ble = BLEDefault.shared
@@ -101,6 +103,8 @@ class BLETagViewController: UIViewController {
             }
             self.setupAnimation()
         }))
+
+        buttonTag!.layer.anchorPoint = ROTATTION_POINT
         super.viewWillAppear(animated)
     }
     
@@ -117,13 +121,18 @@ class BLETagViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
     
-    private var viewLayerPositionY:CGFloat = 0.0
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        stopAnimation()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard let view = self.buttonTag else { return }
-        viewLayerPositionY = view.layer.position.y
-        stopAnimation()
-        setupAimationLayerAndAnchor()
+        guard let tagView = buttonTag else { return }
+        guard let containerView = buttonTagContainer else { return }
+        containerView.setNeedsLayout()
+        containerView.layoutIfNeeded()
+        tagView.layer.position = CGPoint(x: containerView.bounds.width/2, y: tagView.bounds.height * ROTATTION_POINT.y).applying(tagView.transform)
         setupAnimation()
     }
     
@@ -318,14 +327,6 @@ class BLETagViewController: UIViewController {
     let transform0 = CGAffineTransform(rotationAngle: 0)
     let transform1 = CGAffineTransform(rotationAngle: -CGFloat.pi/12)
     let transform2 = CGAffineTransform(rotationAngle: CGFloat.pi/12)
-    
-    private func setupAimationLayerAndAnchor () {
-        
-        guard let view = self.buttonTag else { return }
-        view.layer.anchorPoint = CGPoint(x: 0.5, y: self.anchorY)
-        let offset = view.layer.bounds.size.height * self.anchorY
-        view.layer.position.y = viewLayerPositionY - offset - 16 // 16 is top margin
-    }
     
     private func stopAnimation()
     {
