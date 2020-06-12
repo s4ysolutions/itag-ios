@@ -38,6 +38,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ld6-dg-CEP" userLabel="Top Bar View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODc-w2-KUy" userLabel="AppButton">
+                                        <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="cpW-7n-kZl"/>
+                                        </constraints>
+                                        <state key="normal" backgroundImage="app"/>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiY-Xq-d5f" userLabel="Sound Button">
                                         <rect key="frame" x="216" y="8" width="44" height="44"/>
                                         <constraints>
@@ -45,6 +52,9 @@
                                             <constraint firstAttribute="width" constant="44" id="vQU-aT-MFs"/>
                                         </constraints>
                                         <state key="normal" image="itemSound"/>
+                                        <connections>
+                                            <action selector="sound:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pRL-pY-Jyd"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3F-ZW-5aW" userLabel="Scan Button">
                                         <rect key="frame" x="268" y="8" width="44" height="44"/>
@@ -58,7 +68,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
-                                        <rect key="frame" x="16" y="0.0" width="105.5" height="60"/>
+                                        <rect key="frame" x="60" y="0.0" width="105.5" height="60"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -66,14 +76,17 @@
                                 </subviews>
                                 <color key="backgroundColor" name="colorToolbarBG"/>
                                 <constraints>
-                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="leading" secondItem="Ld6-dg-CEP" secondAttribute="leading" constant="16" id="10W-hv-vhR"/>
+                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="leading" secondItem="ODc-w2-KUy" secondAttribute="trailing" constant="8" id="10W-hv-vhR"/>
                                     <constraint firstItem="BiY-Xq-d5f" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="1fD-S7-NAb"/>
+                                    <constraint firstItem="ODc-w2-KUy" firstAttribute="top" secondItem="BiY-Xq-d5f" secondAttribute="top" id="7rx-z0-UOk"/>
                                     <constraint firstAttribute="bottom" secondItem="B3F-ZW-5aW" secondAttribute="bottom" constant="8" id="ESn-5K-ctI"/>
                                     <constraint firstItem="B3F-ZW-5aW" firstAttribute="leading" secondItem="BiY-Xq-d5f" secondAttribute="trailing" constant="8" id="IDz-sY-6pX"/>
                                     <constraint firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="trailing" constant="8" id="NFB-PU-L5g"/>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" id="R0l-GS-Bfn"/>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BiY-Xq-d5f" secondAttribute="leading" constant="8" id="RwY-Da-1Mk"/>
                                     <constraint firstAttribute="bottom" secondItem="hMZ-aM-S9j" secondAttribute="bottom" id="a57-So-Ico"/>
+                                    <constraint firstItem="BiY-Xq-d5f" firstAttribute="bottom" secondItem="ODc-w2-KUy" secondAttribute="bottom" id="lgp-zA-ccb"/>
+                                    <constraint firstItem="ODc-w2-KUy" firstAttribute="leading" secondItem="Ld6-dg-CEP" secondAttribute="leading" constant="8" id="pWB-6a-Ysu"/>
                                     <constraint firstItem="B3F-ZW-5aW" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="zkh-TJ-R7T"/>
                                 </constraints>
                             </view>
@@ -98,6 +111,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="VeB-MD-rSr" id="Qgl-dv-Jwy"/>
+                        <outlet property="soundButton" destination="BiY-Xq-d5f" id="ezR-a6-E4Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -428,6 +442,13 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3Wz-Te-6l8">
                                 <rect key="frame" x="4" y="476" width="312" height="2"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mfb-jA-KZc" userLabel="AppButton">
+                                <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="XHo-ur-pTs"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="app"/>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNG-j8-iRD" userLabel="Back Button">
                                 <rect key="frame" x="268" y="8" width="44" height="44"/>
                                 <constraints>
@@ -446,7 +467,7 @@
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1h-V4-wJB">
-                                <rect key="frame" x="16" y="13.5" width="105.5" height="33.5"/>
+                                <rect key="frame" x="60" y="13.5" width="105.5" height="33.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -457,11 +478,14 @@
                             <constraint firstItem="3Wz-Te-6l8" firstAttribute="leading" secondItem="EP1-eK-rS2" secondAttribute="leading" constant="4" id="0d1-aw-9rj"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="trailing" secondItem="hNG-j8-iRD" secondAttribute="trailing" constant="8" id="19w-7j-LND"/>
                             <constraint firstItem="z1h-V4-wJB" firstAttribute="centerY" secondItem="hNG-j8-iRD" secondAttribute="centerY" id="9NT-Ez-raa"/>
-                            <constraint firstItem="z1h-V4-wJB" firstAttribute="leading" secondItem="EP1-eK-rS2" secondAttribute="leading" constant="16" id="GUl-co-ty0"/>
+                            <constraint firstItem="z1h-V4-wJB" firstAttribute="leading" secondItem="Mfb-jA-KZc" secondAttribute="trailing" constant="8" id="GUl-co-ty0"/>
+                            <constraint firstItem="Mfb-jA-KZc" firstAttribute="bottom" secondItem="hNG-j8-iRD" secondAttribute="bottom" id="KsI-y7-Juc"/>
                             <constraint firstItem="fQI-K4-7I9" firstAttribute="leading" secondItem="lgU-rk-RjQ" secondAttribute="leading" id="PQ4-sV-Vpp"/>
                             <constraint firstAttribute="trailing" secondItem="3Wz-Te-6l8" secondAttribute="trailing" constant="4" id="Ur5-K7-JGe"/>
+                            <constraint firstItem="Mfb-jA-KZc" firstAttribute="top" secondItem="hNG-j8-iRD" secondAttribute="top" id="YyH-Uu-KH7"/>
                             <constraint firstItem="fQI-K4-7I9" firstAttribute="top" secondItem="hNG-j8-iRD" secondAttribute="bottom" constant="8" id="ZOq-I1-ZFW"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="bottom" secondItem="3Wz-Te-6l8" secondAttribute="bottom" constant="2" id="eEn-tx-B0F"/>
+                            <constraint firstItem="Mfb-jA-KZc" firstAttribute="leading" secondItem="EP1-eK-rS2" secondAttribute="leading" constant="8" id="fao-E8-IlL"/>
                             <constraint firstItem="lgU-rk-RjQ" firstAttribute="trailing" secondItem="fQI-K4-7I9" secondAttribute="trailing" id="pqz-zg-CSv"/>
                             <constraint firstItem="hNG-j8-iRD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="z1h-V4-wJB" secondAttribute="trailing" constant="8" id="sqR-ro-AtV"/>
                             <constraint firstItem="3Wz-Te-6l8" firstAttribute="top" secondItem="fQI-K4-7I9" secondAttribute="bottom" id="yLs-S4-BAZ"/>
@@ -636,6 +660,7 @@
         <segue reference="idc-IC-EfF"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="app" width="384" height="384"/>
         <image name="btConnected" width="198" height="198"/>
         <image name="btnAlert" width="384" height="384"/>
         <image name="btnEdit" width="384" height="384"/>

@@ -12,7 +12,12 @@ import Rasat
 
 class BLERootViewController: UIViewController {
     @IBOutlet weak var containerView: UIView?
-
+    @IBOutlet weak var soundButton: UIButton?
+    
+    static let imageNoSound = UIImage(named: "itemNoSound")
+    static let imageSound = UIImage(named: "itemSound")
+    static let imageVibration = UIImage(named: "itemVibration")
+    
     let ble: BLEInterface
     let store: TagStoreInterface
     
@@ -27,6 +32,7 @@ class BLERootViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupItemSound()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,10 +43,41 @@ class BLERootViewController: UIViewController {
         }))
         setupContent()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         disposable?.dispose()
         super.viewWillDisappear(animated)
+    }
+    
+    @IBAction
+    func sound(_ sender: UIView) {
+        let mode = getAlertSoundMode()
+        switch mode {
+        case .NoSound:
+            setAlertSoundMode(mode: .Sound)
+        case .Sound:
+            setAlertSoundMode(mode: .Vibration)
+        case .Vibration:
+            setAlertSoundMode(mode: .NoSound)
+        }
+        setupItemSound()
+    }
+    
+    private func setupItemSound() {
+        let mode = getAlertSoundMode()
+        
+        let image = { () -> UIImage? in
+            switch mode {
+            case .NoSound:
+                return BLERootViewController.imageNoSound
+            case .Sound:
+                return BLERootViewController.imageSound
+            case .Vibration:
+                return BLERootViewController.imageVibration
+            }
+        }()
+        
+        soundButton?.setImage( image, for: .normal)
     }
     
     // MARK: - Manage Content
@@ -88,7 +125,7 @@ class BLERootViewController: UIViewController {
             multiplier:1.0,
             constant: 0
         ))
-
+        
         contentViewController.didMove(toParent: self)
     }
     

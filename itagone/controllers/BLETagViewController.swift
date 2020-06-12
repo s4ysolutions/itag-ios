@@ -22,7 +22,7 @@ class BLETagViewController: UIViewController {
     static let imageGreen = UIImage(named: "tagGreen")
     static let imageRed = UIImage(named: "tagRed")
     static let imageWhite = UIImage(named: "tagWhite")
-    
+
     static let imageConnecting = UIImage(named: "btConnecting")
     static let imageConnected = UIImage(named: "btConnected")
     static let imageDisabled = UIImage(named: "btDisabled")
@@ -353,4 +353,5 @@ class BLETagViewController: UIViewController {
             })
         }
     }
+    
 }
