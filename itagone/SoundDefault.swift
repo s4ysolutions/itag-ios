@@ -45,8 +45,6 @@ class SoundDefault {
                 }catch let error as NSError {
                     print(error, error.code, error.description)
                 }
-            }else{
-                print("no lost")
             }
         }
     }

@@ -18,6 +18,8 @@ class PeripheralTableViewCell: UITableViewCell {
     let imagePlus = UIImage(named: "btnPlus")
     let imageMinus = UIImage(named: "btnMinus")
     let store: TagStoreInterface
+    
+    var navigationController: UINavigationController?
 
     var _peripheral: CBPeripheral?
 
@@ -65,6 +67,7 @@ class PeripheralTableViewCell: UITableViewCell {
             store.forget(id: peripheral.identifier.uuidString)
         } else {
             store.remember(tag: createTag(fromPeripheral: peripheral))
+            navigationController?.popViewController(animated: true)
         }
     }
     

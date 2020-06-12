@@ -29,16 +29,11 @@ class TagStoreDefault: TagStoreInterface {
  
         ids = defaults.array(forKey: "ids") as? [String] ?? []
         idsforever = defaults.array(forKey: "idsforever") as? [String] ?? []
-        print("tag ids <- store:", ids)
-        print("tag idsforever <- store:", idsforever)
         
         for id in idsforever {
             guard let dict = defaults.dictionary(forKey: "tag \(id)") else {continue}
             if ids.contains(id) {
                 tags[id] = factory.tag(id: id, dict: dict)
-                print("tag remembered <- store:", tags[id]?.toString() ?? "", dict)
-            } else {
-                print("tag forgotten <- store:", tags[id]?.toString() ?? "", dict)
             }
         }
         /*
@@ -94,13 +89,10 @@ class TagStoreDefault: TagStoreInterface {
     private func storeToDefaults() {
         defaults.set(ids, forKey: "ids")
         defaults.set(idsforever, forKey: "idsforever")
-        print("tag ids -> store:", ids)
-        print("tag ids forever -> store:", idsforever)
 
         for id in ids {
             guard let tag = tags[id] else { continue }
             defaults.set(tag.toDict(), forKey: "tag \(id)")
-            print("tag -> store:", tags[id]?.toString() ?? "",tag.toDict())
         }
     }
     
@@ -173,7 +165,7 @@ class TagStoreDefault: TagStoreInterface {
     
     func stopAlertAll() {
         for (_, tag) in tags {
-            if tag.isAlerting {
+            if ble.alert.isAlerting(id: tag.id) {
                 DispatchQueue.global(qos: .background).async {
                     self.ble.alert.stopAlert(id: tag.id, timeout: BLE_TIMEOUT)
                 }

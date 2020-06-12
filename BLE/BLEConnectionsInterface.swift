@@ -10,7 +10,6 @@ import Foundation
 import Rasat
 
 public enum BLEConnectionState {
-    case unknown
     case disconnected
     case connecting
     case disconnecting

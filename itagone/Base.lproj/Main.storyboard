@@ -38,6 +38,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ld6-dg-CEP" userLabel="Top Bar View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiY-Xq-d5f" userLabel="Sound Button">
+                                        <rect key="frame" x="216" y="8" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="kZd-px-kQW"/>
+                                            <constraint firstAttribute="width" constant="44" id="vQU-aT-MFs"/>
+                                        </constraints>
+                                        <state key="normal" image="itemSound"/>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3F-ZW-5aW" userLabel="Scan Button">
                                         <rect key="frame" x="268" y="8" width="44" height="44"/>
                                         <constraints>
@@ -50,7 +58,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
-                                        <rect key="frame" x="16" y="13.5" width="105.5" height="33.5"/>
+                                        <rect key="frame" x="16" y="0.0" width="105.5" height="60"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -59,10 +67,13 @@
                                 <color key="backgroundColor" name="colorToolbarBG"/>
                                 <constraints>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="leading" secondItem="Ld6-dg-CEP" secondAttribute="leading" constant="16" id="10W-hv-vhR"/>
-                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="centerY" secondItem="Ld6-dg-CEP" secondAttribute="centerY" id="30A-nw-io6"/>
+                                    <constraint firstItem="BiY-Xq-d5f" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="1fD-S7-NAb"/>
                                     <constraint firstAttribute="bottom" secondItem="B3F-ZW-5aW" secondAttribute="bottom" constant="8" id="ESn-5K-ctI"/>
+                                    <constraint firstItem="B3F-ZW-5aW" firstAttribute="leading" secondItem="BiY-Xq-d5f" secondAttribute="trailing" constant="8" id="IDz-sY-6pX"/>
                                     <constraint firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="trailing" constant="8" id="NFB-PU-L5g"/>
-                                    <constraint firstItem="B3F-ZW-5aW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hMZ-aM-S9j" secondAttribute="trailing" constant="8" id="t5L-34-rIP"/>
+                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" id="R0l-GS-Bfn"/>
+                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BiY-Xq-d5f" secondAttribute="leading" constant="8" id="RwY-Da-1Mk"/>
+                                    <constraint firstAttribute="bottom" secondItem="hMZ-aM-S9j" secondAttribute="bottom" id="a57-So-Ico"/>
                                     <constraint firstItem="B3F-ZW-5aW" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="zkh-TJ-R7T"/>
                                 </constraints>
                             </view>
@@ -301,9 +312,9 @@
                         <viewLayoutGuide key="safeArea" id="iKY-D3-wMt"/>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="8oE-2Q-yfK"/>
                                 <exclude reference="d0W-sO-LkG"/>
                                 <exclude reference="u1V-Qg-sLe"/>
+                                <exclude reference="8oE-2Q-yfK"/>
                                 <exclude reference="CRD-Zd-JNc"/>
                                 <exclude reference="FE3-Kr-bM6"/>
                                 <exclude reference="KO1-HW-kuQ"/>
@@ -317,13 +328,13 @@
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
+                                <exclude reference="A4h-OS-vDc"/>
+                                <include reference="d0W-sO-LkG"/>
+                                <include reference="u1V-Qg-sLe"/>
                                 <include reference="8oE-2Q-yfK"/>
                                 <exclude reference="FO7-Nr-jKF"/>
                                 <exclude reference="Slw-Z9-aDz"/>
                                 <exclude reference="aLU-i5-ZpD"/>
-                                <exclude reference="A4h-OS-vDc"/>
-                                <include reference="d0W-sO-LkG"/>
-                                <include reference="u1V-Qg-sLe"/>
                                 <exclude reference="CRD-Zd-JNc"/>
                                 <exclude reference="F2R-gW-0h2"/>
                                 <include reference="FE3-Kr-bM6"/>
@@ -526,7 +537,7 @@
                                             <constraint firstAttribute="width" secondItem="rQW-Nk-Fet" secondAttribute="height" multiplier="1:1" id="3On-Tz-taY"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="GVe-J7-8fy"/>
                                         </constraints>
-                                        <state key="normal" title="Button" image="btnNoAlert"/>
+                                        <state key="normal" title="Button" image="btnAlert"/>
                                         <connections>
                                             <action selector="onAlert:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="bnz-Y2-Kg5"/>
                                         </connections>
@@ -626,12 +637,13 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="btConnected" width="198" height="198"/>
+        <image name="btnAlert" width="384" height="384"/>
         <image name="btnEdit" width="384" height="384"/>
         <image name="btnMinus" width="384" height="384"/>
-        <image name="btnNoAlert" width="384" height="384"/>
         <image name="btnProps" width="384" height="384"/>
         <image name="itemBack" width="384" height="384"/>
         <image name="itemScan" width="384" height="384"/>
+        <image name="itemSound" width="384" height="384"/>
         <image name="scanArrow" width="367" height="367"/>
         <image name="tagGold" width="300" height="513"/>
         <namedColor name="colorTagsBG">

@@ -14,8 +14,6 @@ class TagDefault: TagInterface {
     var color: TagColor
     var alert: Bool
 
-    var isAlerting = false
-
     init(id: String, name: String?, color: TagColor?, alert: Bool?) {
         self.id = id
         self.name = name ?? "unknown".localized

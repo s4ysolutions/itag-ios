@@ -78,6 +78,7 @@ class PeripheralsTableViewController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "peripheralCell", for: indexPath) as! PeripheralTableViewCell
             
+            cell.navigationController = navigationController
             let peripheral = peripherals[indexPath.row]
             cell.peripheral = peripheral
             return cell

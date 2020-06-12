@@ -284,7 +284,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
                     case.disconnecting:
                         return BLEConnectionState.connecting
                     default:
-                        return BLEConnectionState.unknown
+                        return BLEConnectionState.disconnected
                     }
                 }()
                 connectionsControl.setState(id: id, state: state)
@@ -437,10 +437,12 @@ class BLEConnectionDefault: BLEConnectionInterface {
     private func write(data: Data, characteristic: CBCharacteristic, timeout: DispatchTime?) -> BLEError? {
         guard let peripheral = peripheral else { return .noPeripheral}
 
+        connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
         if timeout == nil {
             peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
+            Thread.sleep(forTimeInterval: 0.05)
+            connectionsControl.setState(id: peripheral.identifier.uuidString, state: peripheral.state == .connected ? .connected : .disconnected)
         } else {
-            connectionsControl.setState(id: peripheral.identifier.uuidString, state: .writting)
             let semaphore = DispatchSemaphore(value: 0)
             let disposable = DisposeBag()
             
