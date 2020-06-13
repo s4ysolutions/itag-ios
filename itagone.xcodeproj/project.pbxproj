@@ -26,11 +26,12 @@
 		413682EB2301DF440073A45A /* BLEFindMeDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413682EA2301DF440073A45A /* BLEFindMeDefault.swift */; };
 		413682ED2301E0150073A45A /* BLEFindMeControlFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413682EC2301E0150073A45A /* BLEFindMeControlFactoryInterface.swift */; };
 		413682EF2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413682EE2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift */; };
+		415B1C31249536F5001C54B0 /* Pods_itagone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5738C26BF2B9546553AE90 /* Pods_itagone.framework */; };
+		415B1C3324953906001C54B0 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
+		415B1C3424953906001C54B0 /* BLE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4177C95D22FEAE4F003F4423 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		4177C96422FEAE4F003F4423 /* BLETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C96322FEAE4F003F4423 /* BLETests.swift */; };
 		4177C96622FEAE4F003F4423 /* BLE.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177C95622FEAE4E003F4423 /* BLE.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4177C96922FEAE4F003F4423 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
-		4177C96A22FEAE4F003F4423 /* BLE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4177C97222FEAE76003F4423 /* BLEConnectionInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C94522FEA637003F4423 /* BLEConnectionInterface.swift */; };
 		4177C97422FEAE76003F4423 /* BLEConnnectionDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C94722FEA680003F4423 /* BLEConnnectionDefault.swift */; };
 		4177C97522FEAE76003F4423 /* BLEConnectionFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C94922FEAA18003F4423 /* BLEConnectionFactoryInterface.swift */; };
@@ -85,7 +86,6 @@
 		4C0ED533A152DB5C0D9DDA0E /* Pods_itagone_itagoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8F822B85EB450E107E1AAD1 /* Pods_itagone_itagoneTests.framework */; };
 		85F2946E0179EA55749B0FCD /* Pods_itagone_BLETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C12C0E8532E9AED0A879286 /* Pods_itagone_BLETests.framework */; };
 		8D230D20CB41957AC6D80A44 /* Pods_itagone_itagoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7975AA4C2FB05FE18B76001F /* Pods_itagone_itagoneUITests.framework */; };
-		A2EA7DB04E19FE21CE92323C /* Pods_itagone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5738C26BF2B9546553AE90 /* Pods_itagone.framework */; };
 		FC0DECB1F5B5DB3529DDF1A8 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
@@ -128,13 +128,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4177C96E22FEAE4F003F4423 /* Embed Frameworks */ = {
+		415B1C3524953906001C54B0 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4177C96A22FEAE4F003F4423 /* BLE.framework in Embed Frameworks */,
+				415B1C3424953906001C54B0 /* BLE.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +162,7 @@
 		413682EA2301DF440073A45A /* BLEFindMeDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeDefault.swift; sourceTree = "<group>"; };
 		413682EC2301E0150073A45A /* BLEFindMeControlFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryInterface.swift; sourceTree = "<group>"; };
 		413682EE2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryDefault.swift; sourceTree = "<group>"; };
+		415B1C2E24953686001C54B0 /* WayTodaySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WayTodaySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4177C94522FEA637003F4423 /* BLEConnectionInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionInterface.swift; sourceTree = "<group>"; };
 		4177C94722FEA680003F4423 /* BLEConnnectionDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnnectionDefault.swift; sourceTree = "<group>"; };
 		4177C94922FEAA18003F4423 /* BLEConnectionFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionFactoryInterface.swift; sourceTree = "<group>"; };
@@ -275,9 +276,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4177C96922FEAE4F003F4423 /* BLE.framework in Frameworks */,
+				415B1C3324953906001C54B0 /* BLE.framework in Frameworks */,
+				415B1C31249536F5001C54B0 /* Pods_itagone.framework in Frameworks */,
 				FC0DECB1F5B5DB3529DDF1A8 /* (null) in Frameworks */,
-				A2EA7DB04E19FE21CE92323C /* Pods_itagone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +518,7 @@
 		7435D10E9C860F061AD2ADA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				415B1C2E24953686001C54B0 /* WayTodaySDK.framework */,
 				D8F822B85EB450E107E1AAD1 /* Pods_itagone_itagoneTests.framework */,
 				7975AA4C2FB05FE18B76001F /* Pods_itagone_itagoneUITests.framework */,
 				FF4D221C3341DD53A5BB6BE2 /* Pods_itagone_BLE.framework */,
@@ -589,7 +591,7 @@
 				41F67BF122F932E300BCC628 /* Frameworks */,
 				41F67BF222F932E300BCC628 /* Resources */,
 				FA3E28FECC982C4E8D19077B /* [CP] Embed Pods Frameworks */,
-				4177C96E22FEAE4F003F4423 /* Embed Frameworks */,
+				415B1C3524953906001C54B0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1116,6 +1118,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.BLE;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1145,6 +1148,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.BLE;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1316,7 +1320,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 72C8E62BD8311F8E0D200968 /* Pods-itagone.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1340,7 +1343,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 51863BE7226A0B4B46323975 /* Pods-itagone.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

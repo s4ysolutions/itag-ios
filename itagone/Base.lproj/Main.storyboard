@@ -45,8 +45,14 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="app"/>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
+                                        <rect key="frame" x="60" y="0.0" width="96" height="60"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiY-Xq-d5f" userLabel="Sound Button">
-                                        <rect key="frame" x="216" y="8" width="44" height="44"/>
+                                        <rect key="frame" x="164" y="8" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="kZd-px-kQW"/>
                                             <constraint firstAttribute="width" constant="44" id="vQU-aT-MFs"/>
@@ -55,6 +61,14 @@
                                         <connections>
                                             <action selector="sound:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pRL-pY-Jyd"/>
                                         </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEu-zV-ykG">
+                                        <rect key="frame" x="216" y="8" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="KhF-r1-xdm"/>
+                                            <constraint firstAttribute="width" constant="44" id="eCt-HF-GMJ"/>
+                                        </constraints>
+                                        <state key="normal" title="WayToday Button" image="itemWayToday"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3F-ZW-5aW" userLabel="Scan Button">
                                         <rect key="frame" x="268" y="8" width="44" height="44"/>
@@ -67,12 +81,6 @@
                                             <segue destination="DmT-Ju-EAg" kind="show" id="5jZ-Ib-cNz"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
-                                        <rect key="frame" x="60" y="0.0" width="105.5" height="60"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" name="colorToolbarBG"/>
                                 <constraints>
@@ -80,13 +88,15 @@
                                     <constraint firstItem="BiY-Xq-d5f" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="1fD-S7-NAb"/>
                                     <constraint firstItem="ODc-w2-KUy" firstAttribute="top" secondItem="BiY-Xq-d5f" secondAttribute="top" id="7rx-z0-UOk"/>
                                     <constraint firstAttribute="bottom" secondItem="B3F-ZW-5aW" secondAttribute="bottom" constant="8" id="ESn-5K-ctI"/>
-                                    <constraint firstItem="B3F-ZW-5aW" firstAttribute="leading" secondItem="BiY-Xq-d5f" secondAttribute="trailing" constant="8" id="IDz-sY-6pX"/>
+                                    <constraint firstItem="BiY-Xq-d5f" firstAttribute="trailing" secondItem="aEu-zV-ykG" secondAttribute="leading" constant="-8" id="IDz-sY-6pX"/>
                                     <constraint firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="trailing" constant="8" id="NFB-PU-L5g"/>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" id="R0l-GS-Bfn"/>
-                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BiY-Xq-d5f" secondAttribute="leading" constant="8" id="RwY-Da-1Mk"/>
+                                    <constraint firstItem="hMZ-aM-S9j" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BiY-Xq-d5f" secondAttribute="leading" constant="-8" id="RwY-Da-1Mk"/>
                                     <constraint firstAttribute="bottom" secondItem="hMZ-aM-S9j" secondAttribute="bottom" id="a57-So-Ico"/>
+                                    <constraint firstItem="aEu-zV-ykG" firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="leading" constant="-8" id="j46-wm-0sw"/>
                                     <constraint firstItem="BiY-Xq-d5f" firstAttribute="bottom" secondItem="ODc-w2-KUy" secondAttribute="bottom" id="lgp-zA-ccb"/>
                                     <constraint firstItem="ODc-w2-KUy" firstAttribute="leading" secondItem="Ld6-dg-CEP" secondAttribute="leading" constant="8" id="pWB-6a-Ysu"/>
+                                    <constraint firstItem="aEu-zV-ykG" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="waM-NG-DZZ"/>
                                     <constraint firstItem="B3F-ZW-5aW" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="zkh-TJ-R7T"/>
                                 </constraints>
                             </view>
@@ -684,6 +694,7 @@
         <image name="itemBack" width="384" height="384"/>
         <image name="itemScan" width="384" height="384"/>
         <image name="itemSound" width="384" height="384"/>
+        <image name="itemWayToday" width="384" height="384"/>
         <image name="scanArrow" width="367" height="367"/>
         <image name="tagGold" width="300" height="513"/>
         <namedColor name="colorTagsBG">

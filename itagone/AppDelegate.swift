@@ -9,6 +9,7 @@
 import BLE
 import UIKit
 import Rasat
+import WayTodaySDK
 
 enum ApplicationState {
     case ACTIVE
@@ -32,13 +33,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let sound = SoundDefault.shared
     let vibation = VibrationDefault.shared;
     
+    let wtLog: Log
+    let locationService: LocationService
+    let uploader: Uploader
+    let wayTodayState: WayTodayState
+    
     var window: UIWindow?
+    
+
+    override init(){
+      log = LogDefault.shared
+      wayTodayState = WayTodayStateDefault.shared
+      uploader = UploaderDefault.shared(log: log, wayTodayState: wayTodayState)
+      locationService = LocationServiceDefault.shared(log: log, wayTodayState: wayTodayState)
+      super.init()
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if ble.state == .on {
             DispatchQueue.global(qos: .background).async {
                 self.store.connectAll()
             }
+        }
+        do {
+          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: log, wayTodayState: WayTodayStateDefault.shared))
+        }catch{
+          log.error("Error start listening")
         }
         dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
             if toState == .disconnected {
@@ -139,9 +159,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         dispose.dispose()
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        uploader.stopListen()
     }
-    
     
 }
 

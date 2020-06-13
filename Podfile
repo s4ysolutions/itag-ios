@@ -4,8 +4,10 @@
 target 'itagone' do
   platform :ios, '12.4'
   use_frameworks!
+  project 'itagone.xcodeproj'
 
   pod 'Rasat', :git => 'https://github.com/s4ysolutions/Rasat.git'
+  pod 'WayTodaySDK', :path => '~/MyProjects/way-today-ios-sdk'
 
   target 'itagoneTests' do
     inherit! :complete
