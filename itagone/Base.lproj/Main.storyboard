@@ -45,7 +45,7 @@
                                         </constraints>
                                         <state key="normal" backgroundImage="app"/>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="iTag One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-aM-S9j">
                                         <rect key="frame" x="60" y="0.0" width="96" height="60"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <nil key="textColor"/>
@@ -66,7 +66,7 @@
                                         <rect key="frame" x="216" y="8" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="KhF-r1-xdm"/>
-                                            <constraint firstAttribute="width" constant="44" id="eCt-HF-GMJ"/>
+                                            <constraint firstAttribute="width" secondItem="aEu-zV-ykG" secondAttribute="height" multiplier="1:1" id="VC1-0m-GLz"/>
                                         </constraints>
                                         <state key="normal" title="WayToday Button" image="itemWayToday"/>
                                         <connections>
