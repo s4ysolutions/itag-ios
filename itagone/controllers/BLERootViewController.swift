@@ -9,6 +9,7 @@
 import BLE
 import UIKit
 import Rasat
+import WayTodaySDK
 
 class BLERootViewController: UIViewController {
     @IBOutlet weak var containerView: UIView?
@@ -24,9 +25,16 @@ class BLERootViewController: UIViewController {
     var contentID = ""
     var disposable: DisposeBag?
     
+    private let locationService: LocationService
+    private var waytoday: WayTodayState
+    private var waytodayService: WayTodayService
+
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
         store = TagStoreDefault.shared
+        waytoday = WayTodayStateDefault.shared
+        locationService = LocationServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday)
+        waytodayService = WayTodayServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET)
         super.init(coder: aDecoder)
     }
     
@@ -80,6 +88,30 @@ class BLERootViewController: UIViewController {
         soundButton?.setImage( image, for: .normal)
     }
     
+    @IBAction
+    func onWayToday(_ sender: UIView) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Black".localized, style: .default) { _ in
+            
+        })
+        alert.addAction(UIAlertAction(title: "Blue".localized, style: .default) { _ in
+            
+        })
+        alert.addAction(UIAlertAction(title: "Gold".localized, style: .default) { _ in
+            
+        })
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = view
+            popoverController.sourceRect = CGRect(x: sender.bounds.midX,
+                                                  y: sender.bounds.midY,
+                                                  width: sender.bounds.width,
+                                                  height: sender.bounds.height)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        present(alert, animated: true)
+    }
     // MARK: - Manage Content
     
     func setupContent() {

@@ -69,6 +69,9 @@
                                             <constraint firstAttribute="width" constant="44" id="eCt-HF-GMJ"/>
                                         </constraints>
                                         <state key="normal" title="WayToday Button" image="itemWayToday"/>
+                                        <connections>
+                                            <action selector="onWayToday:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vZs-Cv-c7w"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3F-ZW-5aW" userLabel="Scan Button">
                                         <rect key="frame" x="268" y="8" width="44" height="44"/>

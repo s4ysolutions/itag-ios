@@ -42,10 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     override init(){
-      log = LogDefault.shared
+      wtLog = LogDefault.shared
       wayTodayState = WayTodayStateDefault.shared
-      uploader = UploaderDefault.shared(log: log, wayTodayState: wayTodayState)
-      locationService = LocationServiceDefault.shared(log: log, wayTodayState: wayTodayState)
+      uploader = UploaderDefault.shared(log: wtLog, wayTodayState: wayTodayState)
+      locationService = LocationServiceDefault.shared(log: wtLog, wayTodayState: wayTodayState)
       super.init()
     }
     
@@ -56,9 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         do {
-          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: log, wayTodayState: WayTodayStateDefault.shared))
+          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
         }catch{
-          log.error("Error start listening")
+          wtLog.error("Error start listening")
         }
         dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
             if toState == .disconnected {
