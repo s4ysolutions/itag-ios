@@ -30,6 +30,10 @@
 		415B1C3324953906001C54B0 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		415B1C3424953906001C54B0 /* BLE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		415B1C3924956151001C54B0 /* secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3824956151001C54B0 /* secret.swift */; };
+		415B1C3C249569F3001C54B0 /* WayToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3B249569F3001C54B0 /* WayToday.swift */; };
+		415B1C3E24956A26001C54B0 /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3D24956A26001C54B0 /* Bool.swift */; };
+		415B1C4124956ACA001C54B0 /* Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4024956ACA001C54B0 /* Any.swift */; };
+		415B1C4324957356001C54B0 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4224957356001C54B0 /* Int.swift */; };
 		4177C95D22FEAE4F003F4423 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		4177C96422FEAE4F003F4423 /* BLETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C96322FEAE4F003F4423 /* BLETests.swift */; };
 		4177C96622FEAE4F003F4423 /* BLE.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177C95622FEAE4E003F4423 /* BLE.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -165,6 +169,10 @@
 		413682EE2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryDefault.swift; sourceTree = "<group>"; };
 		415B1C2E24953686001C54B0 /* WayTodaySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WayTodaySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		415B1C3824956151001C54B0 /* secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secret.swift; sourceTree = "<group>"; };
+		415B1C3B249569F3001C54B0 /* WayToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayToday.swift; sourceTree = "<group>"; };
+		415B1C3D24956A26001C54B0 /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
+		415B1C4024956ACA001C54B0 /* Any.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Any.swift; sourceTree = "<group>"; };
+		415B1C4224957356001C54B0 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		4177C94522FEA637003F4423 /* BLEConnectionInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionInterface.swift; sourceTree = "<group>"; };
 		4177C94722FEA680003F4423 /* BLEConnnectionDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnnectionDefault.swift; sourceTree = "<group>"; };
 		4177C94922FEAA18003F4423 /* BLEConnectionFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionFactoryInterface.swift; sourceTree = "<group>"; };
@@ -368,6 +376,16 @@
 			path = waytoday;
 			sourceTree = "<group>";
 		};
+		415B1C3F24956A98001C54B0 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				415B1C3D24956A26001C54B0 /* Bool.swift */,
+				415B1C4024956ACA001C54B0 /* Any.swift */,
+				415B1C4224957356001C54B0 /* Int.swift */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
 		4177C95522FEAE4E003F4423 /* BLE */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,7 +460,9 @@
 		41DEB45324939A5B00EAF6C3 /* preferences */ = {
 			isa = PBXGroup;
 			children = (
+				415B1C3F24956A98001C54B0 /* base */,
 				41DEB45424939A8400EAF6C3 /* AlertSound.swift */,
+				415B1C3B249569F3001C54B0 /* WayToday.swift */,
 			);
 			path = preferences;
 			sourceTree = "<group>";
@@ -997,13 +1017,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				415B1C4124956ACA001C54B0 /* Any.swift in Sources */,
 				41F67C2722F93E6400BCC628 /* TagInterface.swift in Sources */,
+				415B1C3C249569F3001C54B0 /* WayToday.swift in Sources */,
 				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
 				415B1C3924956151001C54B0 /* secret.swift in Sources */,
 				41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */,
 				41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */,
 				41DEB45524939A8400EAF6C3 /* AlertSound.swift in Sources */,
 				41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */,
+				415B1C4324957356001C54B0 /* Int.swift in Sources */,
 				413682E0230178480073A45A /* IndicatorTableViewCell.swift in Sources */,
 				41A5DA6E22FBD56C00E6F94B /* TagStoreInterface.swift in Sources */,
 				41A5DA7F22FC569100E6F94B /* BLETag1ViewController.swift in Sources */,
@@ -1015,6 +1038,7 @@
 				41A5DA8322FC572800E6F94B /* BLETagViewController.swift in Sources */,
 				413682E52301B5D60073A45A /* Float+extenstions.swift in Sources */,
 				41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */,
+				415B1C3E24956A26001C54B0 /* Bool.swift in Sources */,
 				413682E72301B94E0073A45A /* SoundDefault.swift in Sources */,
 				41A5DA7422FBD85B00E6F94B /* TagFactoryDefault.swift in Sources */,
 				41A5DA7622FBDAA700E6F94B /* TagStoreDefault.swift in Sources */,

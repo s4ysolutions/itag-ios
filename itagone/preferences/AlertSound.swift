@@ -15,27 +15,39 @@ enum AlertSoundMode {
     case NoSound
 }
 
-func getAlertSoundMode() -> AlertSoundMode {
-    let defaults = UserDefaults.standard
-    let m = defaults.integer(forKey: "alertSoundMode")
-    switch m {
-    case 1:
-        return .Vibration
-    case 2:
-        return .NoSound
-    default:
-        return .Sound
+class AlertSoundPreferences {
+    private static let onPref = IntPreference("alertSoundMode")
+    static var mode: AlertSoundMode {
+        get {
+            let m = onPref.get()
+            switch m {
+            case 1:
+                return .Vibration
+            case 2:
+                return .NoSound
+            default:
+                return .Sound
+            }
+        }
+        set(val) {
+            switch val {
+            case .Sound:
+                onPref.set(0)
+            case .Vibration:
+                onPref.set(1)
+            case .NoSound:
+                onPref.set(2)
+            }
+        }
     }
-}
-
-func setAlertSoundMode(mode: AlertSoundMode) {
-    let defaults = UserDefaults.standard
-    switch mode {
-    case .Sound:
-        defaults.set(0, forKey: "alertSoundMode")
-    case .Vibration:
-        defaults.set(1, forKey: "alertSoundMode")
-    case .NoSound:
-        defaults.set(2, forKey: "alertSoundMode")
+    static func next() {
+        switch mode {
+        case .NoSound:
+            mode = .Sound
+        case .Sound:
+            mode = .Vibration
+        case .Vibration:
+            mode = .NoSound
+        }
     }
 }
