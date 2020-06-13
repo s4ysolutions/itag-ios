@@ -59,23 +59,13 @@ class BLERootViewController: UIViewController {
     
     @IBAction
     func sound(_ sender: UIView) {
-        let mode = getAlertSoundMode()
-        switch mode {
-        case .NoSound:
-            setAlertSoundMode(mode: .Sound)
-        case .Sound:
-            setAlertSoundMode(mode: .Vibration)
-        case .Vibration:
-            setAlertSoundMode(mode: .NoSound)
-        }
+        AlertSoundPreferences.next()
         setupItemSound()
     }
     
     private func setupItemSound() {
-        let mode = getAlertSoundMode()
-        
         let image = { () -> UIImage? in
-            switch mode {
+            switch AlertSoundPreferences.mode {
             case .NoSound:
                 return BLERootViewController.imageNoSound
             case .Sound:
@@ -91,13 +81,11 @@ class BLERootViewController: UIViewController {
     @IBAction
     func onWayToday(_ sender: UIView) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Black".localized, style: .default) { _ in
-            
+        alert.addAction(UIAlertAction(title: WayTodayPreferences.on ? "Cancel WayToday".localized : "Activate WayToday".localized , style: .default) { _ in
+            WayTodayPreferences.toggle()
         })
-        alert.addAction(UIAlertAction(title: "Blue".localized, style: .default) { _ in
-            
-        })
-        alert.addAction(UIAlertAction(title: "Gold".localized, style: .default) { _ in
+        
+        alert.addAction(UIAlertAction(title: "About WayToday".localized, style: .default) { _ in
             
         })
         

@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: DELAY_BEFORE_ALERT.dispatchTime) {
                     if self.ble.connections.state[id] != .connected {
-                        switch getAlertSoundMode() {
+                        switch AlertSoundPreferences.mode {
                         case .Sound:
                             self.sound.startLost()
                             break
