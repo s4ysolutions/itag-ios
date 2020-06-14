@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  itagone
+
+  Created by  Sergey Dolin on 14.06.2020.
+  Copyright © 2020  Sergey Dolin. All rights reserved.
+*/
+
+"iTagOne intended to track your geo location" = "iTagOne будет получать доступ к вашему местоположению";

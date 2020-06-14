@@ -30,10 +30,11 @@
 		415B1C3324953906001C54B0 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		415B1C3424953906001C54B0 /* BLE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		415B1C3924956151001C54B0 /* secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3824956151001C54B0 /* secret.swift */; };
-		415B1C3C249569F3001C54B0 /* WayToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3B249569F3001C54B0 /* WayToday.swift */; };
 		415B1C3E24956A26001C54B0 /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3D24956A26001C54B0 /* Bool.swift */; };
 		415B1C4124956ACA001C54B0 /* Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4024956ACA001C54B0 /* Any.swift */; };
 		415B1C4324957356001C54B0 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4224957356001C54B0 /* Int.swift */; };
+		415B1C4524957847001C54B0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4424957847001C54B0 /* String.swift */; };
+		415B1C4824960E58001C54B0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 415B1C4A24960E58001C54B0 /* InfoPlist.strings */; };
 		4177C95D22FEAE4F003F4423 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		4177C96422FEAE4F003F4423 /* BLETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C96322FEAE4F003F4423 /* BLETests.swift */; };
 		4177C96622FEAE4F003F4423 /* BLE.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177C95622FEAE4E003F4423 /* BLE.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -169,10 +170,12 @@
 		413682EE2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryDefault.swift; sourceTree = "<group>"; };
 		415B1C2E24953686001C54B0 /* WayTodaySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WayTodaySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		415B1C3824956151001C54B0 /* secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secret.swift; sourceTree = "<group>"; };
-		415B1C3B249569F3001C54B0 /* WayToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayToday.swift; sourceTree = "<group>"; };
 		415B1C3D24956A26001C54B0 /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		415B1C4024956ACA001C54B0 /* Any.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Any.swift; sourceTree = "<group>"; };
 		415B1C4224957356001C54B0 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		415B1C4424957847001C54B0 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		415B1C4924960E58001C54B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		415B1C4B24960E7D001C54B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4177C94522FEA637003F4423 /* BLEConnectionInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionInterface.swift; sourceTree = "<group>"; };
 		4177C94722FEA680003F4423 /* BLEConnnectionDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnnectionDefault.swift; sourceTree = "<group>"; };
 		4177C94922FEAA18003F4423 /* BLEConnectionFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionFactoryInterface.swift; sourceTree = "<group>"; };
@@ -382,6 +385,7 @@
 				415B1C3D24956A26001C54B0 /* Bool.swift */,
 				415B1C4024956ACA001C54B0 /* Any.swift */,
 				415B1C4224957356001C54B0 /* Int.swift */,
+				415B1C4424957847001C54B0 /* String.swift */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -462,7 +466,6 @@
 			children = (
 				415B1C3F24956A98001C54B0 /* base */,
 				41DEB45424939A8400EAF6C3 /* AlertSound.swift */,
-				415B1C3B249569F3001C54B0 /* WayToday.swift */,
 			);
 			path = preferences;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 		41F67BEB22F932E300BCC628 = {
 			isa = PBXGroup;
 			children = (
+				415B1C4A24960E58001C54B0 /* InfoPlist.strings */,
 				41A5DA7722FBF95800E6F94B /* Localizable.strings */,
 				41F67BF622F932E300BCC628 /* itagone */,
 				41F67C0B22F932E500BCC628 /* itagoneTests */,
@@ -755,6 +759,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41A5DA7922FBF95800E6F94B /* Localizable.strings in Resources */,
+				415B1C4824960E58001C54B0 /* InfoPlist.strings in Resources */,
 				41F67C0222F932E500BCC628 /* LaunchScreen.storyboard in Resources */,
 				41F67BFF22F932E500BCC628 /* Assets.xcassets in Resources */,
 				41F67BFD22F932E300BCC628 /* Main.storyboard in Resources */,
@@ -1019,7 +1024,6 @@
 			files = (
 				415B1C4124956ACA001C54B0 /* Any.swift in Sources */,
 				41F67C2722F93E6400BCC628 /* TagInterface.swift in Sources */,
-				415B1C3C249569F3001C54B0 /* WayToday.swift in Sources */,
 				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
 				415B1C3924956151001C54B0 /* secret.swift in Sources */,
 				41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */,
@@ -1029,6 +1033,7 @@
 				415B1C4324957356001C54B0 /* Int.swift in Sources */,
 				413682E0230178480073A45A /* IndicatorTableViewCell.swift in Sources */,
 				41A5DA6E22FBD56C00E6F94B /* TagStoreInterface.swift in Sources */,
+				415B1C4524957847001C54B0 /* String.swift in Sources */,
 				41A5DA7F22FC569100E6F94B /* BLETag1ViewController.swift in Sources */,
 				41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */,
 				4104166A2302D4510091E288 /* Double+extenstions.swift in Sources */,
@@ -1096,6 +1101,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		415B1C4A24960E58001C54B0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				415B1C4924960E58001C54B0 /* ru */,
+				415B1C4B24960E7D001C54B0 /* en */,
+			);
+			name = InfoPlist.strings;
+			path = itagone;
+			sourceTree = "<group>";
+		};
 		41A5DA7722FBF95800E6F94B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

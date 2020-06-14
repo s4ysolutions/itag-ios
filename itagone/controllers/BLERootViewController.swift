@@ -10,14 +10,18 @@ import BLE
 import UIKit
 import Rasat
 import WayTodaySDK
+import CoreLocation
 
 class BLERootViewController: UIViewController {
     @IBOutlet weak var containerView: UIView?
     @IBOutlet weak var soundButton: UIButton?
+    @IBOutlet weak var waytodayLed: UIImageView?
     
     static let imageNoSound = UIImage(named: "itemNoSound")
     static let imageSound = UIImage(named: "itemSound")
     static let imageVibration = UIImage(named: "itemVibration")
+    static let imageLedGreen = UIImage(named: "ledGreen")
+    static let imageLedGray = UIImage(named: "ledGray")
     
     let ble: BLEInterface
     let store: TagStoreInterface
@@ -28,7 +32,7 @@ class BLERootViewController: UIViewController {
     private let locationService: LocationService
     private var waytoday: WayTodayState
     private var waytodayService: WayTodayService
-
+    
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
         store = TagStoreDefault.shared
@@ -43,11 +47,29 @@ class BLERootViewController: UIViewController {
         setupItemSound()
     }
     
+    var greenLedIsOn = false;
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
         disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_root", handler: {_ in
             self.setupContent()
+        }))
+        // update led on new location
+        disposable!.add(locationService.observableLocation.subscribe(on: DispatchQueue.global(qos: .userInteractive), handler: {
+            location in
+            if (self.greenLedIsOn) {
+                return
+            }
+            self.greenLedIsOn = true
+            DispatchQueue.main.sync(execute: {
+                self.waytodayLed?.image = BLERootViewController.imageLedGreen
+            })
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
+                self.waytodayLed?.image = BLERootViewController.imageLedGray
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100), execute: {
+                    self.greenLedIsOn = false
+                })
+            })
         }))
         setupContent()
     }
@@ -81,11 +103,51 @@ class BLERootViewController: UIViewController {
     @IBAction
     func onWayToday(_ sender: UIView) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: WayTodayPreferences.on ? "Cancel WayToday".localized : "Activate WayToday".localized , style: .default) { _ in
-            WayTodayPreferences.toggle()
+        
+        if waytoday.tid != "" {
+            alert.addAction(UIAlertAction(title: String(format: "Your ID: %@. Click to change".localized, waytoday.tid), style: .default) { _ in
+                self.requestTid(complete: {_ in })
+            })
+            
+            alert.addAction(UIAlertAction(title: String(format: "Show you recent positions on the map".localized, waytoday.tid), style: .default) { _ in
+                guard let url=URL(string: "https://way.today/#\(self.waytoday.tid)!10") else {
+                    return //be safe
+                }
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            })
+            
+            alert.addAction(UIAlertAction(title: String(format: "Share your position".localized, waytoday.tid), style: .default) { _ in
+                guard let url=URL(string: "https://way.today/#\(self.waytoday.tid)!10") else {
+                    return //be safe
+                }
+                
+                // set up activity view controller
+                let textToShare = [ url ] as [Any]
+                let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+                
+                // exclude some activity types from the list (optional)
+                activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.assignToContact, UIActivity.ActivityType.openInIBooks]
+                
+                // present the view controller
+                self.present(activityViewController, animated: true, completion: nil)
+            })
+            
+        }
+
+        alert.addAction(UIAlertAction(title: waytoday.on ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
+            self.toggleWayToday()
         })
         
         alert.addAction(UIAlertAction(title: "About WayToday".localized, style: .default) { _ in
+            
+        })
+        
+        alert.addAction(UIAlertAction(title: "Close".localized, style: .default) { _ in
             
         })
         
@@ -100,6 +162,44 @@ class BLERootViewController: UIViewController {
         
         present(alert, animated: true)
     }
+    
+    private func toggleWayToday() -> Void {
+        if (self.waytoday.on) {
+            self.waytoday.on = false
+        } else {
+            if (self.waytoday.tid == "") {
+                self.requestTid(complete: {_ in
+                    if (self.waytoday.tid != "") {
+                        self.waytoday.on = true
+                    }
+                })
+            } else {
+                self.waytoday.on = true
+            }
+        }
+    }
+    
+    var gettingTid = false
+    private func requestTid(complete: @escaping (_ tid: String) -> Void) {
+        if gettingTid {
+            return
+        }
+        gettingTid = true
+        do {
+            try waytodayService.generateTid(prevTid: waytoday.tid, complete: { tid in
+                DispatchQueue.main.sync {
+                    self.waytoday.tid = tid
+                    self.gettingTid = false
+                    complete(tid)
+                }
+            })
+        }catch{
+            gettingTid = false
+            // TODO: handle error
+            print(error)
+        }
+    }
+    
     // MARK: - Manage Content
     
     func setupContent() {

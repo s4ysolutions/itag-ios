@@ -84,14 +84,23 @@
                                             <segue destination="DmT-Ju-EAg" kind="show" id="5jZ-Ib-cNz"/>
                                         </connections>
                                     </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ledGray" translatesAutoresizingMaskIntoConstraints="NO" id="8YA-Fb-HMm" userLabel="WayToday led">
+                                        <rect key="frame" x="254" y="43" width="12" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="12" id="Nkr-1x-z8D"/>
+                                            <constraint firstAttribute="height" constant="12" id="cag-aJ-rUc"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" name="colorToolbarBG"/>
                                 <constraints>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="leading" secondItem="ODc-w2-KUy" secondAttribute="trailing" constant="8" id="10W-hv-vhR"/>
                                     <constraint firstItem="BiY-Xq-d5f" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" constant="8" id="1fD-S7-NAb"/>
+                                    <constraint firstItem="8YA-Fb-HMm" firstAttribute="bottom" secondItem="aEu-zV-ykG" secondAttribute="bottom" constant="3" id="1oR-sx-750"/>
                                     <constraint firstItem="ODc-w2-KUy" firstAttribute="top" secondItem="BiY-Xq-d5f" secondAttribute="top" id="7rx-z0-UOk"/>
                                     <constraint firstAttribute="bottom" secondItem="B3F-ZW-5aW" secondAttribute="bottom" constant="8" id="ESn-5K-ctI"/>
                                     <constraint firstItem="BiY-Xq-d5f" firstAttribute="trailing" secondItem="aEu-zV-ykG" secondAttribute="leading" constant="-8" id="IDz-sY-6pX"/>
+                                    <constraint firstItem="8YA-Fb-HMm" firstAttribute="trailing" secondItem="aEu-zV-ykG" secondAttribute="trailing" constant="6" id="JG2-1Y-s6d"/>
                                     <constraint firstAttribute="trailing" secondItem="B3F-ZW-5aW" secondAttribute="trailing" constant="8" id="NFB-PU-L5g"/>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="top" secondItem="Ld6-dg-CEP" secondAttribute="top" id="R0l-GS-Bfn"/>
                                     <constraint firstItem="hMZ-aM-S9j" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BiY-Xq-d5f" secondAttribute="leading" constant="-8" id="RwY-Da-1Mk"/>
@@ -125,6 +134,7 @@
                     <connections>
                         <outlet property="containerView" destination="VeB-MD-rSr" id="Qgl-dv-Jwy"/>
                         <outlet property="soundButton" destination="BiY-Xq-d5f" id="ezR-a6-E4Z"/>
+                        <outlet property="waytodayLed" destination="8YA-Fb-HMm" id="RrN-OT-Sc6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -698,6 +708,7 @@
         <image name="itemScan" width="384" height="384"/>
         <image name="itemSound" width="384" height="384"/>
         <image name="itemWayToday" width="384" height="384"/>
+        <image name="ledGray" width="38" height="38"/>
         <image name="scanArrow" width="367" height="367"/>
         <image name="tagGold" width="300" height="513"/>
         <namedColor name="colorTagsBG">

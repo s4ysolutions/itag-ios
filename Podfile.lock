@@ -18,7 +18,7 @@ PODS:
     - gRPC-Core (~> 1.24.1)
     - SwiftProtobuf (~> 1.7.0)
   - SwiftProtobuf (1.7.0)
-  - WayTodaySDK (1.0.4):
+  - WayTodaySDK (1.0.10):
     - CryptoSwift
     - Rasat
     - SwiftGRPC
@@ -53,7 +53,7 @@ SPEC CHECKSUMS:
   Rasat: d7f45a231aafb5a0cf13f49451a00fb503c4210e
   SwiftGRPC: daeb5abeec734ee2a09072aed3fca1c2341a4869
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
-  WayTodaySDK: 2edbea802ac875cdf3aa891f68220cee4e55e20a
+  WayTodaySDK: 4e74ddf347e635801208cb9624f1edb7f86050dd
 
 PODFILE CHECKSUM: 2ec2a9c7691d6b3421e54ba5b2166d5aa536c68c
 

@@ -26,6 +26,12 @@
 	<string>Bluetooth connection need to be always on in order to track your iTag device</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Bluetooth connection is used to track your iTag device</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>iTagOne intended to track your geo location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>iTagOne intended to track your geo location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>iTagOne intended to track your geo location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

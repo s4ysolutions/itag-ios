@@ -13,3 +13,10 @@
 "Green" = "Зеленый";
 "Red" = "Красный";
 "White" = "Белый";
+"Turn on WayToday" = "Включить WayToday";
+"Turn off WayToday" = "Выключить WayToday";
+"About WayToday" = "О сервисе WayToday";
+"Your ID: %@. Click to change" = "Ваш код: %@. Нажмите, чтобы изменить";
+"Close" = "Закрыть";
+"Show you recent positions on the map" = "Посмотреть на карте";
+"Share your position" = "Поделиться вашим местоположением";

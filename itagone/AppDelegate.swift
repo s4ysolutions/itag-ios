@@ -6,6 +6,7 @@
 //  Copyright © 2019  Sergey Dolin. All rights reserved.
 //
 
+import CoreLocation
 import BLE
 import UIKit
 import Rasat
@@ -37,7 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let locationService: LocationService
     let uploader: Uploader
     let wayTodayState: WayTodayState
-    
+    let locationManager = CLLocationManager() //must be app lifetime
+
     var window: UIWindow?
     
 
@@ -50,16 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if ble.state == .on {
-            DispatchQueue.global(qos: .background).async {
-                self.store.connectAll()
-            }
-        }
-        do {
-          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
-        }catch{
-          wtLog.error("Error start listening")
-        }
         dispose.add(ble.connections.stateObservable.subscribe(id: "connect/disconnect", handler: {(id: String, fromState: BLEConnectionState, toState: BLEConnectionState) in
             if toState == .disconnected {
                 if !self.store.remembered(id: id) {
@@ -131,6 +123,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 self.vibation.stop()
                                                             }
         }))
+        dispose.add(locationService.observableStatus.subscribe(handler: {status in
+            self.wtLog.debug("Status: \(status)")
+            self.locationManager.requestAlwaysAuthorization()
+        }))
+
+        if ble.state == .on {
+            DispatchQueue.global(qos: .background).async {
+                self.store.connectAll()
+            }
+        }
+
+        do {
+          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
+        }catch{
+          wtLog.error("Error start listening")
+        }
+        
+        if wayTodayState.on {
+            locationService.start()
+        } else {
+            locationService.stop()
+        }
+
         return true
     }
     
