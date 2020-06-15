@@ -151,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        if WayTodayPreferences.useService {
+        if wayTodayState.on {
             do {
               try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
             }catch{
@@ -194,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setupLocationService() {
         let hasAlerts = store.hasAlerts
-        let useWayToday = WayTodayPreferences.useService
+        let useWayToday = wayTodayState.on
         if (hasAlerts || useWayToday) && ble.state == .on  {
             l.d("locationService.start hasAlerts=\(hasAlerts) useWayToday=\(useWayToday) ble=\(ble.state)")
             locationService.start()

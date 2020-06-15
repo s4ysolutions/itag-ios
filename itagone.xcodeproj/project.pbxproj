@@ -38,7 +38,6 @@
 		415B1C4E24965C90001C54B0 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4D24965C90001C54B0 /* Logger.swift */; };
 		415B1C5024969509001C54B0 /* LastSeenLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4F24969508001C54B0 /* LastSeenLocation.swift */; };
 		415B1C522496968B001C54B0 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C512496968B001C54B0 /* Double.swift */; };
-		415B1C5724973958001C54B0 /* WayTodayPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C5624973958001C54B0 /* WayTodayPreferences.swift */; };
 		4177C95D22FEAE4F003F4423 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		4177C96422FEAE4F003F4423 /* BLETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4177C96322FEAE4F003F4423 /* BLETests.swift */; };
 		4177C96622FEAE4F003F4423 /* BLE.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177C95622FEAE4E003F4423 /* BLE.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -183,7 +182,6 @@
 		415B1C4D24965C90001C54B0 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		415B1C4F24969508001C54B0 /* LastSeenLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastSeenLocation.swift; sourceTree = "<group>"; };
 		415B1C512496968B001C54B0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
-		415B1C5624973958001C54B0 /* WayTodayPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayTodayPreferences.swift; sourceTree = "<group>"; };
 		4177C94522FEA637003F4423 /* BLEConnectionInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionInterface.swift; sourceTree = "<group>"; };
 		4177C94722FEA680003F4423 /* BLEConnnectionDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnnectionDefault.swift; sourceTree = "<group>"; };
 		4177C94922FEAA18003F4423 /* BLEConnectionFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionFactoryInterface.swift; sourceTree = "<group>"; };
@@ -484,7 +482,6 @@
 				415B1C3F24956A98001C54B0 /* base */,
 				41DEB45424939A8400EAF6C3 /* AlertSound.swift */,
 				415B1C4F24969508001C54B0 /* LastSeenLocation.swift */,
-				415B1C5624973958001C54B0 /* WayTodayPreferences.swift */,
 			);
 			path = preferences;
 			sourceTree = "<group>";
@@ -1065,7 +1062,6 @@
 				41A5DA7222FBD7F900E6F94B /* TagDefault.swift in Sources */,
 				41A5DA8322FC572800E6F94B /* BLETagViewController.swift in Sources */,
 				413682E52301B5D60073A45A /* Float+extenstions.swift in Sources */,
-				415B1C5724973958001C54B0 /* WayTodayPreferences.swift in Sources */,
 				41A5DA6522FB5AB500E6F94B /* PeripheralsTableViewController.swift in Sources */,
 				415B1C3E24956A26001C54B0 /* Bool.swift in Sources */,
 				413682E72301B94E0073A45A /* SoundDefault.swift in Sources */,

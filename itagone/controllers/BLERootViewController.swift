@@ -148,7 +148,22 @@ class BLERootViewController: UIViewController {
         })
         
         alert.addAction(UIAlertAction(title: "About WayToday".localized, style: .default) { _ in
-            
+            let alert = UIAlertController(title: "About WayToday".localized, message: "about_way_today_text".localized, preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "More...".localized, style: .default, handler: { _ in
+                guard let url=URL(string: "https://way.today/landing/en.html".localized) else {
+                  return //be safe
+                }
+                if #available(iOS 10.0, *) {
+                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                  UIApplication.shared.openURL(url)
+                }
+            }))
+
+            alert.addAction(UIAlertAction(title: "Close".localized, style: .default, handler: nil))
+
+            self.present(alert, animated: true)
         })
         
         alert.addAction(UIAlertAction(title: "Close".localized, style: .default) { _ in
