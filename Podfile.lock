@@ -25,7 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - Rasat (from `https://github.com/s4ysolutions/Rasat.git`)
-  - WayTodaySDK (from `~/MyProjects/way-today-ios-sdk/`)
+  - WayTodaySDK (from `https://github.com/s4ysolutions/WayTodaySDK-iOS.git`)
 
 SPEC REPOS:
   trunk:
@@ -39,12 +39,15 @@ EXTERNAL SOURCES:
   Rasat:
     :git: https://github.com/s4ysolutions/Rasat.git
   WayTodaySDK:
-    :path: "~/MyProjects/way-today-ios-sdk/"
+    :git: https://github.com/s4ysolutions/WayTodaySDK-iOS.git
 
 CHECKOUT OPTIONS:
   Rasat:
     :commit: c423e0106e0aeb18ee793476af0302ef8644d6b2
     :git: https://github.com/s4ysolutions/Rasat.git
+  WayTodaySDK:
+    :commit: a32d565fc097b2c3c87d132ddff5be90cf6b2d89
+    :git: https://github.com/s4ysolutions/WayTodaySDK-iOS.git
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: b8d2e9fca6d3870aec81ee7d583869caec2a6076
@@ -55,6 +58,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
   WayTodaySDK: 3a79e14dc5e0275ded1dfd60e8c2148601cf0113
 
-PODFILE CHECKSUM: dd22cf9fb24614e2da820b208f9197bc18be74a7
+PODFILE CHECKSUM: 2f3ced91e052ea42b33e810e63a54f52648d0d0a
 
 COCOAPODS: 1.9.3
