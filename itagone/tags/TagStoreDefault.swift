@@ -78,6 +78,18 @@ class TagStoreDefault: TagStoreInterface {
         }
     }
     
+    var hasAlerts: Bool {
+        get{
+            for id in ids {
+                let tag = by(id: id)
+                if tag?.alert ?? false {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+
     /*
     private func clearDefaults() {
         defaults.removeObject(forKey: "ids")

@@ -663,6 +663,17 @@
                                     <constraint firstAttribute="width" constant="44" id="tRN-6Y-D0X"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SL7-fo-gqy" userLabel="LastSeen Button">
+                                <rect key="frame" x="17.5" y="12" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="XOk-5U-Ffu"/>
+                                    <constraint firstAttribute="height" constant="64" id="gfm-WW-mFs"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="lastLocation"/>
+                                <connections>
+                                    <action selector="onLastSeen:" destination="Dxr-Xp-f19" eventType="touchUpInside" id="aaE-N3-Npl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -673,16 +684,19 @@
                             <constraint firstItem="kZt-uP-uQr" firstAttribute="bottom" secondItem="tuw-s3-E91" secondAttribute="top" constant="-8" id="P6i-rQ-0r7"/>
                             <constraint firstItem="OgR-V3-nDU" firstAttribute="centerX" secondItem="Aws-oI-hZ7" secondAttribute="centerX" id="PPv-iZ-bo2"/>
                             <constraint firstItem="tuw-s3-E91" firstAttribute="leading" secondItem="oSx-Ob-p7h" secondAttribute="leading" id="QOr-o4-iZT"/>
+                            <constraint firstItem="SL7-fo-gqy" firstAttribute="top" secondItem="oSx-Ob-p7h" secondAttribute="top" constant="12" id="T2G-fW-ghT"/>
                             <constraint firstAttribute="trailing" secondItem="tuw-s3-E91" secondAttribute="trailing" id="ePn-Yb-t4q"/>
                             <constraint firstItem="OgR-V3-nDU" firstAttribute="bottom" secondItem="kZt-uP-uQr" secondAttribute="top" constant="-8" id="ijt-iP-MO2"/>
                             <constraint firstItem="OgR-V3-nDU" firstAttribute="trailing" secondItem="Nxa-cu-fA5" secondAttribute="centerX" id="ptz-UR-y6Q"/>
                             <constraint firstItem="sSM-0f-EUv" firstAttribute="centerX" secondItem="Nxa-cu-fA5" secondAttribute="centerX" id="t8m-55-yEx"/>
+                            <constraint firstItem="SL7-fo-gqy" firstAttribute="centerX" secondItem="OgR-V3-nDU" secondAttribute="leading" id="uiD-g1-wTb"/>
                             <constraint firstItem="OgR-V3-nDU" firstAttribute="top" secondItem="Aws-oI-hZ7" secondAttribute="top" constant="8" id="vDH-3X-OS9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="oSx-Ob-p7h"/>
                     </view>
                     <connections>
                         <outlet property="buttonAlert" destination="rQW-Nk-Fet" id="dDr-9O-LzI"/>
+                        <outlet property="buttonLost" destination="SL7-fo-gqy" id="6T0-jz-HMH"/>
                         <outlet property="buttonTag" destination="DdO-ZJ-oXD" id="qRv-Eh-hWt"/>
                         <outlet property="buttonTagContainer" destination="OgR-V3-nDU" id="ebV-hA-dr3"/>
                         <outlet property="imageState" destination="Nxa-cu-fA5" id="I0g-M7-5dA"/>
@@ -708,6 +722,7 @@
         <image name="itemScan" width="384" height="384"/>
         <image name="itemSound" width="384" height="384"/>
         <image name="itemWayToday" width="384" height="384"/>
+        <image name="lastLocation" width="45" height="45"/>
         <image name="ledGray" width="38" height="38"/>
         <image name="scanArrow" width="367" height="367"/>
         <image name="tagGold" width="300" height="513"/>

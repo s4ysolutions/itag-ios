@@ -19,6 +19,7 @@ enum StoreOp {
 protocol TagStoreInterface {
     var count: Int { get }
     var observable: Observable<StoreOp> { get }
+    var hasAlerts: Bool {get}
     func by(id: String) -> TagInterface?
     func tagBy(pos: Int) -> TagInterface?
     func everBy(id: String) -> TagInterface?

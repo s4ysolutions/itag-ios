@@ -72,8 +72,12 @@ class BLERootViewController: UIViewController {
             })
         }))
         setupContent()
+        super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         disposable?.dispose()
         super.viewWillDisappear(animated)
@@ -138,7 +142,7 @@ class BLERootViewController: UIViewController {
             })
             
         }
-
+        
         alert.addAction(UIAlertAction(title: waytoday.on ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
             self.toggleWayToday()
         })
@@ -206,6 +210,14 @@ class BLERootViewController: UIViewController {
         contentID = store.count == 0 ? "tags0" : store.count == 1 ? "tag1" : store.count == 2 ? "tags2" : store.count == 3 ? "tags3" : "tags4"
         guard let contentViewController = self.storyboard?.instantiateViewController(withIdentifier: contentID) else { return }
         guard let contentView = contentViewController.view else { return }
+        
+        while children.count > 0 {
+            let child = children[0]
+            child.willMove(toParent: self)
+            child.view.removeFromSuperview()
+            child.removeFromParent()
+        }
+        
         addChild(contentViewController)
         contentViewController.view.translatesAutoresizingMaskIntoConstraints = false;
         containerView?.addSubview(contentViewController.view)

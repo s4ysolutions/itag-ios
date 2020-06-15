@@ -7,7 +7,8 @@ target 'itagone' do
   project 'itagone.xcodeproj'
 
   pod 'Rasat', :git => 'https://github.com/s4ysolutions/Rasat.git'
-  pod 'WayTodaySDK', :git => 'https://github.com/s4ysolutions/WayTodaySDK-iOS.git'
+  #pod 'WayTodaySDK', :git => 'https://github.com/s4ysolutions/WayTodaySDK-iOS.git'
+  pod 'WayTodaySDK', :path => '~/MyProjects/way-today-ios-sdk/'
 
   target 'itagoneTests' do
     inherit! :complete

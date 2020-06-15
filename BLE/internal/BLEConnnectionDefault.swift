@@ -272,6 +272,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
             } else {
                 peripheral = manager.retrieveConnectedPeripherals(withServices: []).first(where: {connected in connected.identifier == uuid})
             }
+            /*
             if let peripheral = peripheral {
                 let state: BLEConnectionState = {
                     switch peripheral.state {
@@ -288,7 +289,7 @@ class BLEConnectionDefault: BLEConnectionInterface {
                     }
                 }()
                 connectionsControl.setState(id: id, state: state)
-            }
+            }*/
         }
         return nil
     }

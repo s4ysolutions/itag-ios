@@ -25,6 +25,8 @@ var applicationStateObservable: Observable<ApplicationState> {
 }
 
 let DELAY_BEFORE_ALERT = 3
+let DELAY_BEFORE_REMEMBER_LAST_LOCATION = 1
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -38,10 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let locationService: LocationService
     let uploader: Uploader
     let wayTodayState: WayTodayState
-    let locationManager = CLLocationManager() //must be app lifetime
-
     var window: UIWindow?
     
+    let l = Logger("AppDelegate")
 
     override init(){
       wtLog = LogDefault.shared
@@ -61,6 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if !tag.alert { return }
                 DispatchQueue.global(qos: .background).async {
                     self.ble.connections.connect(id: id) // wait forever
+                }
+                DispatchQueue.global(qos: .background).asyncAfter(deadline: DELAY_BEFORE_REMEMBER_LAST_LOCATION.dispatchTime) {
+                    let state = self.ble.connections.state[id]
+                    if state == .disconnected || state == .connecting {
+                        let lsl = LastSeenLocation(id: id)
+                        lsl.coordinate = self.locationService.lastLocation?.coordinate
+                    }
                 }
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: DELAY_BEFORE_ALERT.dispatchTime) {
                     if self.ble.connections.state[id] != .connected {
@@ -93,8 +101,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.store.connectAll()
                 }
             }
+            self.setupLocationService()
         }))
         dispose.add(store.observable.subscribe(on: DispatchQueue.global(qos: .background), id: "remember/forget", handler: {op in
+            defer {
+                self.setupLocationService()
+            }
             switch op {
             case .remember(let tag):
                 if (tag.alert) {
@@ -123,9 +135,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 self.vibation.stop()
                                                             }
         }))
-        dispose.add(locationService.observableStatus.subscribe(handler: {status in
-            self.wtLog.debug("Status: \(status)")
-            self.locationManager.requestAlwaysAuthorization()
+        dispose.add(locationService.observableAuthorizationStatus.subscribe(handler: {status in
+            self.l.d("WayToday status: \(status)")
+            if status == .needAuthorization {
+                // NOTE: REQUEST PERMISSIONS GPS
+                self.locationService.requestAuthorization()
+            } else if status == .Authorized {
+                self.setupLocationService()
+            }
         }))
 
         if ble.state == .on {
@@ -133,18 +150,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.store.connectAll()
             }
         }
-
-        do {
-          try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
-        }catch{
-          wtLog.error("Error start listening")
+        
+        if WayTodayPreferences.useService {
+            do {
+              try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
+            }catch{
+              wtLog.error("Error start listening")
+            }
         }
         
-        if wayTodayState.on {
-            locationService.start()
-        } else {
-            locationService.stop()
-        }
+        setupLocationService();
 
         return true
     }
@@ -177,5 +192,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         uploader.stopListen()
     }
     
+    private func setupLocationService() {
+        let hasAlerts = store.hasAlerts
+        let useWayToday = WayTodayPreferences.useService
+        if (hasAlerts || useWayToday) && ble.state == .on  {
+            l.d("locationService.start hasAlerts=\(hasAlerts) useWayToday=\(useWayToday) ble=\(ble.state)")
+            locationService.start()
+        } else {
+            l.d("locationService.stop hasAlerts=\(hasAlerts) useWayToday=\(useWayToday) ble=\(ble.state)")
+            locationService.stop()
+        }
+
+    }
+
 }
 

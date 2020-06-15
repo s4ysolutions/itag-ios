@@ -27,11 +27,11 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Bluetooth connection is used to track your iTag device</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>iTagOne intended to track your geo location</string>
+	<string>GPS is used to locate the last seen iTAG position</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>iTagOne intended to track your geo location</string>
+	<string>GPS is used to locate the last seen iTAG position</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>iTagOne intended to track your geo location</string>
+	<string>GPS is used to locate the last seen iTAG position</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

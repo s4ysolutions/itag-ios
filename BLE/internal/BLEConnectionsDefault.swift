@@ -77,7 +77,6 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
         setStateQueue.sync {
             holder.states[id] = state
         }
-        
         stateObservableChannel.broadcast((id: id, fromState: fromState, toState: state))
     }
     
