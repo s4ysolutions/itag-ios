@@ -9,6 +9,8 @@
 import Foundation
 import Rasat
 
+let setStateQueue = DispatchQueue(label: "setState")
+
 private class StatesHolder {
     var states: [String: BLEConnectionState] = [:]
 }
@@ -19,7 +21,9 @@ private class ConnectionsStateArrayDefault: BLEConnectionStateArray {
         self.holder = holder
     }
     subscript(id: String) -> BLEConnectionState {
-        return holder.states[id] ?? .disconnected
+        return setStateQueue.sync {
+            return holder.states[id] ?? .disconnected
+        }
     }
 }
 
@@ -67,10 +71,8 @@ class BLEConnectionsDefault: BLEConnectionsInterface, BLEConnectionsControlInter
         }
     }
     
-    let setStateQueue = DispatchQueue(label: "setState")
-    
     func setState(id: String, state: BLEConnectionState) {
-        let fromState: BLEConnectionState = holder.states[id] ?? .disconnected
+        let fromState: BLEConnectionState = self.state[id]
 
         if state == fromState { return }
         
