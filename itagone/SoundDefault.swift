@@ -52,5 +52,10 @@ class SoundDefault {
     func stop() {
         player?.stop()
         player=nil
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        }catch let error as NSError {
+            print(error, error.code, error.description)
+        }
     }
 }
