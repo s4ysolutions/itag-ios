@@ -46,15 +46,17 @@ class BLEConnectionsStoreDefault: BLEConnectionsStoreInterface {
     }
     
     func getOrMake(id: String) -> BLEConnectionInterface {
-        if map[id] == nil || !map[id]!.isConnected {
-            map[id] = connectionFactory.connection(
+        var conn = map[id]
+        if conn == nil || !conn!.isConnected {
+            conn = connectionFactory.connection(
                 connectionsControl: connectionsControl,
                 findMeControl: findMeControl,
                 manager: manager,
                 peripheralObservablesFactory: peripheralObservablesFactory,
                 id: id)
+            map[id] = conn
         }
-        return map[id]!
+        return conn!
     }
     
     func setConnectionsControl(connectionsControl: BLEConnectionsControlInterface) {
