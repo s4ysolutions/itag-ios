@@ -18,6 +18,7 @@
 		410B06A6230087C900590A4A /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B06A5230087C900590A4A /* constants.swift */; };
 		410B06AE2301260400590A4A /* BLEConnectionsControlFactoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B06AD2301260400590A4A /* BLEConnectionsControlFactoryInterface.swift */; };
 		410B06B02301266700590A4A /* BLEConnectionsControlFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B06AF2301266700590A4A /* BLEConnectionsControlFactoryDefault.swift */; };
+		411C13832523074F00CC389B /* provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411C13822523074F00CC389B /* provider.swift */; };
 		413682E0230178480073A45A /* IndicatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413682DE230178480073A45A /* IndicatorTableViewCell.swift */; };
 		413682E1230178480073A45A /* IndicatorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413682DF230178480073A45A /* IndicatorTableViewCell.xib */; };
 		413682E52301B5D60073A45A /* Float+extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413682E42301B5D60073A45A /* Float+extenstions.swift */; };
@@ -163,6 +164,7 @@
 		410B06A5230087C900590A4A /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		410B06AD2301260400590A4A /* BLEConnectionsControlFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionsControlFactoryInterface.swift; sourceTree = "<group>"; };
 		410B06AF2301266700590A4A /* BLEConnectionsControlFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionsControlFactoryDefault.swift; sourceTree = "<group>"; };
+		411C13822523074F00CC389B /* provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = provider.swift; sourceTree = "<group>"; };
 		413682DE230178480073A45A /* IndicatorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTableViewCell.swift; sourceTree = "<group>"; };
 		413682DF230178480073A45A /* IndicatorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IndicatorTableViewCell.xib; sourceTree = "<group>"; };
 		413682E42301B5D60073A45A /* Float+extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+extenstions.swift"; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				415B1C3824956151001C54B0 /* secret.swift */,
+				411C13822523074F00CC389B /* provider.swift */,
 			);
 			path = waytoday;
 			sourceTree = "<group>";
@@ -1048,6 +1051,7 @@
 				415B1C3924956151001C54B0 /* secret.swift in Sources */,
 				41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */,
 				41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */,
+				411C13832523074F00CC389B /* provider.swift in Sources */,
 				41DEB45524939A8400EAF6C3 /* AlertSound.swift in Sources */,
 				41A5DA6922FB5E1B00E6F94B /* PeripheralTableViewCell.swift in Sources */,
 				415B1C4324957356001C54B0 /* Int.swift in Sources */,
@@ -1401,7 +1405,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1424,7 +1428,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

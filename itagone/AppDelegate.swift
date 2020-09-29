@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if wayTodayState.on {
             do {
-              try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET))
+              try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET, provider: WAYTODAY_PROVIDER))
             }catch{
               wtLog.error("Error start listening")
             }

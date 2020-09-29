@@ -38,7 +38,7 @@ class BLERootViewController: UIViewController {
         store = TagStoreDefault.shared
         waytoday = WayTodayStateDefault.shared
         locationService = LocationServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday)
-        waytodayService = WayTodayServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET)
+        waytodayService = WayTodayServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET, provider: WAYTODAY_PROVIDER)
         super.init(coder: aDecoder)
     }
     
