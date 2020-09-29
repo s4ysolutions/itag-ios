@@ -18,7 +18,7 @@ PODS:
     - gRPC-Core (~> 1.24.1)
     - SwiftProtobuf (~> 1.7.0)
   - SwiftProtobuf (1.7.0)
-  - WayTodaySDK (1.0.15):
+  - WayTodaySDK (1.0.17):
     - CryptoSwift
     - Rasat
     - SwiftGRPC
@@ -46,7 +46,7 @@ CHECKOUT OPTIONS:
     :commit: c423e0106e0aeb18ee793476af0302ef8644d6b2
     :git: https://github.com/s4ysolutions/Rasat.git
   WayTodaySDK:
-    :commit: 3200d33371e460838eef2396959ba2bf38b29201
+    :commit: c728a415ab5cb4adb1c29420feb76f2f2b9c601e
     :git: https://github.com/s4ysolutions/WayTodaySDK-iOS.git
 
 SPEC CHECKSUMS:
@@ -56,7 +56,7 @@ SPEC CHECKSUMS:
   Rasat: d7f45a231aafb5a0cf13f49451a00fb503c4210e
   SwiftGRPC: daeb5abeec734ee2a09072aed3fca1c2341a4869
   SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
-  WayTodaySDK: be61d4538408db9d4f9586d928771c545d54edf6
+  WayTodaySDK: 34bc7dde9bda459d53ba614cbeffa69858d9e54d
 
 PODFILE CHECKSUM: 2f3ced91e052ea42b33e810e63a54f52648d0d0a
 
