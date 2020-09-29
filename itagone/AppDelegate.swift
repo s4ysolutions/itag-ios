@@ -43,13 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     let l = Logger("AppDelegate")
-
+    private let locationManager = CLLocationManager()
+    
     override init(){
-      wtLog = LogDefault.shared
-      wayTodayState = WayTodayStateDefault.shared
-      uploader = UploaderDefault.shared(log: wtLog, wayTodayState: wayTodayState)
-      locationService = LocationServiceDefault.shared(log: wtLog, wayTodayState: wayTodayState)
-      super.init()
+        wtLog = LogDefault.shared
+        wayTodayState = WayTodayStateDefault.shared
+        uploader = UploaderDefault.shared(log: wtLog, wayTodayState: wayTodayState)
+        locationService = LocationServiceDefault.shared(log: wtLog, wayTodayState: wayTodayState)
+        super.init()
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -135,16 +136,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 self.vibation.stop()
                                                             }
         }))
-        dispose.add(locationService.observableAuthorizationStatus.subscribe(handler: {status in
-            self.l.d("WayToday status: \(status)")
-            if status == .needAuthorization {
-                // NOTE: REQUEST PERMISSIONS GPS
-                self.locationService.requestAuthorization()
-            } else if status == .Authorized {
-                self.setupLocationService()
+        
+        dispose.add(locationService.observableStatus.subscribe(handler: {status in
+            self.l.d("locationService status: \(status)")
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                switch status {
+                case .stopped:
+                    if self.wayTodayState.on {
+                        if self.locationService.authorizationStatus != .Authorized {
+                            self.locationService.requestAuthorization()
+                        }
+                    }
+                case .needAuthorization, .unknown:
+                    self.locationManager.requestAlwaysAuthorization()
+                case .disabled:
+                    break
+                case .started:
+                    break
+                case .problem:
+                    break
+                }
             }
+        
         }))
-
+        
         if ble.state == .on {
             DispatchQueue.global(qos: .background).async {
                 self.store.connectAll()
@@ -153,14 +168,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if wayTodayState.on {
             do {
-              try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET, provider: WAYTODAY_PROVIDER))
+                try uploader.startListen(locationService: locationService, wayTodayService: WayTodayServiceDefault.shared(log: wtLog, wayTodayState: WayTodayStateDefault.shared, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET, provider: WAYTODAY_PROVIDER))
             }catch{
-              wtLog.error("Error start listening")
+                wtLog.error("Error start listening")
             }
         }
         
         setupLocationService();
-
+        
         return true
     }
     
@@ -202,8 +217,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             l.d("locationService.stop hasAlerts=\(hasAlerts) useWayToday=\(useWayToday) ble=\(ble.state)")
             locationService.stop()
         }
-
+        
     }
-
+    
 }
 

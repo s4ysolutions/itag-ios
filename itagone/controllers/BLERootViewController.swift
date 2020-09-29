@@ -143,7 +143,7 @@ class BLERootViewController: UIViewController {
             
         }
         
-        alert.addAction(UIAlertAction(title: waytoday.on ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
+        alert.addAction(UIAlertAction(title: waytoday.on && locationService.authorizationStatus == .Authorized ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
             self.toggleWayToday()
         })
         
