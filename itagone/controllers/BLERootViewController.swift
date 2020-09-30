@@ -20,8 +20,11 @@ class BLERootViewController: UIViewController {
     static let imageNoSound = UIImage(named: "itemNoSound")
     static let imageSound = UIImage(named: "itemSound")
     static let imageVibration = UIImage(named: "itemVibration")
+    static let imageLedBlue = UIImage(named: "ledBlue")
     static let imageLedGreen = UIImage(named: "ledGreen")
     static let imageLedGray = UIImage(named: "ledGray")
+    static let imageLedRed = UIImage(named: "ledRed")
+    static let imageLedYellow = UIImage(named: "ledYellow")
     
     let ble: BLEInterface
     let store: TagStoreInterface
@@ -32,6 +35,7 @@ class BLERootViewController: UIViewController {
     private let locationService: LocationService
     private var waytoday: WayTodayState
     private var waytodayService: WayTodayService
+    private var uploader: Uploader
     
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
@@ -39,6 +43,7 @@ class BLERootViewController: UIViewController {
         waytoday = WayTodayStateDefault.shared
         locationService = LocationServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday)
         waytodayService = WayTodayServiceDefault.shared(log: LogDefault.shared, wayTodayState: waytoday, appname: WAYTODAY_APPNAME, secret: WAYTODAY_SECRET, provider: WAYTODAY_PROVIDER)
+        uploader = UploaderDefault.shared(log: LogDefault.shared, wayTodayState: waytoday)
         super.init(coder: aDecoder)
     }
     
@@ -47,7 +52,22 @@ class BLERootViewController: UIViewController {
         setupItemSound()
     }
     
+    private func setLedNone() {
+        if waytoday.on {
+            if locationService.authorizationStatus == .Authorized {
+                self.waytodayLed?.image = BLERootViewController.imageLedYellow
+            } else {
+                self.waytodayLed?.image = BLERootViewController.imageLedRed
+            }
+        } else {
+            self.waytodayLed?.image = BLERootViewController.imageLedGray
+        }
+    }
+    
+    var blueLedIsOn = false;
     var greenLedIsOn = false;
+    var redLedIsOn = false;
+    
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
@@ -65,12 +85,72 @@ class BLERootViewController: UIViewController {
                 self.waytodayLed?.image = BLERootViewController.imageLedGreen
             })
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
-                self.waytodayLed?.image = BLERootViewController.imageLedGray
+                self.setLedNone()
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100), execute: {
                     self.greenLedIsOn = false
                 })
             })
         }))
+        // update leds on upload
+        disposable!.add(uploader
+            .observableState
+            .subscribe(id:"uploadedController", handler: {uploaderState in
+                DispatchQueue.main.async {
+                    switch(uploaderState){
+                    case UploaderState.UPLOADING:
+                        if (self.blueLedIsOn) {
+                            return
+                        }
+                        self.blueLedIsOn = true
+                        self.waytodayLed?.image = BLERootViewController.imageLedBlue
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
+                            self.setLedNone()
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100), execute: {
+                                self.blueLedIsOn = false
+                            })
+                        })
+                    case UploaderState.ERROR:
+                        if (self.redLedIsOn) {
+                            return
+                        }
+                        self.redLedIsOn = true
+                        self.waytodayLed?.image = BLERootViewController.imageLedRed
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
+                            self.setLedNone()
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100), execute: {
+                                self.redLedIsOn = false
+                            })
+                        })
+                    default:
+                        self.setLedNone()
+                    }
+                }
+            })
+        )
+        
+        disposable!.add(locationService.observableLocation.subscribe(on: DispatchQueue.global(qos: .userInteractive), handler: {
+            location in
+            if (self.greenLedIsOn) {
+                return
+            }
+            self.greenLedIsOn = true
+            DispatchQueue.main.sync(execute: {
+                self.waytodayLed?.image = BLERootViewController.imageLedGreen
+            })
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
+                self.setLedNone()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100), execute: {
+                    self.greenLedIsOn = false
+                })
+            })
+        }))
+        
+        disposable!.add(waytoday.observableOn.subscribe(handler: {_ in
+            DispatchQueue.main.async{
+                self.setLedNone()
+            }
+        }))
+        
         setupContent()
         super.viewWillAppear(animated)
     }
@@ -149,20 +229,20 @@ class BLERootViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "About WayToday".localized, style: .default) { _ in
             let alert = UIAlertController(title: "About WayToday".localized, message: "about_way_today_text".localized, preferredStyle: .alert)
-
+            
             alert.addAction(UIAlertAction(title: "More...".localized, style: .default, handler: { _ in
                 guard let url=URL(string: "https://way.today/landing/en.html".localized) else {
-                  return //be safe
+                    return //be safe
                 }
                 if #available(iOS 10.0, *) {
-                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 } else {
-                  UIApplication.shared.openURL(url)
+                    UIApplication.shared.openURL(url)
                 }
             }))
-
+            
             alert.addAction(UIAlertAction(title: "Close".localized, style: .default, handler: nil))
-
+            
             self.present(alert, animated: true)
         })
         
@@ -185,7 +265,9 @@ class BLERootViewController: UIViewController {
     private func toggleWayToday() -> Void {
         if (self.waytoday.on) {
             self.waytoday.on = false
+            uploader.reset()
         } else {
+            uploader.reset()
             if (self.waytoday.tid == "") {
                 self.requestTid(complete: {_ in
                     if (self.waytoday.tid != "") {
