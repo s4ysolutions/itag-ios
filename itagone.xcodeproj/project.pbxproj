@@ -78,7 +78,7 @@
 		41A5DA7422FBD85B00E6F94B /* TagFactoryDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7322FBD85B00E6F94B /* TagFactoryDefault.swift */; };
 		41A5DA7622FBDAA700E6F94B /* TagStoreDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7522FBDAA700E6F94B /* TagStoreDefault.swift */; };
 		41A5DA7922FBF95800E6F94B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41A5DA7722FBF95800E6F94B /* Localizable.strings */; };
-		41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7C22FBFAFF00E6F94B /* localized.swift */; };
+		41A5DA7D22FBFAFF00E6F94B /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7C22FBFAFF00E6F94B /* String+localized.swift */; };
 		41A5DA7F22FC569100E6F94B /* BLETag1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7E22FC569100E6F94B /* BLETag1ViewController.swift */; };
 		41A5DA8122FC56AA00E6F94B /* BLETags2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA8022FC56AA00E6F94B /* BLETags2ViewController.swift */; };
 		41A5DA8322FC572800E6F94B /* BLETagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA8222FC572800E6F94B /* BLETagViewController.swift */; };
@@ -173,14 +173,18 @@
 		413682EA2301DF440073A45A /* BLEFindMeDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeDefault.swift; sourceTree = "<group>"; };
 		413682EC2301E0150073A45A /* BLEFindMeControlFactoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryInterface.swift; sourceTree = "<group>"; };
 		413682EE2301E0860073A45A /* BLEFindMeControlFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEFindMeControlFactoryDefault.swift; sourceTree = "<group>"; };
+		41370E37252B16DB008603AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		41370E39252B16FD008603AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		41370E3E252B1766008603AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = itagone/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		41370E3F252B17AC008603AD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		41370E40252B17BD008603AD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = itagone/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		41370E41252B17E4008603AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		415B1C2E24953686001C54B0 /* WayTodaySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WayTodaySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		415B1C3824956151001C54B0 /* secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secret.swift; sourceTree = "<group>"; };
 		415B1C3D24956A26001C54B0 /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		415B1C4024956ACA001C54B0 /* Any.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Any.swift; sourceTree = "<group>"; };
 		415B1C4224957356001C54B0 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		415B1C4424957847001C54B0 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		415B1C4924960E58001C54B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		415B1C4B24960E7D001C54B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		415B1C4D24965C90001C54B0 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		415B1C4F24969508001C54B0 /* LastSeenLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastSeenLocation.swift; sourceTree = "<group>"; };
 		415B1C512496968B001C54B0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -227,8 +231,7 @@
 		41A5DA7322FBD85B00E6F94B /* TagFactoryDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFactoryDefault.swift; sourceTree = "<group>"; };
 		41A5DA7522FBDAA700E6F94B /* TagStoreDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStoreDefault.swift; sourceTree = "<group>"; };
 		41A5DA7822FBF95800E6F94B /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = itagone/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		41A5DA7A22FBF97E00E6F94B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = itagone/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		41A5DA7C22FBFAFF00E6F94B /* localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = localized.swift; sourceTree = "<group>"; };
+		41A5DA7C22FBFAFF00E6F94B /* String+localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+localized.swift"; sourceTree = "<group>"; };
 		41A5DA7E22FC569100E6F94B /* BLETag1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETag1ViewController.swift; sourceTree = "<group>"; };
 		41A5DA8022FC56AA00E6F94B /* BLETags2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETags2ViewController.swift; sourceTree = "<group>"; };
 		41A5DA8222FC572800E6F94B /* BLETagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETagViewController.swift; sourceTree = "<group>"; };
@@ -457,7 +460,7 @@
 		41A5DA7B22FBFAD700E6F94B /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				41A5DA7C22FBFAFF00E6F94B /* localized.swift */,
+				41A5DA7C22FBFAFF00E6F94B /* String+localized.swift */,
 				410416672302C8190091E288 /* Int+extenstions.swift */,
 				413682E42301B5D60073A45A /* Float+extenstions.swift */,
 				410416692302D4510091E288 /* Double+extenstions.swift */,
@@ -1049,7 +1052,7 @@
 				415B1C5024969509001C54B0 /* LastSeenLocation.swift in Sources */,
 				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
 				415B1C3924956151001C54B0 /* secret.swift in Sources */,
-				41A5DA7D22FBFAFF00E6F94B /* localized.swift in Sources */,
+				41A5DA7D22FBFAFF00E6F94B /* String+localized.swift in Sources */,
 				41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */,
 				411C13832523074F00CC389B /* provider.swift in Sources */,
 				41DEB45524939A8400EAF6C3 /* AlertSound.swift in Sources */,
@@ -1128,8 +1131,8 @@
 		415B1C4A24960E58001C54B0 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				415B1C4924960E58001C54B0 /* ru */,
-				415B1C4B24960E7D001C54B0 /* en */,
+				41370E3F252B17AC008603AD /* ru */,
+				41370E41252B17E4008603AD /* en */,
 			);
 			name = InfoPlist.strings;
 			path = itagone;
@@ -1139,7 +1142,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				41A5DA7822FBF95800E6F94B /* Base */,
-				41A5DA7A22FBF97E00E6F94B /* ru */,
+				41370E3E252B1766008603AD /* en */,
+				41370E40252B17BD008603AD /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1152,6 +1156,7 @@
 				41C15A5E22FAF1BC008A4521 /* it */,
 				41A5DA5D22FAF1DA00E6F94B /* zh-Hans */,
 				41A5DA6122FB15D400E6F94B /* ru */,
+				41370E39252B16FD008603AD /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1164,6 +1169,7 @@
 				41C15A5D22FAF1B6008A4521 /* ar */,
 				41C15A5F22FAF1BC008A4521 /* it */,
 				41A5DA5E22FAF1DA00E6F94B /* zh-Hans */,
+				41370E37252B16DB008603AD /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1405,7 +1411,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1428,7 +1434,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

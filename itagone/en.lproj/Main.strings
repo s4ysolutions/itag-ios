@@ -1,0 +1,36 @@
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "1iC-WF-8qC"; */
+"1iC-WF-8qC.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "You have no iTag devices connected yet."; ObjectID = "Aox-D2-ha9"; */
+"Aox-D2-ha9.text" = "You have no iTag devices connected yet.";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "HaR-6N-a3N"; */
+"HaR-6N-a3N.title" = "Item";
+
+/* Class = "UILabel"; text = "Click \"Scan\" button above to start searching."; ObjectID = "V78-gO-sIZ"; */
+"V78-gO-sIZ.text" = "Click \"Scan\" button above to start searching.";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ZBr-LV-IjR"; */
+"ZBr-LV-IjR.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "WayToday Button"; ObjectID = "aEu-zV-ykG"; */
+"aEu-zV-ykG.normalTitle" = "WayToday Button";
+
+/* Class = "UILabel"; text = "iTag One"; ObjectID = "hMZ-aM-S9j"; */
+"hMZ-aM-S9j.text" = "iTag One";
+
+/* Class = "UILabel"; text = "iTag"; ObjectID = "kZt-uP-uQr"; */
+"kZt-uP-uQr.text" = "iTag";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "rQW-Nk-Fet"; */
+"rQW-Nk-Fet.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "sSM-0f-EUv"; */
+"sSM-0f-EUv.normalTitle" = "Button";
+
+/* Class = "UINavigationItem"; title = "iTag One"; ObjectID = "y7o-Rl-kVT"; */
+"y7o-Rl-kVT.title" = "iTag One";
+
+/* Class = "UILabel"; text = "iTag One"; ObjectID = "z1h-V4-wJB"; */
+"z1h-V4-wJB.text" = "iTag One";

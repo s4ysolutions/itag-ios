@@ -37,6 +37,10 @@ class BLERootViewController: UIViewController {
     private var waytodayService: WayTodayService
     private var uploader: Uploader
     
+    var blueLedIsOn = false;
+    var greenLedIsOn = false;
+    var redLedIsOn = false;
+    
     required init?(coder aDecoder: NSCoder) {
         ble = BLEDefault.shared
         store = TagStoreDefault.shared
@@ -55,7 +59,11 @@ class BLERootViewController: UIViewController {
     private func setLedNone() {
         if waytoday.on {
             if locationService.authorizationStatus == .Authorized {
-                self.waytodayLed?.image = BLERootViewController.imageLedYellow
+                if locationService.status == .started {
+                    self.waytodayLed?.image = BLERootViewController.imageLedYellow
+                } else {
+                    self.waytodayLed?.image = BLERootViewController.imageLedGray
+                }
             } else {
                 self.waytodayLed?.image = BLERootViewController.imageLedRed
             }
@@ -64,20 +72,17 @@ class BLERootViewController: UIViewController {
         }
     }
     
-    var blueLedIsOn = false;
-    var greenLedIsOn = false;
-    var redLedIsOn = false;
-    
     override func viewWillAppear(_ animated: Bool) {
         disposable?.dispose()
         disposable = DisposeBag()
         disposable!.add(store.observable.subscribe(on: DispatchQueue.main, id: "tag_change_root", handler: {_ in
             self.setupContent()
         }))
+        setLedNone()
         // update led on new location
         disposable!.add(locationService.observableLocation.subscribe(on: DispatchQueue.global(qos: .userInteractive), handler: {
             location in
-            if (self.greenLedIsOn) {
+            if (self.greenLedIsOn || self.blueLedIsOn || self.redLedIsOn) {
                 return
             }
             self.greenLedIsOn = true
@@ -102,6 +107,8 @@ class BLERootViewController: UIViewController {
                             return
                         }
                         self.blueLedIsOn = true
+                        self.greenLedIsOn = false
+                        self.redLedIsOn = false
                         self.waytodayLed?.image = BLERootViewController.imageLedBlue
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300), execute: {
                             self.setLedNone()
@@ -223,7 +230,7 @@ class BLERootViewController: UIViewController {
             
         }
         
-        alert.addAction(UIAlertAction(title: waytoday.on && locationService.authorizationStatus == .Authorized ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
+        alert.addAction(UIAlertAction(title: locationService.status == .started ? "Turn off WayToday".localized : "Turn on WayToday".localized , style: .default) { _ in
             self.toggleWayToday()
         })
         
@@ -267,16 +274,37 @@ class BLERootViewController: UIViewController {
             self.waytoday.on = false
             uploader.reset()
         } else {
-            uploader.reset()
-            if (self.waytoday.tid == "") {
-                self.requestTid(complete: {_ in
-                    if (self.waytoday.tid != "") {
-                        self.waytoday.on = true
-                    }
-                })
+            if (store.hasAlerts) {
+                uploader.reset()
+                if (self.waytoday.tid == "") {
+                    self.requestTid(complete: {_ in
+                        if (self.waytoday.tid != "") {
+                            self.waytoday.on = true
+                        }
+                    })
+                } else {
+                    self.waytoday.on = true
+                }
             } else {
-                self.waytoday.on = true
+                let alert = UIAlertController(title: "WayToday is not available".localized, message: "way_today_no_available_text".localized, preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Install WayToday".localized, style: .default, handler: { _ in
+                    guard let url=URL(string: "itms-apps://apps.apple.com/us/app/id1472679829") else {
+                        return //be safe
+                    }
+                    print(url)
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Close".localized, style: .default, handler: nil))
+                
+                self.present(alert, animated: true)
             }
+            
         }
     }
     

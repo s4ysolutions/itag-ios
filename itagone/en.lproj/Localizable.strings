@@ -7,4 +7,4 @@
 */
 
 "about_way_today_text" = "WayToday is an online service that makes the last 500 locations available to anyone who knows your track ID for 2 weeks or until your ID changed. iTagOne utilizes the service to help finding the tag in case if it had been lost.\nIMPORTANT: WayToday is not necessary: the most recent location where the tag had been seen will be kept anyway.";
-"way_today_no_available_text" = "In order to save your battery life GPS is disabled if you do not have connected iTags. Please install WayToday from AppStore if you want to keep track of your device and share your location anonymously with your family, friends or partners.";
+"way_today_no_available_text" = "In order to save the battery, GPS is disabled unless you have connected iTags. Please install WayToday from AppStore if you want to keep track of your device and share your location anonymously with your family, friends or partners.";

@@ -210,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupLocationService() {
         let hasAlerts = store.hasAlerts
         let useWayToday = wayTodayState.on
-        if (hasAlerts || useWayToday) && ble.state == .on  {
+        if (hasAlerts || useWayToday) && ble.state == .on && locationService.authorizationStatus == .Authorized {
             l.d("locationService.start hasAlerts=\(hasAlerts) useWayToday=\(useWayToday) ble=\(ble.state)")
             locationService.start()
         } else {
