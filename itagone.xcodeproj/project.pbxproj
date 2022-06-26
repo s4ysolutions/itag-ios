@@ -30,7 +30,6 @@
 		415B1C31249536F5001C54B0 /* Pods_itagone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5738C26BF2B9546553AE90 /* Pods_itagone.framework */; };
 		415B1C3324953906001C54B0 /* BLE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; };
 		415B1C3424953906001C54B0 /* BLE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4177C95422FEAE4E003F4423 /* BLE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		415B1C3924956151001C54B0 /* secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3824956151001C54B0 /* secret.swift */; };
 		415B1C3E24956A26001C54B0 /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C3D24956A26001C54B0 /* Bool.swift */; };
 		415B1C4124956ACA001C54B0 /* Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4024956ACA001C54B0 /* Any.swift */; };
 		415B1C4324957356001C54B0 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415B1C4224957356001C54B0 /* Int.swift */; };
@@ -82,6 +81,7 @@
 		41A5DA7F22FC569100E6F94B /* BLETag1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA7E22FC569100E6F94B /* BLETag1ViewController.swift */; };
 		41A5DA8122FC56AA00E6F94B /* BLETags2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA8022FC56AA00E6F94B /* BLETags2ViewController.swift */; };
 		41A5DA8322FC572800E6F94B /* BLETagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A5DA8222FC572800E6F94B /* BLETagViewController.swift */; };
+		41A918252867C117001A3E48 /* secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A918242867C117001A3E48 /* secret.swift */; };
 		41C15A5922FAF0FC008A4521 /* BLETags0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */; };
 		41DEB45524939A8400EAF6C3 /* AlertSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DEB45424939A8400EAF6C3 /* AlertSound.swift */; };
 		41DEB4572493B01400EAF6C3 /* VibrationDeafult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DEB4562493B01400EAF6C3 /* VibrationDeafult.swift */; };
@@ -180,7 +180,6 @@
 		41370E40252B17BD008603AD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = itagone/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		41370E41252B17E4008603AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		415B1C2E24953686001C54B0 /* WayTodaySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WayTodaySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		415B1C3824956151001C54B0 /* secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secret.swift; sourceTree = "<group>"; };
 		415B1C3D24956A26001C54B0 /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		415B1C4024956ACA001C54B0 /* Any.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Any.swift; sourceTree = "<group>"; };
 		415B1C4224957356001C54B0 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
@@ -235,6 +234,7 @@
 		41A5DA7E22FC569100E6F94B /* BLETag1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETag1ViewController.swift; sourceTree = "<group>"; };
 		41A5DA8022FC56AA00E6F94B /* BLETags2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETags2ViewController.swift; sourceTree = "<group>"; };
 		41A5DA8222FC572800E6F94B /* BLETagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETagViewController.swift; sourceTree = "<group>"; };
+		41A918242867C117001A3E48 /* secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secret.swift; sourceTree = "<group>"; };
 		41C15A5822FAF0FC008A4521 /* BLETags0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLETags0ViewController.swift; sourceTree = "<group>"; };
 		41C15A5B22FAF1A1008A4521 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		41C15A5C22FAF1B6008A4521 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
@@ -385,7 +385,7 @@
 		415B1C3624956124001C54B0 /* waytoday */ = {
 			isa = PBXGroup;
 			children = (
-				415B1C3824956151001C54B0 /* secret.swift */,
+				41A918242867C117001A3E48 /* secret.swift */,
 				411C13822523074F00CC389B /* provider.swift */,
 			);
 			path = waytoday;
@@ -1051,7 +1051,6 @@
 				415B1C4E24965C90001C54B0 /* Logger.swift in Sources */,
 				415B1C5024969509001C54B0 /* LastSeenLocation.swift in Sources */,
 				41F67BFA22F932E300BCC628 /* BLERootViewController.swift in Sources */,
-				415B1C3924956151001C54B0 /* secret.swift in Sources */,
 				41A5DA7D22FBFAFF00E6F94B /* String+localized.swift in Sources */,
 				41A5DA7022FBD6B400E6F94B /* TagFactoryInterface.swift in Sources */,
 				411C13832523074F00CC389B /* provider.swift in Sources */,
@@ -1060,6 +1059,7 @@
 				415B1C4324957356001C54B0 /* Int.swift in Sources */,
 				413682E0230178480073A45A /* IndicatorTableViewCell.swift in Sources */,
 				41A5DA6E22FBD56C00E6F94B /* TagStoreInterface.swift in Sources */,
+				41A918252867C117001A3E48 /* secret.swift in Sources */,
 				415B1C4524957847001C54B0 /* String.swift in Sources */,
 				41A5DA7F22FC569100E6F94B /* BLETag1ViewController.swift in Sources */,
 				41F67BF822F932E300BCC628 /* AppDelegate.swift in Sources */,
@@ -1412,7 +1412,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.9;
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
+				PRODUCT_BUNDLE_IDENTIFIER = ifot.itag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1435,7 +1435,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.9;
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.s4y.itagone;
+				PRODUCT_BUNDLE_IDENTIFIER = ifot.itag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

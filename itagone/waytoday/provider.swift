@@ -8,4 +8,4 @@
 
 import Foundation
 
-let WAYTODAY_PROVIDER = "iTagOneIOS"
+let WAYTODAY_PROVIDER = "ifot"
